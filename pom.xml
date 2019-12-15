@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.wuxian</groupId>
+    <artifactId>janus</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+    <name>janus</name>
+    <modules>
+        <module>janus-core</module>
+        <module>janus-entity-prototype</module>
+        <module>janus-entity-classic</module>
+        <module>janus-entity-general</module>
+        <module>janus-cache-source</module>
+    </modules>
+
+    <properties>
+        <junit.jupiter.verion>5.3.2</junit.jupiter.verion>
+        <junit.platform.version>1.3.2</junit.platform.version>
+        <lombok.version>1.18.10</lombok.version>
+        <mybatis-plus.version>3.2.0</mybatis-plus.version>
+        <swagger-annotations.version>1.5.20</swagger-annotations.version>
+        <module.version>1.0.0</module.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>com.wuxian</groupId>
+                <artifactId>janus-entity-general</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wuxian</groupId>
+                <artifactId>janus-entity-classic</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wuxian</groupId>
+                <artifactId>janus-entity-prototype</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wuxian</groupId>
+                <artifactId>janus-core</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-annotations.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-annotation</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <!-- Junit 5 -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.jupiter.verion}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>${junit.jupiter.verion}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.jupiter.verion}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-launcher</artifactId>
+                <version>${junit.platform.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-runner</artifactId>
+                <version>${junit.platform.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
