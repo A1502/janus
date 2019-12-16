@@ -31,10 +31,13 @@ public class SourceExtractor {
         //STEP5:提取role
         RoleExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
-        //STEP5:提取userGroup
+        //STEP6:提取userGroup
         UserGroupExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
-        //STEP6:提取userGroupUser
+        //STEP7:提取roleRelation
+        RoleRelationExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
+
+        //STEP8:提取userGroupUser
         UserGroupUserExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
         return result;
