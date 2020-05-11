@@ -71,7 +71,7 @@ public class PermissionTemplateExtractor {
         all.addAll(from4);
 
         Set<IdType> allIds = all.stream().filter(o -> o.getId() != null).map(o ->
-                IdUtils.createId(o.getId().toString())).collect(Collectors.toSet());
+                IdUtils.createId(o.getId())).collect(Collectors.toSet());
         //修正id生成起点
         templateIdGenerator.addUsed(allIds);
 
