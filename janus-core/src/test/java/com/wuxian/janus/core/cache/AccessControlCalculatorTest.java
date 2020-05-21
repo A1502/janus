@@ -132,7 +132,7 @@ public class AccessControlCalculatorTest {
      * 2. 正向获取RoleUserGroupX,execute_Access为false
      * 3. 反向测试RoleUserGroupXEntity关系表中，GroupId不存在, 不会报错
      * 4. 反向测试RoleUserGroupXEntity关系表中，RoleId不存在, 会报错--error message 1
-     * 5. 反向测试UserOutObject中不存在outobjectId,会报错--error message 2
+     * 5. 反向测试UserOutObject中不存在outObjectId,会报错--error message 2
      * 6. 反向测试outGroupList:"1,2,3,"尾部有,号,不会报错
      */
     @Test
