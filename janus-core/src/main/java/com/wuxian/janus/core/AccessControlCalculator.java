@@ -13,7 +13,7 @@ import com.wuxian.janus.core.synchronism.BaseStatusSynchronizer;
 import java.util.List;
 
 /**
- * @author solomon
+ * @author wuxian
  */
 
 public class AccessControlCalculator {

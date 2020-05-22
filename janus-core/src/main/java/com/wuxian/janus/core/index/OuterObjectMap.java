@@ -6,7 +6,7 @@ import com.wuxian.janus.entity.OuterObjectEntity;
 import com.wuxian.janus.entity.primary.IdType;
 
 /**
- * @author Solomon
+ * @author wuxian
  */
 
 public class OuterObjectMap extends AutoFillMultipleIndexesMap<IdType, OuterObjectEntity> {

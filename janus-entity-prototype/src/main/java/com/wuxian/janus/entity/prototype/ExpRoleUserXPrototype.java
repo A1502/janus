@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 /**
  * Prototype类
  *
- * @author Solomon
+ * @author wuxian
  * @email
  * @date 2019/07/09
  */

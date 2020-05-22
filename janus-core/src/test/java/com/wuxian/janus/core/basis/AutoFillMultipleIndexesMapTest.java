@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * AutoFillMultipleIndexesMap Tester.
  *
- * @author Solomon
+ * @author wuxian
  */
 public class AutoFillMultipleIndexesMapTest extends TestTemplate<MultipleIndexesMapData> {
 

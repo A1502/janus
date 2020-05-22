@@ -7,7 +7,7 @@ import com.wuxian.janus.core.StrictUtils;
 import java.util.*;
 
 /**
- * @author Solomon
+ * @author wuxian
  */
 
 public abstract class BaseApplicationCachePool {

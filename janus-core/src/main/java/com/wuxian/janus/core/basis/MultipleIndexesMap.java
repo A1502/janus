@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * @author Solomon
+ * @author wuxian
  * <p>
  * 这个类实现了<K,V>方式存储基础上同时支持索引来提高查询性能，最终体现在getByCondition方法
  */

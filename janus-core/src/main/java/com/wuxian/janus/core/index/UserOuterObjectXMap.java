@@ -9,7 +9,7 @@ import com.wuxian.janus.core.basis.SourceLoader;
 import java.util.List;
 
 /**
- * @author Solomon
+ * @author wuxian
  */
 
 public class UserOuterObjectXMap extends AutoFillMultipleIndexesMap<IdType, UserOuterObjectXEntity> {

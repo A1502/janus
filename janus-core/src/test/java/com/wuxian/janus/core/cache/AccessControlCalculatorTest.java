@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * AccessControlCalculatorTest Test
  * Date: 2019/08/26
  *
- * @author Ben
+ * @author wuxian
  */
 public class AccessControlCalculatorTest {
 

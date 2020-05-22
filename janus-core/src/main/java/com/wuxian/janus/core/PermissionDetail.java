@@ -6,7 +6,7 @@ import com.wuxian.janus.entity.OuterObjectTypeEntity;
 import com.wuxian.janus.entity.PermissionEntity;
 
 /**
- * @author Solomon
+ * @author wuxian
  */
 
 @Data

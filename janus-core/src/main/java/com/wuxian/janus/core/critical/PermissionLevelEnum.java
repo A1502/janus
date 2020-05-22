@@ -6,7 +6,7 @@ import lombok.Getter;
 /**
  * 权限级别
  *
- * @author lijianun
+ * @author wuxian
  */
 @SuppressWarnings("all")
 public enum PermissionLevelEnum {

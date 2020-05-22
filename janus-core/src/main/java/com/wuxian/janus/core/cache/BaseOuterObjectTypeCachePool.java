@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * @author Solomon
+ * @author wuxian
  */
 
 public abstract class BaseOuterObjectTypeCachePool {
