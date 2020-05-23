@@ -15,7 +15,9 @@ import java.util.stream.Collectors;
 
 class ExtractUtils {
     /**
-     * list中缺Id和Code的项补全
+     * list中有id，缺keyFields的补keyFields
+     * list中有keyFields，缺id的补id
+     * 并保证id相等的，keyFields必然相等;反之亦然
      */
     static <T extends BaseModel> void fixIdAndKeyFields(List<T> list, IdGenerator idGenerator) {
 
@@ -33,6 +35,7 @@ class ExtractUtils {
                 } else {
                     T refItem = StrictUtils.get(idMap, item.getId());
                     if (!refItem.getKeyFieldsHash().equals(item.getKeyFieldsHash())) {
+                        //id相等，keyFieldsHash却不等的是异常数据
                         throw ErrorFactory.createKeyFieldsConflictError(item.toString());
                     }
                 }
@@ -43,6 +46,7 @@ class ExtractUtils {
                 } else {
                     T refItem = StrictUtils.get(keyMap, item.getKeyFieldsHash());
                     if (!refItem.getId().equals(item.getId())) {
+                        //keyFieldsHash相等，id却不等的是异常数据
                         throw ErrorFactory.createIdConflictError(item.toString());
                     }
                 }
@@ -59,6 +63,7 @@ class ExtractUtils {
         //给idList补全keyFields
         for (T item : idList) {
             if (StrictUtils.containsKey(idMap, item.getId())) {
+                //补全keyFields，这个是关键；fillKeyFields是个重要的抽象方法
                 item.fillKeyFields(StrictUtils.get(idMap, item.getId()));
             }
         }
@@ -69,32 +74,31 @@ class ExtractUtils {
             }
         }
 
-        //提取所有id给idGenerator，登记为已使用（"Used"）
-        Set<IdType> allIds = list.stream().filter(o -> o.getId() != null).map(o ->
-                IdUtils.createId(o.getId().toString())).collect(Collectors.toSet());
-        idGenerator.addUsed(allIds);
-
-        Set<String> idleKeyFieldsSet = new HashSet<>();
-        List<T> idleKeyFieldsItemList = new ArrayList<>();
+        //id为null的项的hash集合
+        Set<String> hashesOfNullIdItem = new HashSet<>();
+        //id为null的项的集合
+        List<T> nullIdItemList = new ArrayList<>();
         for (T item : list) {
             if (item.getId() != null) {
+                //提取所有id给idGenerator，登记为已使用
                 idGenerator.addUsed(Collections.singleton(IdUtils.createId(item.getId())));
             } else {
-                idleKeyFieldsSet.add(item.getKeyFieldsHash());
-                idleKeyFieldsItemList.add(item);
+                hashesOfNullIdItem.add(item.getKeyFieldsHash());
+                nullIdItemList.add(item);
             }
         }
 
-        //为每个没有id的keyFieldsHas分配好id
-        Map<String, IdType> idleKeyFieldsSetMap = idleKeyFieldsSet.stream()
+        //为每个没有id的keyFieldsHash生成配对的id
+        Map<String, IdType> keyFieldsIdMapForNullItems = hashesOfNullIdItem.stream()
                 .collect(Collectors.toMap(Function.identity(), o -> idGenerator.generate()));
 
         //最后一轮给没有id的补id
-        idleKeyFieldsItemList.forEach(o -> o.setId(idleKeyFieldsSetMap.get(o.getKeyFieldsHash()).getValue().toString()));
+        nullIdItemList.forEach(o -> o.setId(keyFieldsIdMapForNullItems.get(o.getKeyFieldsHash()).getValue().toString()));
     }
 
     /**
-     * By id进行分组,同组执行BaseModel的mergeFrom动作，每组只保留一个，并检查每组合并结果一定填充了关键字段，最后以map形式返回
+     * By id进行分组,同组执行BaseModel的mergeFrom动作，每组只保留一个，并检查每组合并结果一定填充了关键字段，
+     * 最后以map形式返回
      */
     static <E, T extends BaseModel<E>> Map<IdType, T> groupByIdAndMerge(List<T> list) {
         Map<IdType, T> result = new HashMap<>();
@@ -126,11 +130,11 @@ class ExtractUtils {
     /**
      * group和merge后，再把每个model转entity返回
      */
-    static <E, T extends BaseModel<E>> Map<IdType, E> groupByIdAndMergeToEntity(List<T> list, Function<BaseModel<E>, E> otherFiledBuilder) {
+    static <E, T extends BaseModel<E>> Map<IdType, E> groupByIdAndMergeToEntity(List<T> list, Function<BaseModel<E>, E> otherFieldsBuilder) {
         Map<IdType, T> map = groupByIdAndMerge(list);
         Map<IdType, E> result =
                 map.entrySet().stream()
-                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().buildEntity(otherFiledBuilder)));
+                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().buildEntity(otherFieldsBuilder)));
         return result;
     }
 
