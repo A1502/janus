@@ -31,7 +31,7 @@ public abstract class BaseModel<E> {
     protected abstract <T extends BaseModel> Class<T> getThisClass();
 
     private FieldCopyHandler entityCopyHandler = (fieldName, copyToValue, copyFromValue, copyTo, copyToFieldSetter)
-            -> skipFieldCopy(BaseModel.this.toString(), fieldName,
+            -> beforeFieldCopy(BaseModel.this.toString(), fieldName,
             copyToValue, copyFromValue, copyTo, copyToFieldSetter);
 
     private FieldCopyHandler selfCopyHandler = (fieldName, copyToValue, copyFromValue, copyTo, copyToFieldSetter) -> {
@@ -39,28 +39,31 @@ public abstract class BaseModel<E> {
         if (exclude.contains(fieldName)) {
             return true;
         } else {
-            return skipFieldCopy(BaseModel.this.toString(), fieldName,
+            return beforeFieldCopy(BaseModel.this.toString(), fieldName,
                     copyToValue, copyFromValue, copyTo, copyToFieldSetter);
         }
     };
 
-    protected List<String> getSkipCopyFiledNames() {
+    private List<String> getSkipCopyFiledNames() {
         return Collections.singletonList("entity");
     }
 
     /**
-     * copyToValue为null时copyFromValue不为null才可能复制
+     * 以下情况提前处理，返回true表示skip后续复制行为
+     * 1）copyFromValue是List类型，按merge元素方式处理
+     * 2）copyFromValue没有值
+     * 3）copyFromValue和copyToValue相等
      */
-    private boolean skipFieldCopy(String model, String fieldName, Object copyToValue, Object copyFromValue, Object copyTo, Method copyToFieldSetter) {
+    private boolean beforeFieldCopy(String model, String fieldName, Object copyToValue, Object copyFromValue, Object copyTo, Method copyToFieldSetter) {
         if (copyFromValue != null) {
-            if (processListField(model, fieldName, copyToValue, copyFromValue, copyTo, copyToFieldSetter)) {
+            if (mergeListField(model, fieldName, copyToValue, copyFromValue, copyTo, copyToFieldSetter)) {
                 return true;
             }
-
             if (copyToValue == null) {
                 return false;
             } else {
                 if (!copyFromValue.equals(copyToValue)) {
+                    //copyToValue和copyFromValue同时不为null有不相等是异常数据
                     throw ErrorFactory.createDuplicatedFieldError(model, fieldName);
                 } else {
                     return true;
@@ -73,8 +76,9 @@ public abstract class BaseModel<E> {
 
     /**
      * List类型，采用合并两个List的方式处理
+     * 是List返回true
      */
-    private boolean processListField(String model, String fieldName, Object copyToValue, Object copyFromValue, Object copyTo, Method copyToFieldSetter) {
+    private boolean mergeListField(String model, String fieldName, Object copyToValue, Object copyFromValue, Object copyTo, Method copyToFieldSetter) {
         if (copyFromValue instanceof List) {
             try {
                 List copyToValueList;
