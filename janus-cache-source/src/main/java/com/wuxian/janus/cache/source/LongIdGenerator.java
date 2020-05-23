@@ -4,7 +4,7 @@ import com.wuxian.janus.entity.primary.IdType;
 
 import java.util.Collection;
 
-public class DefaultIdGenerator implements IdGenerator {
+public class LongIdGenerator implements IdGenerator {
 
     private Long next = 0L;
 

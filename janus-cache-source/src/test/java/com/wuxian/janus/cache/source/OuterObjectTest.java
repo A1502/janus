@@ -58,7 +58,7 @@ public class OuterObjectTest {
                         OuterObject.byId("13", "oo13", "oot20")
                 );
 
-        SourceExtractor sourceExtractor = new SourceExtractor(new DefaultIdGeneratorFactory());
+        SourceExtractor sourceExtractor = new SourceExtractor(new LongIdGeneratorFactory());
         DirectAccessControlSource source = sourceExtractor.extract(applicationGroup);
 
         System.out.println("==============testOuterObjectAndOuterObjectType===============");
@@ -143,7 +143,7 @@ public class OuterObjectTest {
                 OuterObjectType.byId("1", "oot1"),
                 OuterObjectType.byId("17", "oot1"));
 
-        SourceExtractor sourceExtractor = new SourceExtractor(new DefaultIdGeneratorFactory());
+        SourceExtractor sourceExtractor = new SourceExtractor(new LongIdGeneratorFactory());
         try {
             sourceExtractor.extract(applicationGroup);
             Assert.fail("未触发期望异常");
@@ -160,7 +160,7 @@ public class OuterObjectTest {
                 OuterObjectType.byId("1", "oot1"),
                 OuterObjectType.byId("1", "oot17"));
 
-        SourceExtractor sourceExtractor = new SourceExtractor(new DefaultIdGeneratorFactory());
+        SourceExtractor sourceExtractor = new SourceExtractor(new LongIdGeneratorFactory());
         try {
             sourceExtractor.extract(applicationGroup);
             Assert.fail("未触发期望异常");
@@ -222,7 +222,7 @@ public class OuterObjectTest {
                         new OuterObject("oo99", "oot85")
                 );
 
-        SourceExtractor sourceExtractor = new SourceExtractor(new DefaultIdGeneratorFactory());
+        SourceExtractor sourceExtractor = new SourceExtractor(new LongIdGeneratorFactory());
         DirectAccessControlSource source = sourceExtractor.extract(applicationGroup);
 
         checkOuterObjectTypeContainsId(source, "oot88", new String[]{"1"});

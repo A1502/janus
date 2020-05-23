@@ -77,7 +77,7 @@ public class ApplicationTenantTest {
                 );
         applicationGroup.addItem(app1);
 
-        SourceExtractor sourceExtractor = new SourceExtractor(new DefaultIdGeneratorFactory());
+        SourceExtractor sourceExtractor = new SourceExtractor(new LongIdGeneratorFactory());
         DirectAccessControlSource source = sourceExtractor.extract(applicationGroup);
         System.out.println("==============testInitApplicationTenant===============");
         source.print(System.out);
@@ -105,7 +105,7 @@ public class ApplicationTenantTest {
                 )
         );
 
-        SourceExtractor sourceExtractor = new SourceExtractor(new DefaultIdGeneratorFactory());
+        SourceExtractor sourceExtractor = new SourceExtractor(new LongIdGeneratorFactory());
         DirectAccessControlSource source = sourceExtractor.extract(applicationGroup);
         DirectAccessControlCacheProvider cacheProvider = DirectAccessControlCacheProvider.createFrom(source);
 

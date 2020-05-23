@@ -12,7 +12,7 @@ public class DefaultIdGeneratorTest {
     @Test
     @DisplayName("基本功能测试IdGenerator")
     void testCase1() {
-        DefaultIdGenerator generator = new DefaultIdGenerator();
+        LongIdGenerator generator = new LongIdGenerator();
 
         IdType usedOne = new IdType(null);
         usedOne.setStringValue(((Integer) Integer.MAX_VALUE).toString());
