@@ -8,7 +8,7 @@ import com.wuxian.janus.core.index.PermissionTemplateMap;
 import java.util.*;
 
 /**
- * @author Solomon
+ * @author wuxian
  */
 
 public abstract class BaseApplicationCache {

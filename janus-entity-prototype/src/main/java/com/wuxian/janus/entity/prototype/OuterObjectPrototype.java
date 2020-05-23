@@ -14,7 +14,7 @@ import java.util.Date;
 /**
  * 外部对象Prototype类
  *
- * @author Solomon
+ * @author wuxian
  * @email
  * @date 2019/07/11
  */

@@ -14,7 +14,7 @@ import java.util.Date;
 /**
  * Prototype类
  *
- * @author Solomon
+ * @author wuxian
  * @email
  * @date 2019/07/11
  */

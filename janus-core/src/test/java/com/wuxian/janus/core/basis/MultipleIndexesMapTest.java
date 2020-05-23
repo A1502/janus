@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * AutoFillMultipleIndexesMap Tester.
  *
- * @author Solomon
+ * @author wuxian
  */
 public class MultipleIndexesMapTest extends TestTemplate<MultipleIndexesMapData> {
 

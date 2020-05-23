@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Solomon
+ * @author wuxian
  */
 
 public class AutoFillMultipleIndexesMap<K, V> extends MultipleIndexesMap<K, V> {

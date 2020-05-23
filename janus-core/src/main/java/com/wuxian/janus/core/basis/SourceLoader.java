@@ -3,7 +3,7 @@ package com.wuxian.janus.core.basis;
 import java.util.Map;
 
 /**
- * @author Solomon
+ * @author wuxian
  */
 
 public interface SourceLoader<K, V> {

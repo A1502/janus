@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * @author Solomon
+ * @author wuxian
  */
 
 public abstract class BaseTenantCache {

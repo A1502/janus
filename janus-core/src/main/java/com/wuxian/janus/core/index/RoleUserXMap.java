@@ -9,7 +9,7 @@ import com.wuxian.janus.entity.primary.UserIdType;
 import java.util.List;
 
 /**
- * @author Solomon
+ * @author wuxian
  */
 
 public class RoleUserXMap extends AutoFillMultipleIndexesMap<IdType, RoleUserXEntity> {

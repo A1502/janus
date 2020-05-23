@@ -8,7 +8,7 @@ import com.wuxian.janus.core.basis.SourceLoader;
 import java.util.List;
 
 /**
- * @author Solomon
+ * @author wuxian
  */
 
 public class RolePermissionXMap extends AutoFillMultipleIndexesMap<IdType, RolePermissionXEntity> {
