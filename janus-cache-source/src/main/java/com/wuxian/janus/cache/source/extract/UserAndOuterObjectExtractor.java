@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 
 class UserAndOuterObjectExtractor {
 
+    static final String DELIMITER = ",";
+
     static void extract(ApplicationGroup applicationGroup, IdGeneratorFactory idGeneratorFactory, DirectAccessControlSource result) {
 
         Map<IdType, OuterObject> modelMap = extractOuterObject(applicationGroup, idGeneratorFactory, result);
@@ -119,9 +121,11 @@ class UserAndOuterObjectExtractor {
                 outerObjects.stream().collect(Collectors.groupingBy(OuterObject::getOuterObjectTypeCode));
 
         for (List<OuterObject> list : group.values()) {
+            //model转entity
             OuterObjectTypeEntity typeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeCode(result,
                     list.get(0).getOuterObjectTypeCode(), list.get(0).getKeyFieldsHash());
             IdType outerObjectTypeId = new IdType(typeEntity.getId());
+
             Map<IdType, UserOuterObjectXEntity> data = extractUserOuterObjectX(outerObjectTypeId, list, idGenerator)
                     .stream().collect(Collectors.toMap(o -> new IdType(o.getId()), Function.identity()));
             //转map后存储到result中
@@ -139,7 +143,7 @@ class UserAndOuterObjectExtractor {
         //首先按scope作为key；然后是UserIdType作为key,以其对应的OuterObject.IdType作为value
         Map<String, Map<UserIdType, Set<IdType>>> pool = new HashMap<>();
 
-        //先重组数据到pool中
+        //把outerObjects重组数据形式，放到pool中
         outerObjects.stream().forEach(
                 o -> {
                     List<User> users = o.getUsers();
@@ -177,7 +181,7 @@ class UserAndOuterObjectExtractor {
                 List<String> outerObjectIdStrings = outerObjectIds.stream()
                         .map(o -> o.getValue().toString())
                         .collect(Collectors.toList());
-                String oIdLink = String.join(",", outerObjectIdStrings.toArray(new String[outerObjectIdStrings.size()]));
+                String oIdLink = String.join(DELIMITER, outerObjectIdStrings.toArray(new String[outerObjectIdStrings.size()]));
 
                 UserOuterObjectXEntity xEntity = new UserOuterObjectXEntity();
                 xEntity.setId(idGenerator.generate().getValue());
