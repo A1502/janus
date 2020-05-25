@@ -61,7 +61,7 @@ class PermissionExtractor {
             allTenant.addAll(from4Tenant);
             allTenant.addAll(from5Tenant);
             //只需要补全tenantId
-            appendTenantId(allTenant, tenantId);
+            appendEntityTenantId(allTenant, tenantId);
 
             //来源合并
             List<Permission> all = new ArrayList<>(from1Application);
@@ -108,7 +108,7 @@ class PermissionExtractor {
         }
     }
 
-    private static void appendTenantId(List<Permission> list, TenantIdType tenantId) {
+    private static void appendEntityTenantId(List<Permission> list, TenantIdType tenantId) {
         for (Permission permission : list) {
             if (permission.getEntity() == null) {
                 permission.setEntity(new PermissionEntity());
