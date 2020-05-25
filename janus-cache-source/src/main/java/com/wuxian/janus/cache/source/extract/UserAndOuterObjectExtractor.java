@@ -203,9 +203,9 @@ class UserAndOuterObjectExtractor {
 
         Map<IdType, OuterObjectEntity> map = source.getOuterObject().get(IdUtils.createId(outerObjectTypeEntity.getId().toString()));
 
-        String findDesc = "OuterObject";
+        String targetDesc = "OuterObject";
         if (map == null) {
-            throw ErrorFactory.createNothingFoundError(findByDesc, findDesc);
+            throw ErrorFactory.createNothingFoundError(findByDesc, targetDesc);
         }
 
         OuterObjectEntity entity = ExtractUtils.findFirst(map.values(),
@@ -213,7 +213,7 @@ class UserAndOuterObjectExtractor {
         if (entity != null) {
             return entity;
         } else {
-            throw ErrorFactory.createNothingFoundError(findByDesc, findDesc);
+            throw ErrorFactory.createNothingFoundError(findByDesc, targetDesc);
         }
     }
 }

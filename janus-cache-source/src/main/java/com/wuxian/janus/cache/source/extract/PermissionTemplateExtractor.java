@@ -99,9 +99,9 @@ public class PermissionTemplateExtractor {
         Map<IdType, PermissionTemplateEntity> map =
                 source.getPermissionTemplate().get(IdUtils.createApplicationId(application.getId()));
 
-        String findDesc = "PermissionTemplate";
+        String targetDesc = "PermissionTemplate";
         if (map == null) {
-            throw ErrorFactory.createNothingFoundError(findByDesc, findDesc);
+            throw ErrorFactory.createNothingFoundError(findByDesc, targetDesc);
         }
 
         PermissionTemplateEntity entity = ExtractUtils.findFirst(map.values(),
@@ -109,7 +109,7 @@ public class PermissionTemplateExtractor {
         if (entity != null) {
             return entity;
         } else {
-            throw ErrorFactory.createNothingFoundError(findByDesc, findDesc);
+            throw ErrorFactory.createNothingFoundError(findByDesc, targetDesc);
         }
     }
 }

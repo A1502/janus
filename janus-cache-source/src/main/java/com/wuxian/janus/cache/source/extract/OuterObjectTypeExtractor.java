@@ -88,14 +88,14 @@ class OuterObjectTypeExtractor {
     static OuterObjectTypeEntity findByOuterObjectTypeCode(DirectAccessControlSource source
             , String outerObjectTypeCode, String findByDesc) {
 
-        String findDesc = "OuterObjectType";
+        String targetDesc = "OuterObjectType";
         OuterObjectTypeEntity typeEntity = ExtractUtils.findFirst(source.getOuterObjectType().values(),
                 o -> StrictUtils.equals(outerObjectTypeCode, o.getCode()));
 
         if (typeEntity != null) {
             return typeEntity;
         } else {
-            throw ErrorFactory.createNothingFoundError(findByDesc, findDesc);
+            throw ErrorFactory.createNothingFoundError(findByDesc, targetDesc);
         }
     }
 }
