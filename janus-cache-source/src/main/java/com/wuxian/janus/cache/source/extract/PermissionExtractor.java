@@ -41,8 +41,10 @@ class PermissionExtractor {
             TenantIdType tenantId = IdUtils.createTenantId(tenant.getId());
 
             //来源2:指定了permissionTemplateId的native permission
+            //因为application级只能设置templateId
             List<Permission> from2Tenant = application.buildNativeTenantPermission(tenantId, templateIdGenerator);
             //来源3:指定了permissionId的native permission
+            //因为tenant级只能设置permissionId
             List<Permission> from3Tenant = tenant.buildNativeTenantPermission();
 
             List<Permission> from4Tenant = new ArrayList<>();
