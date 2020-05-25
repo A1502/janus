@@ -96,6 +96,7 @@ class PermissionExtractor {
                         return entity;
                     });
 
+            //按single,multiple收录到结果中
             Map<IdType, PermissionEntity> singles = new HashMap<>();
             Map<IdType, PermissionEntity> multiples = new HashMap<>();
             for (Map.Entry<IdType, PermissionEntity> entry : map.entrySet()) {

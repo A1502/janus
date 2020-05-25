@@ -25,7 +25,7 @@ public class SourceExtractor {
         //STEP3:提取permissionTemplate DONE
         PermissionTemplateExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
-        //STEP4:提取permission
+        //STEP4:提取permission DONE
         PermissionExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
         //STEP5:提取role
