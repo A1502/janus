@@ -47,7 +47,7 @@ public class UserGroupExtractor {
             //tenant来源合并,并数据加工
             List<UserGroup> allTenant = new ArrayList<>(from2Tenant);
             allTenant.addAll(from3Tenant);
-            appendTenantId(allTenant, tenantId);
+            appendEntityTenantId(allTenant, tenantId);
 
             //来源合并
             List<UserGroup> all = new ArrayList<>(from1Application);
@@ -78,7 +78,7 @@ public class UserGroupExtractor {
         }
     }
 
-    private static void appendTenantId(List<UserGroup> list, TenantIdType tenantId) {
+    private static void appendEntityTenantId(List<UserGroup> list, TenantIdType tenantId) {
         for (UserGroup userGroup : list) {
             if (userGroup.getEntity() == null) {
                 userGroup.setEntity(new UserGroupEntity());

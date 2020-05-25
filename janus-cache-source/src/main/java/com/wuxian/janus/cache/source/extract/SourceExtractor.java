@@ -28,16 +28,16 @@ public class SourceExtractor {
         //STEP4:提取permission DONE
         PermissionExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
-        //STEP5:提取role
+        //STEP5:提取role DONE
         RoleExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
-        //STEP6:提取userGroup
+        //STEP6:提取userGroup DONE
         UserGroupExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
-        //STEP7:提取roleRelation
+        //STEP7:提取roleRelation TODO
         RoleRelationExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
-        //STEP8:提取userGroupUser
+        //STEP8:提取userGroupUser TODO
         UserGroupUserExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
         return result;

@@ -55,7 +55,7 @@ public class RoleExtractor {
             List<Role> allTenant = new ArrayList<>(from2Tenant);
             allTenant.addAll(from3Tenant);
             allTenant.addAll(from4Tenant);
-            appendTenantId(allTenant, tenantId);
+            appendEntityTenantId(allTenant, tenantId);
 
             //来源合并
             List<Role> all = new ArrayList<>(from1Application);
@@ -91,6 +91,7 @@ public class RoleExtractor {
                         return entity;
                     });
 
+            //按single,multiple收录到结果中
             Map<IdType, RoleEntity> singles = new HashMap<>();
             Map<IdType, RoleEntity> multiples = new HashMap<>();
             for (Map.Entry<IdType, RoleEntity> entry : map.entrySet()) {
@@ -105,7 +106,7 @@ public class RoleExtractor {
         }
     }
 
-    private static void appendTenantId(List<Role> list, TenantIdType tenantId) {
+    private static void appendEntityTenantId(List<Role> list, TenantIdType tenantId) {
         for (Role role : list) {
             if (role.getEntity() == null) {
                 role.setEntity(new RoleEntity());
