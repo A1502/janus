@@ -22,7 +22,7 @@ public class SourceExtractor {
         //STEP2-2:提取userOuterObjectX DONE
         UserAndOuterObjectExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
-        //STEP3:提取permissionTemplate
+        //STEP3:提取permissionTemplate DONE
         PermissionTemplateExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
         //STEP4:提取permission
