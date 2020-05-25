@@ -328,8 +328,8 @@ public class Application {
         UserGroupEntity ug1 = new UserGroupEntity();
         ug1.setCode(NativeUserGroupEnum.APPLICATION_ADMIN.getCode());
         ug1.setApplicationId(applicationId.getValue());
-        if (applicationMaintainerRoleId != null) {
-            ug1.setId(IdUtils.createId(applicationMaintainerRoleId).getValue());
+        if (applicationAdminUserGroupId != null) {
+            ug1.setId(IdUtils.createId(applicationAdminUserGroupId).getValue());
         }
 
         return Stream.of(ug0, ug1).map(UserGroup::byEntity).collect(Collectors.toList());
