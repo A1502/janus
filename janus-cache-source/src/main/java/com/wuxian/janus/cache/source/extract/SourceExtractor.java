@@ -15,23 +15,23 @@ public class SourceExtractor {
     public DirectAccessControlSource extract(ApplicationGroup applicationGroup) {
         DirectAccessControlSource result = new DirectAccessControlSource();
 
-        //STEP1:提取outerObjectType DONE
+        //STEP1:提取(19)outerObjectType DONE
         OuterObjectTypeExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
-        //STEP2-1:提取outerObject DONE
-        //STEP2-2:提取userOuterObjectX DONE
+        //STEP2-1:提取(20)outerObject DONE
+        //STEP2-2:提取(21)userOuterObjectX DONE
         UserAndOuterObjectExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
-        //STEP3:提取permissionTemplate DONE
+        //STEP3:提取(18)permissionTemplate DONE
         PermissionTemplateExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
-        //STEP4:提取permission DONE
+        //STEP4:提取(6)singlePermission,(12)multiplePermission DONE
         PermissionExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
-        //STEP5:提取role DONE
+        //STEP5:提取(8)singleRole,(14)multipleRole DONE
         RoleExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
-        //STEP6:提取userGroup DONE
+        //STEP6:提取(4)userGroup DONE
         UserGroupExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
         //STEP7:提取roleRelation TODO
