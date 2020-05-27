@@ -84,6 +84,36 @@ public class ApplicationTenantTest {
         System.out.println("--------------------------------------------------------");
     }
 
+    @Test
+    @DisplayName("测试HelloWorld")
+    void testHelloWorld() {
+        ApplicationGroup applicationGroup = new ApplicationGroup().addItem(
+                Application.byId("1").addItem(
+                        Tenant.byId("10").addItem(
+                                new Role("deptMgr").addItem(
+                                        User.byId("100"),
+                                        new Permission("abc"),
+                                        new Permission("def"),
+                                        new Permission("xyz")
+                                ),
+                                new Role("deptEmployee").addItem(
+                                        User.byId("101"),
+                                        User.byId("102"),
+                                        new Permission("abc"),
+                                        new Permission("def")
+                                )
+                        )
+                )
+        );
+
+        SourceExtractor sourceExtractor = new SourceExtractor(new LongIdGeneratorFactory());
+        DirectAccessControlSource source = sourceExtractor.extract(applicationGroup);
+
+        System.out.println("==============testHelloWorld===============");
+        source.print(System.out);
+        System.out.println("--------------------------------------------------------");
+    }
+
     //整合测试模拟代码
     void x() {
         ApplicationGroup applicationGroup = new ApplicationGroup().addItem(
@@ -107,6 +137,11 @@ public class ApplicationTenantTest {
 
         SourceExtractor sourceExtractor = new SourceExtractor(new LongIdGeneratorFactory());
         DirectAccessControlSource source = sourceExtractor.extract(applicationGroup);
+
+        System.out.println("==============testInitApplicationTenant===============");
+        source.print(System.out);
+        System.out.println("--------------------------------------------------------");
+
         DirectAccessControlCacheProvider cacheProvider = DirectAccessControlCacheProvider.createFrom(source);
 
         AccessControlCalculator cpu = new AccessControlCalculator(
