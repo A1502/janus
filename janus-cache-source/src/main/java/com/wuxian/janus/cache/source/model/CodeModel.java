@@ -35,4 +35,8 @@ public abstract class CodeModel<E> extends BaseModel<E> {
     public String getKeyFieldsHash() {
         return this.code;
     }
+
+    public String toHashString() {
+        return this.toString() + ", keyFieldsHash = { " + getKeyFieldsHash() + " } ";
+    }
 }
