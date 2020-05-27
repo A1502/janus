@@ -10,14 +10,13 @@ import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.entity.OuterObjectEntity;
 import com.wuxian.janus.entity.PermissionTemplateEntity;
 import com.wuxian.janus.entity.RoleEntity;
+import com.wuxian.janus.entity.RolePermissionXEntity;
 import com.wuxian.janus.entity.primary.ApplicationIdType;
 import com.wuxian.janus.entity.primary.IdType;
 import com.wuxian.janus.entity.primary.TenantIdType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class RoleExtractor {
 
@@ -62,47 +61,57 @@ public class RoleExtractor {
             all.addAll(allTenant);
 
             ExtractUtils.fixIdAndKeyFields(all, roleIdGenerator);
-            Map<IdType, RoleEntity> map = ExtractUtils.groupByIdAndMergeToEntity(all,
-                    //在model上面有applicationId,所以在生成entity时补上这个属性通过merge进入到结果中
-                    (model) -> {
-                        Role roleModel = (Role) model;
-                        RoleEntity entity = new RoleEntity();
-                        entity.setApplicationId(applicationId.getValue());
 
-                        //PermissionTemplateCode  -->  PermissionTemplateId
-                        if (roleModel.getPermissionTemplateCode() != null) {
-                            PermissionTemplateEntity permissionTemplateEntity
-                                    = PermissionTemplateExtractor.findByPermissionTemplateCode(result
-                                    , application, roleModel.getPermissionTemplateCode()
-                                    , roleModel.getKeyFieldsHash());
-                            entity.setPermissionTemplateId(permissionTemplateEntity.getId());
-                        }
+            //后续计算SinglePermissionX和MultiplePermissionX需要
+            Map<IdType, Role> modelMap = ExtractUtils.groupByIdAndMerge(all);
 
-                        //OuterObjectTypeCode + OuterObjectCode  --> OuterObjectTypeId
-                        //注意下面这个条件不可以用keyFieldsHasValue代替
-                        if (roleModel.getOuterObjectCode() != null) {
-                            OuterObjectEntity outerObjectEntity =
-                                    UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(result,
-                                            roleModel.getOuterObjectTypeCode()
-                                            , roleModel.getOuterObjectCode()
-                                            , roleModel.toString());
-                            entity.setOuterObjectId(outerObjectEntity.getId());
-                        }
-                        return entity;
-                    });
+            //SingleRole,MultipleRole需要
+            Map<IdType, RoleEntity> entityMap = modelMap.entrySet().stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey,
+                            //在roleModel上面有applicationId,所以在生成entity时补上这个属性通过merge进入到结果中
+                            (entry) -> {
+                                Role roleModel = entry.getValue();
+                                RoleEntity entity = new RoleEntity();
+                                entity.setApplicationId(applicationId.getValue());
+
+                                //PermissionTemplateCode  -->  PermissionTemplateId
+                                if (roleModel.getPermissionTemplateCode() != null) {
+                                    PermissionTemplateEntity permissionTemplateEntity
+                                            = PermissionTemplateExtractor.findByPermissionTemplateCode(result
+                                            , application, roleModel.getPermissionTemplateCode()
+                                            , roleModel.getKeyFieldsHash());
+                                    entity.setPermissionTemplateId(permissionTemplateEntity.getId());
+                                }
+
+                                //OuterObjectTypeCode + OuterObjectCode  --> OuterObjectTypeId
+                                //注意下面这个条件不可以用keyFieldsHasValue代替
+                                if (roleModel.getOuterObjectCode() != null) {
+                                    OuterObjectEntity outerObjectEntity =
+                                            UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(result,
+                                                    roleModel.getOuterObjectTypeCode()
+                                                    , roleModel.getOuterObjectCode()
+                                                    , roleModel.toString());
+                                    entity.setOuterObjectId(outerObjectEntity.getId());
+                                }
+                                return entity;
+                            }
+                    ));
 
             //按single,multiple收录到结果中
             Map<IdType, RoleEntity> singles = new HashMap<>();
             Map<IdType, RoleEntity> multiples = new HashMap<>();
-            for (Map.Entry<IdType, RoleEntity> entry : map.entrySet()) {
+            for (Map.Entry<IdType, RoleEntity> entry : entityMap.entrySet()) {
                 if (entry.getValue().getOuterObjectId() == null) {
                     singles.put(entry.getKey(), entry.getValue());
                 } else {
                     multiples.put(entry.getKey(), entry.getValue());
                 }
             }
+
             result.getSingleRole().add(applicationId, tenantId, singles);
             result.getMultipleRole().add(applicationId, tenantId, multiples);
+
+            //todo 提取(7)singleRolePermission,(13)multipleRolePermission
         }
     }
 
@@ -118,4 +127,5 @@ public class RoleExtractor {
             role.getEntity().setTenantId(tenantId.getValue());
         }
     }
+
 }
