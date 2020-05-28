@@ -164,4 +164,8 @@ public abstract class BaseModel<E> {
     public abstract boolean keyFieldsHasValue();
 
     public abstract String getKeyFieldsHash();
+
+    public String toHashString() {
+        return this.toString() + "( keyFieldsHash = { " + getKeyFieldsHash() + " } )";
+    }
 }
