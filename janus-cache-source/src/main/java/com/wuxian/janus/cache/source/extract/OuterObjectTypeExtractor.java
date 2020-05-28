@@ -38,31 +38,28 @@ class OuterObjectTypeExtractor {
         List<OuterObjectType> from3 = new ArrayList<>();
         List<OuterObjectType> from4 = new ArrayList<>();
         List<OuterObjectType> from5 = new ArrayList<>();
+        List<OuterObjectType> from6 = new ArrayList<>();
 
         for (Application application : applicationGroup.getApplications()) {
+
+            for (PermissionTemplate permissionTemplate : application.getPermissionTemplates()) {
+                fill(from3, permissionTemplate.getOuterObjectTypeCode());
+            }
+
             for (Tenant tenant : application.getTenants()) {
                 //来源3
                 for (Permission permission : tenant.getPermissions()) {
-                    String typeCode = permission.getOuterObjectTypeCode();
-                    if (typeCode != null) {
-                        from3.add(new OuterObjectType(typeCode));
-                    }
+                    fill(from4, permission.getOuterObjectTypeCode());
                 }
 
                 //来源4
                 for (UserGroup userGroup : tenant.getUserGroups()) {
-                    String typeCode = userGroup.getOuterObjectTypeCode();
-                    if (typeCode != null) {
-                        from4.add(new OuterObjectType(typeCode));
-                    }
+                    fill(from5, userGroup.getOuterObjectTypeCode());
                 }
 
                 //来源5
                 for (Role role : tenant.getRoles()) {
-                    String typeCode = role.getOuterObjectTypeCode();
-                    if (typeCode != null) {
-                        from5.add(new OuterObjectType(typeCode));
-                    }
+                    fill(from6, role.getOuterObjectTypeCode());
                 }
             }
         }
@@ -73,10 +70,17 @@ class OuterObjectTypeExtractor {
         all.addAll(from3);
         all.addAll(from4);
         all.addAll(from5);
+        all.addAll(from6);
 
         ExtractUtils.fixIdAndKeyFields(all, idGenerator);
         Map<IdType, OuterObjectTypeEntity> map = ExtractUtils.groupByIdAndMergeToEntity(all, null);
         result.getOuterObjectType().putAll(map);
+    }
+
+    private static void fill(List<OuterObjectType> list, String outerObjectTypeCode) {
+        if (outerObjectTypeCode != null) {
+            list.add(new OuterObjectType(outerObjectTypeCode));
+        }
     }
 
     /**
