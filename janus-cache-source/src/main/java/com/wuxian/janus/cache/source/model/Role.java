@@ -111,6 +111,7 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
     }
 
     private static void validateMultipleAndNull(boolean multiple, String outerObjectTypeCode, String outerObjectCode) {
+        //todo
         OuterObject.validateNull(outerObjectTypeCode, outerObjectCode);
         if (!multiple && outerObjectTypeCode != null) {
 
