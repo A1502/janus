@@ -63,9 +63,17 @@ public class RolePrototype<ID, UID, AID, TID> extends JanusPrototype<ID, UID> {
     @ApiModelProperty(value = "编码", example = "boss")
     private String code;
 
+    @TableField("multiple")
+    @ApiModelProperty(value = "操作级权限角色 = false，数据级权限角色 = true", example = "false")
+    private Boolean multiple;
+
     @TableField("name")
     @ApiModelProperty(value = "名称", example = "基础配置平台")
     private String name;
+
+    @TableField("description")
+    @ApiModelProperty(value = "描述", example = "这是角色的描述...")
+    private String description;
 
     @TableField("enable")
     @ApiModelProperty(value = "状态", example = "true")
@@ -82,10 +90,6 @@ public class RolePrototype<ID, UID, AID, TID> extends JanusPrototype<ID, UID> {
     @TableField("outer_object_remark")
     @ApiModelProperty(value = "绑定的外部对象的备注", example = "会议室对象:CQ811")
     private String outerObjectRemark;
-
-    @TableField("description")
-    @ApiModelProperty(value = "描述", example = "这是角色的描述...")
-    private String description;
 
     @TableField("version")
     @ApiModelProperty(value = "乐观锁", example = "998")
