@@ -10,12 +10,14 @@ import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.entity.OuterObjectEntity;
 import com.wuxian.janus.entity.PermissionTemplateEntity;
 import com.wuxian.janus.entity.RoleEntity;
-import com.wuxian.janus.entity.RolePermissionXEntity;
 import com.wuxian.janus.entity.primary.ApplicationIdType;
 import com.wuxian.janus.entity.primary.IdType;
 import com.wuxian.janus.entity.primary.TenantIdType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RoleExtractor {
@@ -111,8 +113,22 @@ public class RoleExtractor {
             result.getSingleRole().add(applicationId, tenantId, singles);
             result.getMultipleRole().add(applicationId, tenantId, multiples);
 
-            //todo 提取(7)singleRolePermission,(13)multipleRolePermission
+            //提取(7)singleRolePermission,(13)multipleRolePermission
+            extractRolePermission(application, tenant, modelMap);
         }
+    }
+
+    private static void extractRolePermission(Application application
+            , Tenant tenant, Map<IdType, Role> roleMap) {
+
+        //TODO
+
+        /*for (Map.Entry<IdType, Role> entry : roleMap.entrySet()) {
+            String typeCodeOfRole = entry.getValue().getOuterObjectTypeCode();
+            for (Permission permission : entry.getValue().getPermissions()) {
+                permission.getOuterObjectTypeCode()
+            }
+        }*/
     }
 
     private static void appendEntityTenantId(List<Role> list, TenantIdType tenantId) {
@@ -129,3 +145,8 @@ public class RoleExtractor {
     }
 
 }
+
+
+//role.PermissionTemplateId = role.permissions.any().permissionTemplateId
+//role.Permission
+
