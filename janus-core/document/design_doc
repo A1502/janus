@@ -1,0 +1,10 @@
+1.SingleRole的OuterObjectId == null
+ SinglePermission的OuterObjectId == null
+
+ SingleRole只和SinglePermission关联，存在SoleRolePermissionX中
+ SoleRolePermissionX中只存SingleRole只和SinglePermission关联
+ 依据是:AccessControlCalculator文件的getSinglePermissionInner方法体现，这是个强制要求
+
+2.RoleEntity定义了permissionTemplateId，但并不要求这个Role只能放指定permissionTemplateCode的Permission
+  只是建议这样做，会管理方便。权限的计算逻辑并没有这个规定。
+  RoleEntity的outerObjectId同理，权限计算逻辑的没有跟它相关的强制要求。
