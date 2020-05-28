@@ -82,11 +82,11 @@ class OuterObjectTypeExtractor {
     /**
      * @param source              查找的范围
      * @param outerObjectTypeCode 查找条件
-     * @param findByDesc          查找条件的说明,用于拼装报错提示
+     * @param context             若查找失败的相关数据
      * @return 查找的结果
      */
     static OuterObjectTypeEntity findByOuterObjectTypeCode(DirectAccessControlSource source
-            , String outerObjectTypeCode, String findByDesc) {
+            , String outerObjectTypeCode, String context) {
 
         String targetDesc = "OuterObjectType";
         OuterObjectTypeEntity typeEntity = ExtractUtils.findFirst(source.getOuterObjectType().values(),
@@ -95,7 +95,31 @@ class OuterObjectTypeExtractor {
         if (typeEntity != null) {
             return typeEntity;
         } else {
-            throw ErrorFactory.createNothingFoundError(findByDesc, targetDesc);
+            throw ErrorFactory.createNothingFoundError(targetDesc
+                    , "outerObjectTypeCode = " + outerObjectTypeCode
+                    , context);
+        }
+    }
+
+    /**
+     * @param source            查找的范围
+     * @param outerObjectTypeId 查找条件
+     * @param context           查找上下文数据
+     * @return 查找的结果
+     */
+    static OuterObjectTypeEntity findByOuterObjectTypeId(DirectAccessControlSource source
+            , IdType outerObjectTypeId, String context) {
+
+        String targetDesc = "OuterObjectType";
+
+        OuterObjectTypeEntity typeEntity = StrictUtils.get(source.getOuterObjectType(), outerObjectTypeId);
+
+        if (typeEntity != null) {
+            return typeEntity;
+        } else {
+            throw ErrorFactory.createNothingFoundError(targetDesc
+                    , "outerObjectTypeId = " + outerObjectTypeId
+                    , context);
         }
     }
 }
