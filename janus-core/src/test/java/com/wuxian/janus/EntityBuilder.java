@@ -53,6 +53,7 @@ public final class EntityBuilder {
         return result;
     }
 
+    //todo
     public static RoleEntity newRoleEntity(Integer id, Integer applicationId, Integer tenantId, String code, String name, Boolean enable
             , Integer permissionTemplateId, Integer outerObjectId, String outerObjectRemark, String description
             , Integer createdBy, Date createdDate, Integer lastModifiedBy, Date lastModifiedDate, Integer version) {
