@@ -349,15 +349,15 @@ public class AccessControlCacheProvider18 extends BaseAccessControlCacheProvider
         if (StrictUtils.equals(outerObjectTypeId, IdBuilder.id(outerObjectTypeId1))) {
             SourceLoader<IdType, OuterObjectEntity> result = () -> {
                 Map<IdType, OuterObjectEntity> map = new HashMap<>();
-                map.put(IdBuilder.id(10), EntityBuilder.newOuterObjectEntity(10, outerObjectTypeId1, "EMS001", "ref100", "销售", 1, new Date(), 1, new Date()));
+                map.put(IdBuilder.id(10), EntityBuilder.newOuterObjectEntity(10, outerObjectTypeId1, "EMS001", "ref100", "销售", null, 1, new Date(), 1, new Date()));
                 return map;
             };
             return result;
         } else if (StrictUtils.equals(outerObjectTypeId, IdBuilder.id(outerObjectTypeId2))) {
             SourceLoader<IdType, OuterObjectEntity> result = () -> {
                 Map<IdType, OuterObjectEntity> map = new HashMap<>();
-                map.put(IdBuilder.id(11), EntityBuilder.newOuterObjectEntity(11, outerObjectTypeId2, "ORG001", "ref8001", "ORG001", 1, new Date(), 1, new Date()));
-                map.put(IdBuilder.id(12), EntityBuilder.newOuterObjectEntity(12, outerObjectTypeId2, "ORG002", "ref8002", "ORG002", 1, new Date(), 1, new Date()));
+                map.put(IdBuilder.id(11), EntityBuilder.newOuterObjectEntity(11, outerObjectTypeId2, "ORG001", "ref8001", "ORG001", null, 1, new Date(), 1, new Date()));
+                map.put(IdBuilder.id(12), EntityBuilder.newOuterObjectEntity(12, outerObjectTypeId2, "ORG002", "ref8002", "ORG002", null, 1, new Date(), 1, new Date()));
                 return map;
             };
             return result;

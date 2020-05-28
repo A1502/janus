@@ -211,7 +211,7 @@ public class AccessControlCacheProvider16 extends BaseAccessControlCacheProvider
         if (StrictUtils.equals(outerObjectTypeId, IdBuilder.id(outerObjectTypeId1))) {
             SourceLoader<IdType, OuterObjectEntity> result = () -> {
                 Map<IdType, OuterObjectEntity> map = new HashMap<>();
-                map.put(IdBuilder.id(10), EntityBuilder.newOuterObjectEntity(10, outerObjectTypeId1, "EMS001", "100", "销售", 1, new Date(), 1, new Date()));
+                map.put(IdBuilder.id(10), EntityBuilder.newOuterObjectEntity(10, outerObjectTypeId1, "EMS001", "100", "销售", null, 1, new Date(), 1, new Date()));
                 return map;
             };
             return result;

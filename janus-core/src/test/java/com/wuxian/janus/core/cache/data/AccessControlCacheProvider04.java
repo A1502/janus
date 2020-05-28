@@ -175,8 +175,8 @@ public class AccessControlCacheProvider04 extends BaseAccessControlCacheProvider
     protected SourceLoader<IdType, OuterObjectEntity> createOuterObjectLoader(IdType outerObjectTypeId) {
         SourceLoader<IdType, OuterObjectEntity> result = () -> {
             Map<IdType, OuterObjectEntity> map = new HashMap<>();
-            map.put(IdBuilder.id(1), EntityBuilder.newOuterObjectEntity(1, 1, "EMS001", "100", "销售", 1, new Date(), 1, new Date()));
-            map.put(IdBuilder.id(2), EntityBuilder.newOuterObjectEntity(2, 1, "EMS002", "101", "HR", 1, new Date(), 1, new Date()));
+            map.put(IdBuilder.id(1), EntityBuilder.newOuterObjectEntity(1, 1, "EMS001", "100", "销售", null, 1, new Date(), 1, new Date()));
+            map.put(IdBuilder.id(2), EntityBuilder.newOuterObjectEntity(2, 1, "EMS002", "101", "HR", null, 1, new Date(), 1, new Date()));
             return map;
         };
         return result;

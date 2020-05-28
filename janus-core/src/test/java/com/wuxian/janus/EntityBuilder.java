@@ -217,11 +217,11 @@ public final class EntityBuilder {
 
     public static OuterObjectEntity newOuterObjectEntity(Integer id
             , Integer outerObjectTypeId, String referenceId, String referenceCode, String referenceName
-            , Integer createdBy, Date createdDate, Integer lastModifiedBy, Date lastModifiedDate) {
+            , String referenceDescription, Integer createdBy, Date createdDate, Integer lastModifiedBy, Date lastModifiedDate) {
         OuterObjectEntity result = new OuterObjectEntity();
         result.fill(IdBuilder.id(id).getValue()
                 , IdBuilder.id(outerObjectTypeId).getValue()
-                , referenceId, referenceCode, referenceName
+                , referenceId, referenceCode, referenceName, referenceDescription
                 , IdBuilder.uId(createdBy).getValue()
                 , createdDate
                 , IdBuilder.uId(lastModifiedBy).getValue()

@@ -29,13 +29,14 @@ public class OuterObjectPrototype<ID, UID> extends JanusPrototype<ID, UID> {
 
     public void fill(ID id
             , ID outerObjectTypeId, String referenceId, String referenceCode, String referenceName
-            , UID createdBy, Date createdDate, UID lastModifiedBy, Date lastModifiedDate) {
+            , String referenceDescription, UID createdBy, Date createdDate, UID lastModifiedBy, Date lastModifiedDate) {
 
         setId(id);
         setOuterObjectTypeId(outerObjectTypeId);
         setReferenceId(referenceId);
         setReferenceCode(referenceCode);
         setReferenceName(referenceName);
+        setReferenceDescription(referenceDescription);
 
         setCreationProposer(createdBy);
         setModificationProposer(lastModifiedBy);
