@@ -1,11 +1,13 @@
 package com.wuxian.janus.cache.source.extract;
 
+import com.wuxian.janus.cache.source.ErrorFactory;
 import com.wuxian.janus.cache.source.IdGenerator;
 import com.wuxian.janus.cache.source.IdGeneratorFactory;
 import com.wuxian.janus.cache.source.IdUtils;
 import com.wuxian.janus.cache.source.model.*;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.entity.OuterObjectEntity;
+import com.wuxian.janus.entity.OuterObjectTypeEntity;
 import com.wuxian.janus.entity.PermissionEntity;
 import com.wuxian.janus.entity.PermissionTemplateEntity;
 import com.wuxian.janus.entity.primary.ApplicationIdType;
@@ -80,8 +82,11 @@ class PermissionExtractor {
                         PermissionTemplateEntity permissionTemplateEntity
                                 = PermissionTemplateExtractor.findByPermissionTemplateCode(result
                                 , application, permissionModel.getPermissionTemplateCode()
-                                , permissionModel.getKeyFieldsHash());
+                                , permissionModel.toHashString());
                         entity.setPermissionTemplateId(permissionTemplateEntity.getId());
+
+                        //验证权限模板和权限是否是同类的outerObjectType
+                        checkOuterObjectTypeMatch(result, permissionTemplateEntity, permissionModel);
 
                         //OuterObjectTypeCode + OuterObjectCode  --> OuterObjectTypeId
                         //注意下面这个条件不可以用keyFieldsHasValue代替
@@ -90,7 +95,7 @@ class PermissionExtractor {
                                     UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(result,
                                             permissionModel.getOuterObjectTypeCode()
                                             , permissionModel.getOuterObjectCode()
-                                            , permissionModel.toString());
+                                            , permissionModel.toHashString());
                             entity.setOuterObjectId(outerObjectEntity.getId());
                         }
                         return entity;
@@ -108,6 +113,35 @@ class PermissionExtractor {
             }
             result.getSinglePermission().add(applicationId, tenantId, singles);
             result.getMultiplePermission().add(applicationId, tenantId, multiples);
+        }
+    }
+
+    //验证permissionTemplate和permission的outerObjectType要一致
+    private static void checkOuterObjectTypeMatch(DirectAccessControlSource source
+            , PermissionTemplateEntity permissionTemplateEntity
+            , Permission permissionModel) {
+
+        boolean notMatch = false;
+        if (permissionTemplateEntity.getOuterObjectTypeId() != null) {
+            OuterObjectTypeEntity outerObjectTypeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeId(source
+                    , IdUtils.createId(permissionTemplateEntity.getOuterObjectTypeId().toString())
+                    , permissionModel.toHashString());
+            //二者outerObjectTypeCode不一致
+            if (permissionModel.getOuterObjectTypeCode() != outerObjectTypeEntity.getCode()) {
+                notMatch = true;
+            }
+        } else {
+            //二者outerObjectType一个为null，一个不为null
+            if (permissionModel.getOuterObjectTypeCode() != null) {
+                notMatch = true;
+            }
+        }
+        if (notMatch) {
+            throw ErrorFactory.createOuterObjectTypeNotMatchError(
+                    PermissionTemplate.byId(permissionTemplateEntity.getId().toString()
+                            , permissionTemplateEntity.getCode()).toHashString()
+                    , permissionModel.toHashString()
+            );
         }
     }
 
