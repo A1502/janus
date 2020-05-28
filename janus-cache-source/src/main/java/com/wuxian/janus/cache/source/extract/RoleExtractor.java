@@ -103,7 +103,7 @@ public class RoleExtractor {
             Map<IdType, RoleEntity> singles = new HashMap<>();
             Map<IdType, RoleEntity> multiples = new HashMap<>();
             for (Map.Entry<IdType, RoleEntity> entry : entityMap.entrySet()) {
-                if (entry.getValue().getOuterObjectId() == null) {
+                if (!entry.getValue().getMultiple()) {
                     singles.put(entry.getKey(), entry.getValue());
                 } else {
                     multiples.put(entry.getKey(), entry.getValue());
