@@ -36,13 +36,13 @@ public class ApplicationTenantTest {
                 .setNative(NativePermissionTemplateEnum.CREATE_INNER_GROUP, "5")
                 .setNative(NativePermissionTemplateEnum.CREATE_ROLE, "6")
                 .addItem(
-                        PermissionTemplate.byId("14","p-14-synchronism"),
-                        PermissionTemplate.byId("15","p-15-del"),
-                        PermissionTemplate.byId("16","p-16-add"),
-                        PermissionTemplate.byId("17","p-17-edit"),
-                        PermissionTemplate.byId("18","p-18-del-org"),
-                        PermissionTemplate.byId("19","p-19-update-org"),
-                        PermissionTemplate.byId("100","p-100-add-org")
+                        PermissionTemplate.byId("14", "p-14-synchronism"),
+                        PermissionTemplate.byId("15", "p-15-del"),
+                        PermissionTemplate.byId("16", "p-16-add"),
+                        PermissionTemplate.byId("17", "p-17-edit"),
+                        PermissionTemplate.byId("18", "p-18-del-org", "MyOrganization"),
+                        PermissionTemplate.byId("19", "p-19-update-org", "MyOrganization"),
+                        PermissionTemplate.byId("100", "p-100-add-org", "MyOrganization")
                 )
                 .addItem(
                         Tenant.byId("10")
