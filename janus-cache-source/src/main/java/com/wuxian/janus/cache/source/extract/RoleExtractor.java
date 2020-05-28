@@ -79,7 +79,7 @@ public class RoleExtractor {
                                     PermissionTemplateEntity permissionTemplateEntity
                                             = PermissionTemplateExtractor.findByPermissionTemplateCode(result
                                             , application, roleModel.getPermissionTemplateCode()
-                                            , roleModel.getKeyFieldsHash());
+                                            , roleModel.toHashString());
                                     entity.setPermissionTemplateId(permissionTemplateEntity.getId());
                                 }
 
@@ -90,7 +90,7 @@ public class RoleExtractor {
                                             UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(result,
                                                     roleModel.getOuterObjectTypeCode()
                                                     , roleModel.getOuterObjectCode()
-                                                    , roleModel.toString());
+                                                    , roleModel.toHashString());
                                     entity.setOuterObjectId(outerObjectEntity.getId());
                                 }
                                 return entity;

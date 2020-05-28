@@ -87,7 +87,7 @@ class UserAndOuterObjectExtractor {
                             OuterObject outerObject = (OuterObject) model;
                             OuterObjectEntity returnEntity = new OuterObjectEntity();
                             OuterObjectTypeEntity typeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeCode(
-                                    result, outerObject.getOuterObjectTypeCode(), outerObject.getKeyFieldsHash());
+                                    result, outerObject.getOuterObjectTypeCode(), outerObject.toHashString());
                             returnEntity.setOuterObjectTypeId(typeEntity.getId());
                             returnEntity.setReferenceCode(outerObject.getCode());
                             return returnEntity;
@@ -123,7 +123,7 @@ class UserAndOuterObjectExtractor {
         for (List<OuterObject> list : group.values()) {
             //model转entity
             OuterObjectTypeEntity typeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeCode(result,
-                    list.get(0).getOuterObjectTypeCode(), list.get(0).getKeyFieldsHash());
+                    list.get(0).getOuterObjectTypeCode(), list.get(0).toHashString());
             IdType outerObjectTypeId = new IdType(typeEntity.getId());
 
             Map<IdType, UserOuterObjectXEntity> data = extractUserOuterObjectX(outerObjectTypeId, list, idGenerator)
@@ -196,24 +196,29 @@ class UserAndOuterObjectExtractor {
     }
 
     static OuterObjectEntity findByOuterObjectTypeCodeAndOuterObjectCode(DirectAccessControlSource source
-            , String outerObjectTypeCode, String outerObjectCode, String findByDesc) {
+            , String outerObjectTypeCode, String outerObjectCode, String context) {
 
         OuterObjectTypeEntity outerObjectTypeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeCode(
-                source, outerObjectTypeCode, new OuterObject(outerObjectCode, outerObjectTypeCode).toString());
+                source, outerObjectTypeCode, new OuterObject(outerObjectCode, outerObjectTypeCode).toHashString());
 
         Map<IdType, OuterObjectEntity> map = source.getOuterObject().get(IdUtils.createId(outerObjectTypeEntity.getId().toString()));
 
-        String targetDesc = "OuterObject";
+        String targetDesc = "Map<IdType, OuterObjectEntity>";
         if (map == null) {
-            throw ErrorFactory.createNothingFoundError(findByDesc, targetDesc);
+            throw ErrorFactory.createNothingFoundError(targetDesc
+                    , "outerObjectTypeId = " + outerObjectTypeEntity.getId()
+                    , context);
         }
 
+        targetDesc = "OuterObject";
         OuterObjectEntity entity = ExtractUtils.findFirst(map.values(),
                 o -> StrictUtils.equals(outerObjectCode, o.getReferenceCode()));
         if (entity != null) {
             return entity;
         } else {
-            throw ErrorFactory.createNothingFoundError(findByDesc, targetDesc);
+            throw ErrorFactory.createNothingFoundError(targetDesc
+                    , "outerObjectTypeCode = " + outerObjectTypeCode + ", outerObjectCode" + outerObjectCode
+                    , context);
         }
     }
 }

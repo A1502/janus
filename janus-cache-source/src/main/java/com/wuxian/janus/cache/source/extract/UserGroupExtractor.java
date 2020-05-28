@@ -68,7 +68,7 @@ public class UserGroupExtractor {
                                     UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(result,
                                             userGroupModel.getOuterObjectTypeCode()
                                             , userGroupModel.getOuterObjectCode()
-                                            , userGroupModel.toString());
+                                            , userGroupModel.toHashString());
                             entity.setOuterObjectId(outerObjectEntity.getId());
                         }
                         return entity;
