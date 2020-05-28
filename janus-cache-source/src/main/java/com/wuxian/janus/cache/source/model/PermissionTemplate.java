@@ -3,6 +3,7 @@ package com.wuxian.janus.cache.source.model;
 import com.wuxian.janus.cache.source.ErrorFactory;
 import com.wuxian.janus.cache.source.model.item.ApplicationItem;
 import com.wuxian.janus.core.StrictUtils;
+import com.wuxian.janus.core.critical.CoverageTypeEnum;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
 import com.wuxian.janus.entity.PermissionTemplateEntity;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
     private Boolean multiple;
 
     protected PermissionTemplate() {
+        this.multiple = false;
     }
 
     /**
@@ -40,15 +42,18 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
      */
     public PermissionTemplate(String code) {
         super(code);
+        this.multiple = false;
     }
 
     public PermissionTemplate(NativePermissionTemplateEnum code) {
         this(code == null ? null : code.getCode());
+        this.multiple = (code != null && code.getCoverageType() == CoverageTypeEnum.TENANT);
     }
 
     public static PermissionTemplate byEntity(PermissionTemplateEntity entity) {
         PermissionTemplate result = new PermissionTemplate(entity.getCode());
         result.setEntity(entity);
+        result.setMultiple(entity.getMultiple() != null && entity.getMultiple());
         if (entity.getId() != null) {
             result.setId(entity.getId().toString());
         }
@@ -65,9 +70,7 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
         PermissionTemplate result = byId(id);
         result.code = code;
         result.outerObjectTypeCode = outerObjectTypeCode;
-        if (outerObjectTypeCode != null) {
-            result.multiple = true;
-        }
+        result.multiple = (outerObjectTypeCode != null);
         return result;
     }
 
@@ -86,6 +89,7 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
         PermissionTemplateEntity entity = super.buildEntity(otherFieldBuilder);
         entity.setId(this.buildIdType().getValue());
         entity.setCode(this.getCode());
+        entity.setMultiple(this.getMultiple());
         return entity;
     }
 
