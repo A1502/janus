@@ -7,6 +7,7 @@ import com.wuxian.janus.cache.source.IdUtils;
 import com.wuxian.janus.cache.source.model.*;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
+import com.wuxian.janus.entity.OuterObjectTypeEntity;
 import com.wuxian.janus.entity.PermissionTemplateEntity;
 import com.wuxian.janus.entity.primary.ApplicationIdType;
 import com.wuxian.janus.entity.primary.IdType;
@@ -84,8 +85,19 @@ public class PermissionTemplateExtractor {
         Map<IdType, PermissionTemplateEntity> map = ExtractUtils.groupByIdAndMergeToEntity(all,
                 //在model上面有applicationId,所以在生成entity时补上这个属性通过merge进入到结果中
                 (model) -> {
+
+                    PermissionTemplate permissionTemplateModel = (PermissionTemplate) model;
+
                     PermissionTemplateEntity entity = new PermissionTemplateEntity();
                     entity.setApplicationId(applicationId.getValue());
+
+                    String outerObjectTypeCode = permissionTemplateModel.getOuterObjectTypeCode();
+                    if (outerObjectTypeCode != null) {
+                        OuterObjectTypeEntity typeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeCode(result,
+                                outerObjectTypeCode, permissionTemplateModel.toHashString());
+                        entity.setOuterObjectTypeId(typeEntity.getId());
+                        entity.setMultiple(permissionTemplateModel.getMultiple());
+                    }
                     return entity;
                 });
 
@@ -94,22 +106,27 @@ public class PermissionTemplateExtractor {
     }
 
     static PermissionTemplateEntity findByPermissionTemplateCode(DirectAccessControlSource source
-            , Application application, String permissionTemplateCode, String findByDesc) {
+            , Application application, String permissionTemplateCode, String context) {
 
         Map<IdType, PermissionTemplateEntity> map =
                 source.getPermissionTemplate().get(IdUtils.createApplicationId(application.getId()));
 
-        String targetDesc = "PermissionTemplate";
+        String targetDesc = "Map<IdType, PermissionTemplateEntity>";
         if (map == null) {
-            throw ErrorFactory.createNothingFoundError(findByDesc, targetDesc);
+            throw ErrorFactory.createNothingFoundError(targetDesc
+                    , "applicationId = " + application.getId(),
+                    context);
         }
 
+        targetDesc = "PermissionTemplate";
         PermissionTemplateEntity entity = ExtractUtils.findFirst(map.values(),
                 o -> StrictUtils.equals(permissionTemplateCode, o.getCode()));
         if (entity != null) {
             return entity;
         } else {
-            throw ErrorFactory.createNothingFoundError(findByDesc, targetDesc);
+            throw ErrorFactory.createNothingFoundError(targetDesc
+                    , "applicationId = " + application.getId() + ", permissionTemplateCode = " + permissionTemplateCode
+                    , context);
         }
     }
 }
