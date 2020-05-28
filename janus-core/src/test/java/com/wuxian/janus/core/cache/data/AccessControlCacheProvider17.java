@@ -112,11 +112,11 @@ public class AccessControlCacheProvider17 extends BaseAccessControlCacheProvider
         if (StrictUtils.equals(applicationId, IdBuilder.aId(defaultAId)) && StrictUtils.equals(tenantId, IdBuilder.tId(defaultTId))) {
             SourceLoader<IdType, RoleEntity> result = () -> {
                 Map<IdType, RoleEntity> map = new HashMap<>();
-                map.put(IdBuilder.id(1), EntityBuilder.newRoleEntity(1, defaultAId, defaultTId, "role1", "角色1", true, null, null, "role1-outerObjectRemark", "role1-description", 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(2), EntityBuilder.newRoleEntity(2, defaultAId, defaultTId, "role2", "角色2", true, null, null, "role2-outerObjectRemark", "role2-description", 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(3), EntityBuilder.newRoleEntity(3, defaultAId, defaultTId, "role3", "角色3", true, null, null, "role3-outerObjectRemark", "role3-description", 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(4), EntityBuilder.newRoleEntity(4, defaultAId, defaultTId, "role4", "角色4", true, null, null, "role4-outerObjectRemark", "role4-description", 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(4), EntityBuilder.newRoleEntity(5, defaultAId, defaultTId, "role5", "角色5", true, null, null, "role5-outerObjectRemark", "role5-description", 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(1), EntityBuilder.newRoleEntity(1, defaultAId, defaultTId, "role1", false, "角色1", true, null, null, "role1-outerObjectRemark", "role1-description", 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(2), EntityBuilder.newRoleEntity(2, defaultAId, defaultTId, "role2", false, "角色2", true, null, null, "role2-outerObjectRemark", "role2-description", 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(3), EntityBuilder.newRoleEntity(3, defaultAId, defaultTId, "role3", false, "角色3", true, null, null, "role3-outerObjectRemark", "role3-description", 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(4), EntityBuilder.newRoleEntity(4, defaultAId, defaultTId, "role4", false, "角色4", true, null, null, "role4-outerObjectRemark", "role4-description", 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(4), EntityBuilder.newRoleEntity(5, defaultAId, defaultTId, "role5", false, "角色5", true, null, null, "role5-outerObjectRemark", "role5-description", 1, new Date(), 1, new Date(), 1));
                 return map;
             };
             return result;

@@ -145,8 +145,8 @@ public class AccessControlCacheProvider07 extends BaseAccessControlCacheProvider
         if (StrictUtils.equals(applicationId, IdBuilder.aId(defaultAId)) && StrictUtils.equals(tenantId, IdBuilder.tId(defaultTId))) {
             SourceLoader<IdType, RoleEntity> result = () -> {
                 Map<IdType, RoleEntity> map = new HashMap<>();
-                map.put(IdBuilder.id(1), EntityBuilder.newRoleEntity(1, defaultAId, defaultTId, "role1", "角色1", true, null, 1, "role1-outerObjectRemark", "role1-description", 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(2), EntityBuilder.newRoleEntity(2, defaultAId, defaultTId, "role2", "角色2", true, null, 2, "role2-outerObjectRemark", "role2-description", 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(1), EntityBuilder.newRoleEntity(1, defaultAId, defaultTId, "role1", true, "角色1", true, null, 1, "role1-outerObjectRemark", "role1-description", 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(2), EntityBuilder.newRoleEntity(2, defaultAId, defaultTId, "role2", true, "角色2", true, null, 2, "role2-outerObjectRemark", "role2-description", 1, new Date(), 1, new Date(), 1));
                 return map;
             };
             return result;
@@ -183,7 +183,7 @@ public class AccessControlCacheProvider07 extends BaseAccessControlCacheProvider
 
     @Override
     protected SourceLoader<IdType, PermissionTemplateEntity> createPermissionTemplateLoader(ApplicationIdType applicationId) {
-        if ( StrictUtils.equals(applicationId,IdBuilder.aId(defaultAId))){
+        if (StrictUtils.equals(applicationId, IdBuilder.aId(defaultAId))) {
             SourceLoader<IdType, PermissionTemplateEntity> result = () -> {
                 Map<IdType, PermissionTemplateEntity> map = new HashMap<>();
                 map.put(IdBuilder.id(1), EntityBuilder.newPermissionTemplateEntity(1, defaultAId, "pt1", false, "权限模板1", "权限模板1", "高级查询", "高级查询", null, 1, new Date(), 1, new Date(), 1));

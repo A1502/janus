@@ -157,12 +157,12 @@ public class AccessControlCacheProvider18 extends BaseAccessControlCacheProvider
         if (StrictUtils.equals(applicationId, IdBuilder.aId(defaultAId)) && StrictUtils.equals(tenantId, IdBuilder.tId(defaultTId))) {
             SourceLoader<IdType, RoleEntity> result = () -> {
                 Map<IdType, RoleEntity> map = new HashMap<>();
-                map.put(IdBuilder.id(1), EntityBuilder.newRoleEntity(1, defaultAId, null, NativeRoleEnum.ALL_PERMISSION.getCode(), NativeRoleEnum.ALL_PERMISSION.getCode(), true, null, null, null, NativeRoleEnum.ALL_PERMISSION.getCode(), 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(2), EntityBuilder.newRoleEntity(2, defaultAId, null, NativeRoleEnum.APPLICATION_MAINTAINER.getCode(), NativeRoleEnum.APPLICATION_MAINTAINER.getCode(), true, null, null, null, NativeRoleEnum.APPLICATION_MAINTAINER.getCode(), 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(3), EntityBuilder.newRoleEntity(3, defaultAId, defaultTId, NativeRoleEnum.TENANT_MAINTAINER.getCode(), NativeRoleEnum.TENANT_MAINTAINER.getCode(), true, null, null, null, NativeRoleEnum.TENANT_MAINTAINER.getCode(), 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(4), EntityBuilder.newRoleEntity(4, defaultAId, defaultTId, NativeRoleEnum.TENANT_DATA_OWNER.getCode(), NativeRoleEnum.TENANT_DATA_OWNER.getCode(), true, null, null, null, NativeRoleEnum.TENANT_DATA_OWNER.getCode(), 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(5), EntityBuilder.newRoleEntity(5, defaultAId, defaultTId, "xxxRole", "xxxRole", true, null, null, "role5-outerObjectRemark", "draft-description", 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(6), EntityBuilder.newRoleEntity(6, defaultAId, defaultTId, "yyyRole", "yyyRole", true, null, null, "role6-outerObjectRemark", "yyy-description", 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(1), EntityBuilder.newRoleEntity(1, defaultAId, null, NativeRoleEnum.ALL_PERMISSION.getCode(), false, NativeRoleEnum.ALL_PERMISSION.getCode(), true, null, null, null, NativeRoleEnum.ALL_PERMISSION.getCode(), 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(2), EntityBuilder.newRoleEntity(2, defaultAId, null, NativeRoleEnum.APPLICATION_MAINTAINER.getCode(), false, NativeRoleEnum.APPLICATION_MAINTAINER.getCode(), true, null, null, null, NativeRoleEnum.APPLICATION_MAINTAINER.getCode(), 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(3), EntityBuilder.newRoleEntity(3, defaultAId, defaultTId, NativeRoleEnum.TENANT_MAINTAINER.getCode(), false, NativeRoleEnum.TENANT_MAINTAINER.getCode(), true, null, null, null, NativeRoleEnum.TENANT_MAINTAINER.getCode(), 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(4), EntityBuilder.newRoleEntity(4, defaultAId, defaultTId, NativeRoleEnum.TENANT_DATA_OWNER.getCode(), false, NativeRoleEnum.TENANT_DATA_OWNER.getCode(), true, null, null, null, NativeRoleEnum.TENANT_DATA_OWNER.getCode(), 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(5), EntityBuilder.newRoleEntity(5, defaultAId, defaultTId, "xxxRole", false, "xxxRole", true, null, null, "role5-outerObjectRemark", "draft-description", 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(6), EntityBuilder.newRoleEntity(6, defaultAId, defaultTId, "yyyRole", false, "yyyRole", true, null, null, "role6-outerObjectRemark", "yyy-description", 1, new Date(), 1, new Date(), 1));
                 return map;
             };
             return result;
@@ -237,7 +237,7 @@ public class AccessControlCacheProvider18 extends BaseAccessControlCacheProvider
         if (StrictUtils.equals(applicationId, IdBuilder.aId(defaultAId)) && StrictUtils.equals(tenantId, IdBuilder.tId(defaultTId))) {
             SourceLoader<IdType, RoleEntity> result = () -> {
                 Map<IdType, RoleEntity> map = new HashMap<>();
-                map.put(IdBuilder.id(7), EntityBuilder.newRoleEntity(7, defaultAId, defaultTId, "zzzRole", "zzzRole", true, null, 12, "role7-outerObjectRemark", "zzz-description", 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(7), EntityBuilder.newRoleEntity(7, defaultAId, defaultTId, "zzzRole", true, "zzzRole", true, null, 12, "role7-outerObjectRemark", "zzz-description", 1, new Date(), 1, new Date(), 1));
                 return map;
             };
             return result;

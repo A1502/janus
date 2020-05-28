@@ -103,12 +103,12 @@ public class AccessControlCacheProvider11 extends BaseAccessControlCacheProvider
         if (StrictUtils.equals(applicationId, IdBuilder.aId(defaultAId)) && StrictUtils.equals(tenantId, IdBuilder.tId(defaultTId))) {
             SourceLoader<IdType, RoleEntity> result = () -> {
                 Map<IdType, RoleEntity> map = new HashMap<>();
-                map.put(IdBuilder.id(1), EntityBuilder.newRoleEntity(1, defaultAId, null, NativeRoleEnum.ALL_PERMISSION.getCode(), NativeRoleEnum.ALL_PERMISSION.getCode(), true, null, null, null, NativeRoleEnum.ALL_PERMISSION.getCode(), 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(2), EntityBuilder.newRoleEntity(2, defaultAId, null, NativeRoleEnum.APPLICATION_MAINTAINER.getCode(), NativeRoleEnum.APPLICATION_MAINTAINER.getCode(), true, null, null, null, NativeRoleEnum.APPLICATION_MAINTAINER.getCode(), 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(3), EntityBuilder.newRoleEntity(3, defaultAId, defaultTId, NativeRoleEnum.TENANT_MAINTAINER.getCode(), NativeRoleEnum.TENANT_MAINTAINER.getCode(), true, null, null, null, NativeRoleEnum.TENANT_MAINTAINER.getCode(), 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(4), EntityBuilder.newRoleEntity(4, defaultAId, defaultTId, NativeRoleEnum.TENANT_DATA_OWNER.getCode(), NativeRoleEnum.TENANT_DATA_OWNER.getCode(), true, null, null, null, NativeRoleEnum.TENANT_DATA_OWNER.getCode(), 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(5), EntityBuilder.newRoleEntity(5, defaultAId, defaultTId, "role5", "角色5", true, null, null, "role5-outerObjectRemark", "role1-description", 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(6), EntityBuilder.newRoleEntity(6, defaultAId, defaultTId, "role6", "角色6", true, null, null, "role6-outerObjectRemark", "role2-description", 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(1), EntityBuilder.newRoleEntity(1, defaultAId, null, NativeRoleEnum.ALL_PERMISSION.getCode(), false, NativeRoleEnum.ALL_PERMISSION.getCode(), true, null, null, null, NativeRoleEnum.ALL_PERMISSION.getCode(), 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(2), EntityBuilder.newRoleEntity(2, defaultAId, null, NativeRoleEnum.APPLICATION_MAINTAINER.getCode(), false, NativeRoleEnum.APPLICATION_MAINTAINER.getCode(), true, null, null, null, NativeRoleEnum.APPLICATION_MAINTAINER.getCode(), 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(3), EntityBuilder.newRoleEntity(3, defaultAId, defaultTId, NativeRoleEnum.TENANT_MAINTAINER.getCode(), false, NativeRoleEnum.TENANT_MAINTAINER.getCode(), true, null, null, null, NativeRoleEnum.TENANT_MAINTAINER.getCode(), 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(4), EntityBuilder.newRoleEntity(4, defaultAId, defaultTId, NativeRoleEnum.TENANT_DATA_OWNER.getCode(), false, NativeRoleEnum.TENANT_DATA_OWNER.getCode(), true, null, null, null, NativeRoleEnum.TENANT_DATA_OWNER.getCode(), 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(5), EntityBuilder.newRoleEntity(5, defaultAId, defaultTId, "role5", false, "角色5", true, null, null, "role5-outerObjectRemark", "role1-description", 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(6), EntityBuilder.newRoleEntity(6, defaultAId, defaultTId, "role6", false, "角色6", true, null, null, "role6-outerObjectRemark", "role2-description", 1, new Date(), 1, new Date(), 1));
 
                 return map;
             };
