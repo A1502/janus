@@ -44,6 +44,8 @@ public final class ErrorFactory {
 
     public final static String KEY_FIELDS_NO_VALUE = PRE + "KEY_FIELDS_NO_VALUE";
 
+    public final static String OUTER_OBJECT_TYPE_NOT_MATCH = PRE + "OUTER_OBJECT_TYPE_NOT_MATCH";
+
     public static ErrorCodeException createPermissionTemplateCodeCannotBeNullError() {
         String message = "PermissionTemplateCode不能为null";
         return new ErrorCodeException(PERMISSION_TEMPLATE_CODE_CANNOT_BE_NULL, message, null);
@@ -104,8 +106,8 @@ public final class ErrorFactory {
         return new ErrorCodeException(BUILD_ENTITY_FAILED, message, detail);
     }
 
-    public static ErrorCodeException createNothingFoundError(String findByDesc, String findDesc) {
-        String message = "由" + findByDesc + "找不到" + findDesc;
+    public static ErrorCodeException createNothingFoundError(String targetDesc, String findByDesc, String context) {
+        String message = "按'" + findByDesc + "'查找" + targetDesc + "失败,错误相关上下文是:" + context;
         return new ErrorCodeException(NOTHING_FOUND, message, null);
     }
 
@@ -132,7 +134,12 @@ public final class ErrorFactory {
             message = "无效类型:" + actual.getClass().getTypeName()
                     + ",期望对象的类型为:" + expected.getClass().getTypeName();
         }
-
         return new ErrorCodeException(INVALID_MODEL_CLASS, message, null);
+    }
+
+    public static ErrorCodeException createOuterObjectTypeNotMatchError(String permissionTemplateDesc
+            , String permissionDesc) {
+        String message = "permissionTemplate:" + permissionTemplateDesc + "和permission:" + permissionDesc + " 的outerObjectType不匹配";
+        return new ErrorCodeException(OUTER_OBJECT_TYPE_NOT_MATCH, message, null);
     }
 }
