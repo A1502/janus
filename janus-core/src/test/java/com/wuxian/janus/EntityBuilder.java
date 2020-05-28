@@ -54,7 +54,8 @@ public final class EntityBuilder {
     }
 
     //todo
-    public static RoleEntity newRoleEntity(Integer id, Integer applicationId, Integer tenantId, String code, String name, Boolean enable
+    public static RoleEntity newRoleEntity(
+            Integer id, Integer applicationId, Integer tenantId, String code, Boolean multiple, String name, Boolean enable
             , Integer permissionTemplateId, Integer outerObjectId, String outerObjectRemark, String description
             , Integer createdBy, Date createdDate, Integer lastModifiedBy, Date lastModifiedDate, Integer version) {
         RoleEntity result = new RoleEntity();
@@ -62,6 +63,7 @@ public final class EntityBuilder {
                 , IdBuilder.aId(applicationId).getValue()
                 , IdBuilder.tId(tenantId).getValue()
                 , code
+                , multiple
                 , name
                 , enable
                 , IdBuilder.id(permissionTemplateId).getValue()
