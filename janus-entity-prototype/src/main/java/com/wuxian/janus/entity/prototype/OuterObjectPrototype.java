@@ -61,5 +61,9 @@ public class OuterObjectPrototype<ID, UID> extends JanusPrototype<ID, UID> {
     @ApiModelProperty(value = "外部引用名称", example = "中国上海市")
     private String referenceName;
 
+    @TableField("reference_description")
+    @ApiModelProperty(value = "外部引用描述", example = "这是唯一识别外部数据的描述...")
+    private String referenceDescription;
+
     //无需version
 }
