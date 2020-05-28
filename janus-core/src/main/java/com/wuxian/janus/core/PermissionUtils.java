@@ -18,7 +18,17 @@ import java.util.stream.Collectors;
 @SuppressWarnings("all")
 public class PermissionUtils {
 
-    static PermissionResult isPermitted(List<IdType> permissionTemplateIds, IdType outerObjectId, PermissionPackage permissionPackage, PermissionTemplateMap permissionTemplateSource) {
+    /**
+     * 判定是否对具体outerObject有permissionTemplateIds的权限。
+     *
+     * @param permissionTemplateIds    多个权限模板
+     * @param outerObjectId            【重要】可以为null，表示不限定outerObject。不为null表示具体一个outerObject
+     * @param permissionPackage        权限搜索的范围
+     * @param permissionTemplateSource 权限模板的范围（permissionTemplate的Id要在这个范围）
+     * @return
+     */
+    static PermissionResult isPermitted(List<IdType> permissionTemplateIds, IdType outerObjectId,
+                                        PermissionPackage permissionPackage, PermissionTemplateMap permissionTemplateSource) {
 
         PermissionResult result = new PermissionResult();
 
@@ -34,37 +44,46 @@ public class PermissionUtils {
                     if (permissionPackage.getHasAllCustomPermission() && !status) {
                         result.getDetail().put(id, true);
                     } else {
-                        List<PermissionInfo> permissionInfos = permissionPackage.getPermissions();
-
-                        for (PermissionInfo permissionInfo : permissionInfos) {
-                            if (id.valueEquals(permissionInfo.getTemplate().getId())) {
-                                if (outerObjectId == null) {
-                                    result.getDetail().put(id, true);
-                                    break;
-                                } else {
-                                    //在detail中要找到OuterObjectId才生效
-                                    boolean foundOuterObjectId = false;
-                                    for (PermissionDetail detail : permissionInfo.getPermissionDetails()) {
-                                        if (outerObjectId.valueEquals(detail.getOuterObject().getId())) {
-                                            foundOuterObjectId = true;
-                                            break;
-                                        }
-                                    }
-                                    if (foundOuterObjectId) {
-                                        result.getDetail().put(id, true);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        if (!StrictUtils.containsKey(result.getDetail(), id)) {
-                            result.getDetail().put(id, false);
-                        }
+                        isPermitted(result.getDetail(), id, outerObjectId, permissionPackage.getPermissions());
                     }
                 }
             }
         });
         return result;
+    }
+
+    /**
+     * 判定是否对具体outerObject有permissionTemplateId的权限。
+     *
+     * @param result               存放判断结果
+     * @param permissionTemplateId 具体的权限模板
+     * @param outerObjectId        【重要】可以为null，表示不限定outerObject。不为null表示具体一个outerObject
+     * @param permissionInfos      权限搜索的范围
+     */
+    static void isPermitted(Map<IdType, Boolean> result, IdType permissionTemplateId, IdType outerObjectId, List<PermissionInfo> permissionInfos) {
+        for (PermissionInfo permissionInfo : permissionInfos) {
+            if (permissionTemplateId.valueEquals(permissionInfo.getTemplate().getId())) {
+                if (outerObjectId == null) {
+                    result.put(permissionTemplateId, true);
+                } else {
+                    //在detail中要找到OuterObjectId才生效
+                    boolean foundOuterObjectId = false;
+                    for (PermissionDetail detail : permissionInfo.getPermissionDetails()) {
+                        if (outerObjectId.valueEquals(detail.getOuterObject().getId())) {
+                            foundOuterObjectId = true;
+                            break;
+                        }
+                    }
+                    if (foundOuterObjectId) {
+                        result.put(permissionTemplateId, true);
+                        break;
+                    }
+                }
+            }
+        }
+        if (!StrictUtils.containsKey(result, permissionTemplateId)) {
+            result.put(permissionTemplateId, false);
+        }
     }
 
     static PermissionPackage getPermissionPackage(ExecuteAccessRolePackage rolePackage,
@@ -110,7 +129,7 @@ public class PermissionUtils {
     }
 
     /**
-    返回true表示native,false表示非native（即custom),null表示不存在
+     * 返回true表示native,false表示非native（即custom),null表示不存在
      */
     private static Map<IdType, Boolean> getNativeStatus(List<IdType> permissionTemplateIds, PermissionTemplateMap permissionTemplateSource) {
 
