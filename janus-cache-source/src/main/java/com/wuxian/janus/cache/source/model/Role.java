@@ -29,6 +29,10 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
     private String permissionTemplateCode;
 
     @Getter
+    @Setter
+    private Boolean multiple;//todo 构造函数+byId的影响
+
+    @Getter
     private List<Permission> permissions = new ArrayList<>();
 
     @Getter
@@ -97,13 +101,20 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
         this.permissionTemplateCode = permissionTemplateCode;
     }
 
-    public static Role byId(String id, String code, String outerObjectTypeCode, String outerObjectCode, String permissionTemplateCode) {
+    public static Role byId(String id, String code, String multiple, String outerObjectTypeCode, String outerObjectCode, String permissionTemplateCode) {
         Role result = byId(id, code);
         OuterObject.validateNull(outerObjectTypeCode, outerObjectCode);
         result.outerObjectTypeCode = outerObjectTypeCode;
         result.outerObjectCode = outerObjectCode;
         result.permissionTemplateCode = permissionTemplateCode;
         return result;
+    }
+
+    private static void validateMultipleAndNull(boolean multiple, String outerObjectTypeCode, String outerObjectCode) {
+        OuterObject.validateNull(outerObjectTypeCode, outerObjectCode);
+        if (!multiple && outerObjectTypeCode != null) {
+
+        }
     }
 
     public Role addItem(RoleItem... items) {
