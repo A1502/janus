@@ -27,13 +27,15 @@ public class RolePrototype<ID, UID, AID, TID> extends JanusPrototype<ID, UID> {
 
     private static final long serialVersionUID = 1L;
 
-    public RolePrototype<ID, UID, AID, TID> fill(ID id, AID applicationId, TID tenantId, String code, String name, Boolean enable
+    public RolePrototype<ID, UID, AID, TID> fill(
+            ID id, AID applicationId, TID tenantId, String code, Boolean multiple, String name, Boolean enable
             , ID permissionTemplateId, ID outerObjectId, String outerObjectRemark, String description
             , UID createdBy, Date createdDate, UID lastModifiedBy, Date lastModifiedDate, Integer version) {
         setId(id);
         setApplicationId(applicationId);
         setTenantId(tenantId);
         setCode(code);
+        setMultiple(multiple);
         setName(name);
         setEnable(enable);
         setPermissionTemplateId(permissionTemplateId);
