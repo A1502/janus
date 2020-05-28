@@ -1,8 +1,8 @@
 package com.wuxian.janus.cache.source.model;
 
+import com.wuxian.janus.cache.source.ErrorFactory;
 import com.wuxian.janus.cache.source.model.item.RoleItem;
 import com.wuxian.janus.cache.source.model.item.TenantItem;
-import com.wuxian.janus.cache.source.ErrorFactory;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.basis.StringUtils;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
