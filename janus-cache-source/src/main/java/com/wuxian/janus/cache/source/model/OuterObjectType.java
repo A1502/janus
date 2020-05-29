@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 public class OuterObjectType extends CodeModel<OuterObjectTypeEntity> {
 
+    //---------------------------------------------------------------------------------------------------------------------------------
     protected OuterObjectType() {
     }
 
@@ -22,7 +23,7 @@ public class OuterObjectType extends CodeModel<OuterObjectTypeEntity> {
         result.id = id;
         return result;
     }
-
+    //---------------------------------------------------------------------------------------------------------------------------------
     /**
      * code作为构造函数参数的时永远不能为null
      */
@@ -36,7 +37,7 @@ public class OuterObjectType extends CodeModel<OuterObjectTypeEntity> {
         result.code = code;
         return result;
     }
-
+    //---------------------------------------------------------------------------------------------------------------------------------
     @Override
     protected Class<OuterObjectTypeEntity> getEntityClass() {
         return OuterObjectTypeEntity.class;
