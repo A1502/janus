@@ -23,6 +23,7 @@ public class OuterObject extends CodeModel<OuterObjectEntity> {
 
     @Getter
     private List<User> users = new ArrayList<>();
+
     //---------------------------------------------------------------------------------------------------------------------------------
     protected OuterObject() {
     }
@@ -39,6 +40,7 @@ public class OuterObject extends CodeModel<OuterObjectEntity> {
         return result;
     }
     //---------------------------------------------------------------------------------------------------------------------------------
+
     /**
      * code作为构造函数参数的时永远不能为null
      * 这里简化设计,继承了CodeModel,code即是referenceCode
@@ -55,6 +57,7 @@ public class OuterObject extends CodeModel<OuterObjectEntity> {
         result.code = code;
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
     public OuterObject(String code, String outerObjectTypeCode) {
         this(code);
@@ -72,6 +75,7 @@ public class OuterObject extends CodeModel<OuterObjectEntity> {
         result.outerObjectTypeCode = outerObjectTypeCode;
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
     public OuterObject addItem(User... users) {
         this.users.addAll(Arrays.asList(users));
@@ -128,7 +132,7 @@ public class OuterObject extends CodeModel<OuterObjectEntity> {
         return StringUtils.safeJoinStrings(this.code, this.outerObjectTypeCode);
     }
 
-    public static void validateNull(String outerObjectCode, String outerObjectTypeCode) {
+    public static void validateNull(String outerObjectTypeCode, String outerObjectCode) {
         if (outerObjectCode != null && outerObjectTypeCode == null) {
             throw ErrorFactory.createOuterObjectTypeCodeCannotBeNullError();
         } else if (outerObjectCode == null && outerObjectTypeCode != null) {
