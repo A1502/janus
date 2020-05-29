@@ -75,6 +75,7 @@ public class Application {
     @Getter
     private List<Tenant> tenants = new ArrayList<>();
 
+    //---------------------------------------------------------------------------------------------------------------------------------
     protected Application() {
     }
 
@@ -83,6 +84,7 @@ public class Application {
         result.id = id;
         return result;
     }
+    //---------------------------------------------------------------------------------------------------------------------------------
 
     public Application addItem(ApplicationItem... items) {
 
