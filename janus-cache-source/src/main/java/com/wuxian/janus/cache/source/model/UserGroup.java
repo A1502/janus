@@ -1,11 +1,11 @@
 package com.wuxian.janus.cache.source.model;
 
+import com.wuxian.janus.cache.source.ErrorFactory;
 import com.wuxian.janus.cache.source.model.item.TenantItem;
 import com.wuxian.janus.cache.source.model.item.UserGroupItem;
 import com.wuxian.janus.core.StrictUtils;
-import com.wuxian.janus.entity.UserGroupEntity;
-import com.wuxian.janus.cache.source.ErrorFactory;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
+import com.wuxian.janus.entity.UserGroupEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,6 +29,7 @@ public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem 
     @Getter
     private List<Role> roles = new ArrayList<>();
 
+    //---------------------------------------------------------------------------------------------------------------------------------
     protected UserGroup() {
     }
 
@@ -43,12 +44,18 @@ public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem 
         result.id = id;
         return result;
     }
-
+    //---------------------------------------------------------------------------------------------------------------------------------
     /**
      * code作为构造函数参数的时永远不能为null
      */
     public UserGroup(String code) {
         super(code);
+    }
+
+    public static UserGroup byId(String id, String code) {
+        UserGroup result = byId(id);
+        result.code = code;
+        return result;
     }
 
     public static UserGroup byEntity(UserGroupEntity entity) {
@@ -68,13 +75,7 @@ public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem 
         }
         return result;
     }
-
-    public static UserGroup byId(String id, String code) {
-        UserGroup result = byId(id);
-        result.code = code;
-        return result;
-    }
-
+    //---------------------------------------------------------------------------------------------------------------------------------
     public UserGroup(NativeUserGroupEnum code) {
         if (code == null) {
             throw ErrorFactory.createCodeCannotBeNullError();
@@ -86,7 +87,7 @@ public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem 
         String codeArg = (code == null ? null : code.getCode());
         return byId(id, codeArg);
     }
-
+    //---------------------------------------------------------------------------------------------------------------------------------
     public UserGroup(String code, String outerObjectTypeCode, String outerObjectCode) {
         this(code);
         OuterObject.validateNull(outerObjectTypeCode, outerObjectCode);
@@ -101,6 +102,7 @@ public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem 
         result.outerObjectCode = outerObjectCode;
         return result;
     }
+    //---------------------------------------------------------------------------------------------------------------------------------
 
     public UserGroup addItem(UserGroupItem... items) {
 
