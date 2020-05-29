@@ -7,6 +7,7 @@ PS:以下结论没有提是Id还是Code，是作为省略，因为Id和Code是�
 Role.PermissionTemplate的意思是指Role.PermissionTemplateCode和RoleEntity.PermissionTemplateId
 ------------------------------------------------------------------------------------------------
 有以下结论：
+这些结论通过代码的方式实现了逻辑，在RolePermissionUtils里
 (1)
 Role.OuterObject和Permission.PermissionTemplate.OuterObject必须一致，是null要一致，不是null也要一致
 
