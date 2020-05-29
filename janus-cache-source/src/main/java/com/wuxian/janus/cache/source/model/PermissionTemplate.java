@@ -21,6 +21,7 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
     @Setter
     private Boolean multiple;
 
+    //---------------------------------------------------------------------------------------------------------------------------------
     protected PermissionTemplate() {
         this.multiple = false;
     }
@@ -36,6 +37,7 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
         result.id = id;
         return result;
     }
+    //---------------------------------------------------------------------------------------------------------------------------------
 
     /**
      * code作为构造函数参数的时永远不能为null
@@ -45,9 +47,10 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
         this.multiple = false;
     }
 
-    public PermissionTemplate(NativePermissionTemplateEnum code) {
-        this(code == null ? null : code.getCode());
-        this.multiple = (code != null && code.getCoverageType() == CoverageTypeEnum.TENANT);
+    public static PermissionTemplate byId(String id, String code) {
+        PermissionTemplate result = byId(id);
+        result.code = code;
+        return result;
     }
 
     public static PermissionTemplate byEntity(PermissionTemplateEntity entity) {
@@ -59,19 +62,40 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
         }
         return result;
     }
+    //---------------------------------------------------------------------------------------------------------------------------------
+    public PermissionTemplate(NativePermissionTemplateEnum code) {
+        this(code == null ? null : code.getCode());
+        this.multiple = (code != null && code.getCoverageType() == CoverageTypeEnum.TENANT);
+    }
 
-    public static PermissionTemplate byId(String id, String code) {
+    public static PermissionTemplate byId(String id, NativePermissionTemplateEnum code) {
         PermissionTemplate result = byId(id);
-        result.code = code;
+        result.code = code == null ? null : code.getCode();
+        result.multiple = (code != null && code.getCoverageType() == CoverageTypeEnum.TENANT);
         return result;
+    }
+    //---------------------------------------------------------------------------------------------------------------------------------
+    public PermissionTemplate(String code, String outerObjectTypeCode) {
+        this(code);
+        validateCodeAndOuterObjectTypeCode(code, outerObjectTypeCode);
+        this.outerObjectTypeCode = outerObjectTypeCode;
+        this.multiple = (outerObjectTypeCode != null);
     }
 
     public static PermissionTemplate byId(String id, String code, String outerObjectTypeCode) {
         PermissionTemplate result = byId(id);
+        validateCodeAndOuterObjectTypeCode(code, outerObjectTypeCode);
         result.code = code;
         result.outerObjectTypeCode = outerObjectTypeCode;
         result.multiple = (outerObjectTypeCode != null);
         return result;
+    }
+    //---------------------------------------------------------------------------------------------------------------------------------
+    private static void validateCodeAndOuterObjectTypeCode(String code, String outerObjectTypeCode) {
+        NativePermissionTemplateEnum nativeCode = NativePermissionTemplateEnum.getByCode(code);
+        if (nativeCode != null && outerObjectTypeCode != null) {
+            throw ErrorFactory.createInvalidNativePermissionTemplateCodeError(code, outerObjectTypeCode);
+        }
     }
 
     @Override

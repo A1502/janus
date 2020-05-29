@@ -1,12 +1,12 @@
 package com.wuxian.janus.cache.source.model;
 
+import com.wuxian.janus.cache.source.ErrorFactory;
 import com.wuxian.janus.cache.source.model.item.RoleItem;
 import com.wuxian.janus.cache.source.model.item.TenantItem;
 import com.wuxian.janus.cache.source.model.item.UserGroupItem;
 import com.wuxian.janus.core.StrictUtils;
-import com.wuxian.janus.entity.RoleEntity;
-import com.wuxian.janus.cache.source.ErrorFactory;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
+import com.wuxian.janus.entity.RoleEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,7 +30,7 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
 
     @Getter
     @Setter
-    private Boolean multiple;//todo 构造函数+byId的影响
+    private Boolean multiple;
 
     @Getter
     private List<Permission> permissions = new ArrayList<>();
@@ -38,26 +38,36 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
     @Getter
     private List<User> users = new ArrayList<>();
 
-    protected Role() {
+    //---------------------------------------------------------------------------------------------------------------------------------
+    protected Role(boolean multiple) {
+        this.multiple = multiple;
     }
 
     /**
      * byId的静态构造方式，id不能为null
      */
-    public static Role byId(String id) {
+    public static Role byId(String id, boolean multiple) {
         if (id == null) {
             throw ErrorFactory.createIdCannotBeNullError();
         }
-        Role result = new Role();
+        Role result = new Role(multiple);
         result.id = id;
         return result;
     }
+    //---------------------------------------------------------------------------------------------------------------------------------
 
     /**
      * code作为构造函数参数的时永远不能为null
      */
-    public Role(String code) {
+    public Role(String code, boolean multiple) {
         super(code);
+        this.multiple = multiple;
+    }
+
+    public static Role byId(String id, String code, boolean multiple) {
+        Role result = byId(id, multiple);
+        result.code = code;
+        return result;
     }
 
     public static Role byEntity(RoleEntity entity) {
@@ -65,10 +75,11 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
     }
 
     public static Role byEntity(RoleEntity entity, String outerObjectTypeCode, String outerObjectCode) {
-        Role result = new Role(entity.getCode());
+        boolean multiple = (outerObjectTypeCode != null);
+        Role result = new Role(entity.getCode(), multiple);
         result.setEntity(entity);
 
-        OuterObject.validateNull(outerObjectTypeCode, outerObjectCode);
+        validateMultipleAndNull(multiple, outerObjectTypeCode, outerObjectCode);
         result.outerObjectTypeCode = outerObjectTypeCode;
         result.outerObjectCode = outerObjectCode;
 
@@ -78,43 +89,39 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
         return result;
     }
 
-    public static Role byId(String id, String code) {
-        Role result = byId(id);
-        result.code = code;
-        return result;
-    }
-
+    //---------------------------------------------------------------------------------------------------------------------------------
     public Role(NativeRoleEnum code) {
-        this(code == null ? null : code.getCode());
+        this(code == null ? null : code.getCode(), false);
     }
 
     public static Role byId(String id, NativeRoleEnum code) {
         String codeArg = (code == null ? null : code.getCode());
-        return byId(id, codeArg);
+        return byId(id, codeArg, false);
     }
 
-    public Role(String code, String outerObjectTypeCode, String outerObjectCode, String permissionTemplateCode) {
-        this(code);
-        OuterObject.validateNull(outerObjectTypeCode, outerObjectCode);
+    //---------------------------------------------------------------------------------------------------------------------------------
+    public Role(String code, boolean multiple, String outerObjectTypeCode, String outerObjectCode, String permissionTemplateCode) {
+        this(code, multiple);
+        validateMultipleAndNull(multiple, outerObjectTypeCode, outerObjectCode);
         this.outerObjectTypeCode = outerObjectTypeCode;
         this.outerObjectCode = outerObjectCode;
         this.permissionTemplateCode = permissionTemplateCode;
     }
 
-    public static Role byId(String id, String code, String multiple, String outerObjectTypeCode, String outerObjectCode, String permissionTemplateCode) {
-        Role result = byId(id, code);
-        OuterObject.validateNull(outerObjectTypeCode, outerObjectCode);
+    public static Role byId(String id, String code, boolean multiple, String outerObjectTypeCode, String outerObjectCode, String permissionTemplateCode) {
+        Role result = byId(id, code, multiple);
+        validateMultipleAndNull(multiple, outerObjectTypeCode, outerObjectCode);
         result.outerObjectTypeCode = outerObjectTypeCode;
         result.outerObjectCode = outerObjectCode;
         result.permissionTemplateCode = permissionTemplateCode;
         return result;
     }
 
+    //---------------------------------------------------------------------------------------------------------------------------------
     private static void validateMultipleAndNull(boolean multiple, String outerObjectTypeCode, String outerObjectCode) {
-        //todo
         OuterObject.validateNull(outerObjectTypeCode, outerObjectCode);
         if (!multiple && outerObjectTypeCode != null) {
-
+            throw ErrorFactory.createOuterObjectTypeCodeOfMultipleRoleMustBeNullError(outerObjectTypeCode);
         }
     }
 
