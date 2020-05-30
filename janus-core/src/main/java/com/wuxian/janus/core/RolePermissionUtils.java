@@ -40,7 +40,7 @@ public class RolePermissionUtils {
             } else {
                 //outerObjectTypeCodeOfRole即有具体指定时
                 //要求PermissionTemplate和Role的outerObjectTypeCode一致
-                outerObjectTypeAllowed = outerObjectTypeOfPermissionTemplate.equals(outerObjectTypeOfRole);
+                outerObjectTypeAllowed = outerObjectTypeOfRole.equals(outerObjectTypeOfPermissionTemplate);
             }
 
             //如果false，提前返回
@@ -59,7 +59,7 @@ public class RolePermissionUtils {
             } else {
                 //outerObjectCodeOfRole!=null即有具体指定时
                 //要求Permission和Role的outerObjectCode一致
-                return outerObjectOfPermission.equals(outerObjectOfRole);
+                return outerObjectOfRole.equals(outerObjectOfPermission);
             }
         } else {
             return outerObjectTypeOfPermissionTemplate == null
