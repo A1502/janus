@@ -135,6 +135,9 @@ public class RoleExtractor {
 
     private static void extractRolePermission(Application application
             , Tenant tenant, Map<IdType, Role> roleMap, DirectAccessControlSource result) {
+        if (true) {
+            return;
+        }
         for (Role role : roleMap.values()) {
 
             for (Permission permission : role.getPermissions()) {
@@ -156,7 +159,7 @@ public class RoleExtractor {
                         , role.getOuterObjectCode()
                         , templateEntity.getCode()
                         , outerObjectPair.outerObjectEntity.getReferenceCode());
-                 if not allowed TODO
+                // if not allowed TODO
 
             }
         }
