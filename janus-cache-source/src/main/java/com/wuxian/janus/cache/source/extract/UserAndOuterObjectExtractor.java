@@ -19,6 +19,11 @@ import java.util.stream.Collectors;
 
 class UserAndOuterObjectExtractor {
 
+    static class OuterObjectPair {
+        OuterObjectTypeEntity outerObjectTypeEntity;
+        OuterObjectEntity outerObjectEntity;
+    }
+
     static final String DELIMITER = ",";
 
     static void extract(ApplicationGroup applicationGroup, IdGeneratorFactory idGeneratorFactory, DirectAccessControlSource result) {
@@ -195,7 +200,7 @@ class UserAndOuterObjectExtractor {
         return result;
     }
 
-    static OuterObjectEntity findByOuterObjectTypeCodeAndOuterObjectCode(DirectAccessControlSource source
+    static OuterObjectPair findByOuterObjectTypeCodeAndOuterObjectCode(DirectAccessControlSource source
             , String outerObjectTypeCode, String outerObjectCode, String context) {
 
         OuterObjectTypeEntity outerObjectTypeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeCode(
@@ -214,7 +219,10 @@ class UserAndOuterObjectExtractor {
         OuterObjectEntity entity = ExtractUtils.findFirst(map.values(),
                 o -> StrictUtils.equals(outerObjectCode, o.getReferenceCode()));
         if (entity != null) {
-            return entity;
+            OuterObjectPair result = new OuterObjectPair();
+            result.outerObjectTypeEntity = outerObjectTypeEntity;
+            result.outerObjectEntity = entity;
+            return result;
         } else {
             throw ErrorFactory.createNothingFoundError(targetDesc
                     , "outerObjectTypeCode = " + outerObjectTypeCode + ", outerObjectCode" + outerObjectCode

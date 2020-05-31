@@ -95,7 +95,7 @@ class PermissionExtractor {
                                     UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(result,
                                             permissionModel.getOuterObjectTypeCode()
                                             , permissionModel.getOuterObjectCode()
-                                            , permissionModel.toHashString());
+                                            , permissionModel.toHashString()).outerObjectEntity;
                             entity.setOuterObjectId(outerObjectEntity.getId());
                         }
                         return entity;
@@ -116,7 +116,9 @@ class PermissionExtractor {
         }
     }
 
-    //验证permissionTemplate和permission的outerObjectType要一致
+    /**
+     * 验证permissionTemplate和permission的outerObjectType要一致
+     */
     private static void checkOuterObjectTypeMatch(DirectAccessControlSource source
             , PermissionTemplateEntity permissionTemplateEntity
             , Permission permissionModel) {
