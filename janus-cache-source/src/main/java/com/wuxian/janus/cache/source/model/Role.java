@@ -153,6 +153,7 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
         RoleEntity entity = super.buildEntity(otherFieldBuilder);
         entity.setId(this.buildIdType().getValue());
         entity.setCode(this.getCode());
+        entity.setMultiple(this.getMultiple());
         return entity;
     }
 
