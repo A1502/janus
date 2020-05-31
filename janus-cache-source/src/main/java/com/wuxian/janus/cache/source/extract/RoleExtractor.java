@@ -4,6 +4,7 @@ import com.wuxian.janus.cache.source.IdGenerator;
 import com.wuxian.janus.cache.source.IdGeneratorFactory;
 import com.wuxian.janus.cache.source.IdUtils;
 import com.wuxian.janus.cache.source.model.*;
+import com.wuxian.janus.core.RolePermissionUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.critical.CoverageTypeEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
@@ -126,23 +127,39 @@ public class RoleExtractor {
                     UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(source
                             , roleModel.getOuterObjectTypeCode()
                             , roleModel.getOuterObjectCode()
-                            , roleModel.toHashString());
+                            , roleModel.toHashString()).outerObjectEntity;
             entity.setOuterObjectId(outerObjectEntity.getId());
         }
         return entity;
     }
 
     private static void extractRolePermission(Application application
-            , Tenant tenant, Map<IdType, Role> roleMap) {
+            , Tenant tenant, Map<IdType, Role> roleMap, DirectAccessControlSource result) {
+        for (Role role : roleMap.values()) {
 
-        //TODO
+            for (Permission permission : role.getPermissions()) {
 
-        /*for (Map.Entry<IdType, Role> entry : roleMap.entrySet()) {
-            String typeCodeOfRole = entry.getValue().getOuterObjectTypeCode();
-            for (Permission permission : entry.getValue().getPermissions()) {
-                permission.getOuterObjectTypeCode()
+                PermissionTemplateEntity templateEntity
+                        = PermissionTemplateExtractor.findByPermissionTemplateCode(result
+                        , application
+                        , permission.getPermissionTemplateCode()
+                        , permission.toHashString());
+
+                UserAndOuterObjectExtractor.OuterObjectPair outerObjectPair =
+                        UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(result
+                                , permission.getOuterObjectTypeCode()
+                                , permission.getOuterObjectCode()
+                                , permission.toHashString());
+
+                boolean allowed = RolePermissionUtils.relationAllowed(role.getMultiple()
+                        , role.getOuterObjectTypeCode()
+                        , role.getOuterObjectCode()
+                        , templateEntity.getCode()
+                        , outerObjectPair.outerObjectEntity.getReferenceCode());
+                if not allowed TODO
+
             }
-        }*/
+        }
     }
 
     private static void appendEntityTenantId(List<Role> list, TenantIdType tenantId) {
