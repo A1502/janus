@@ -8,6 +8,7 @@ import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.critical.CoverageTypeEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.entity.OuterObjectEntity;
+import com.wuxian.janus.entity.OuterObjectTypeEntity;
 import com.wuxian.janus.entity.PermissionTemplateEntity;
 import com.wuxian.janus.entity.RoleEntity;
 import com.wuxian.janus.entity.primary.ApplicationIdType;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class RoleExtractor {
@@ -70,32 +72,11 @@ public class RoleExtractor {
             //SingleRole,MultipleRole需要
             Map<IdType, RoleEntity> entityMap = modelMap.entrySet().stream()
                     .collect(Collectors.toMap(Map.Entry::getKey,
-                            //在roleModel上面有applicationId,所以在生成entity时补上这个属性通过merge进入到结果中
                             (entry) -> {
-                                Role roleModel = entry.getValue();
-                                RoleEntity entity = new RoleEntity();
-                                entity.setApplicationId(applicationId.getValue());
-
-                                //PermissionTemplateCode  -->  PermissionTemplateId
-                                if (roleModel.getPermissionTemplateCode() != null) {
-                                    PermissionTemplateEntity permissionTemplateEntity
-                                            = PermissionTemplateExtractor.findByPermissionTemplateCode(result
-                                            , application, roleModel.getPermissionTemplateCode()
-                                            , roleModel.toHashString());
-                                    entity.setPermissionTemplateId(permissionTemplateEntity.getId());
-                                }
-
-                                //OuterObjectTypeCode + OuterObjectCode  --> OuterObjectTypeId
-                                //注意下面这个条件不可以用keyFieldsHasValue代替
-                                if (roleModel.getOuterObjectCode() != null) {
-                                    OuterObjectEntity outerObjectEntity =
-                                            UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(result,
-                                                    roleModel.getOuterObjectTypeCode()
-                                                    , roleModel.getOuterObjectCode()
-                                                    , roleModel.toHashString());
-                                    entity.setOuterObjectId(outerObjectEntity.getId());
-                                }
-                                return entity;
+                                Role role = entry.getValue();
+                                Function<BaseModel<RoleEntity>, RoleEntity> lambda =
+                                        model -> convertToEntity((Role) model, application, result);
+                                return role.buildEntity(lambda);
                             }
                     ));
 
@@ -116,6 +97,39 @@ public class RoleExtractor {
             //提取(7)singleRolePermission,(13)multipleRolePermission
             extractRolePermission(application, tenant, modelMap);
         }
+    }
+
+    private static RoleEntity convertToEntity(Role roleModel, Application application, DirectAccessControlSource source) {
+        RoleEntity entity = new RoleEntity();
+        //在roleModel上面有applicationId,所以在生成entity时补上这个属性通过merge进入到结果中
+        entity.setApplicationId(application.getId());
+
+        //PermissionTemplateCode  -->  PermissionTemplateId
+        if (roleModel.getPermissionTemplateCode() != null) {
+            PermissionTemplateEntity permissionTemplateEntity
+                    = PermissionTemplateExtractor.findByPermissionTemplateCode(source
+                    , application, roleModel.getPermissionTemplateCode()
+                    , roleModel.toHashString());
+            entity.setPermissionTemplateId(permissionTemplateEntity.getId());
+        }
+
+        //OuterObjectTypeCode  --> OuterObjectTypeId
+        if (roleModel.getOuterObjectTypeCode() != null) {
+            OuterObjectTypeEntity typeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeCode(source
+                    , roleModel.getOuterObjectTypeCode(), roleModel.toHashString());
+            entity.setOuterObjectTypeId(typeEntity.getId());
+        }
+
+        //OuterObjectTypeCode + OuterObjectCode  --> OuterObjectId
+        if (roleModel.getOuterObjectCode() != null) {
+            OuterObjectEntity outerObjectEntity =
+                    UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(source
+                            , roleModel.getOuterObjectTypeCode()
+                            , roleModel.getOuterObjectCode()
+                            , roleModel.toHashString());
+            entity.setOuterObjectId(outerObjectEntity.getId());
+        }
+        return entity;
     }
 
     private static void extractRolePermission(Application application
