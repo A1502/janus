@@ -12,16 +12,14 @@ import com.wuxian.janus.entity.PermissionTemplateEntity;
 import com.wuxian.janus.entity.primary.ApplicationIdType;
 import com.wuxian.janus.entity.primary.IdType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PermissionTemplateExtractor {
 
     /**
      * STEP3:提取permissionTemplate
+     * 为STEP4提供PermissionTemplateExtractor.findByPermissionTemplateCode
      */
     static void extract(ApplicationGroup applicationGroup, IdGeneratorFactory idGeneratorFactory, DirectAccessControlSource result) {
 
@@ -47,19 +45,19 @@ public class PermissionTemplateExtractor {
             //来源2
             for (Permission permission : tenant.getPermissions()) {
                 if (permission.getPermissionTemplateCode() != null) {
-                    from2.add(new PermissionTemplate(permission.getPermissionTemplateCode()));
+                    from2.add(createTempPermissionTemplate(permission.getPermissionTemplateCode()));
                 }
             }
 
             for (Role role : tenant.getRoles()) {
                 //来源3
                 if (role.getPermissionTemplateCode() != null) {
-                    from3.add(new PermissionTemplate(role.getPermissionTemplateCode()));
+                    from3.add(createTempPermissionTemplate(role.getPermissionTemplateCode()));
                 }
                 for (Permission permission : role.getPermissions()) {
                     //来源4
                     if (permission.getPermissionTemplateCode() != null) {
-                        from4.add(new PermissionTemplate(permission.getPermissionTemplateCode()));
+                        from4.add(createTempPermissionTemplate(permission.getPermissionTemplateCode()));
                     }
                 }
             }
@@ -82,10 +80,10 @@ public class PermissionTemplateExtractor {
         //全部来源合并
         all.addAll(from5);
         ExtractUtils.fixIdAndKeyFields(all, templateIdGenerator);
+
         Map<IdType, PermissionTemplateEntity> map = ExtractUtils.groupByIdAndMergeToEntity(all,
                 //在model上面有applicationId,所以在生成entity时补上这个属性通过merge进入到结果中
                 (model) -> {
-
                     PermissionTemplate permissionTemplateModel = (PermissionTemplate) model;
 
                     PermissionTemplateEntity entity = new PermissionTemplateEntity();
@@ -101,8 +99,31 @@ public class PermissionTemplateExtractor {
                     return entity;
                 });
 
+        //还原temp逻辑对结果中multiple的影响
+        processTempMultiple(map.values());
+
         //添加到结果集
         result.getPermissionTemplate().add(IdUtils.createApplicationId(application.getId()), map);
+    }
+
+    /**
+     * multiple为null是为了在合并时降低自己优先级，以其他数据为准。若multiple为false则会视为确定值不可再被合并逻辑修改
+     */
+    private static PermissionTemplate createTempPermissionTemplate(String permissionTemplateCode) {
+        PermissionTemplate result = new PermissionTemplate(permissionTemplateCode);
+        result.setMultiple(null);
+        return result;
+    }
+
+    /**
+     * 将临时multiple按null处理的，全部转false作为最终值
+     */
+    private static void processTempMultiple(Collection<PermissionTemplateEntity> input) {
+        input.stream().forEach(o -> {
+            if (o.getMultiple() == null) {
+                o.setMultiple(false);
+            }
+        });
     }
 
     static PermissionTemplateEntity findByPermissionTemplateCode(DirectAccessControlSource source
