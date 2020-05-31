@@ -96,7 +96,7 @@ public class RoleExtractor {
             result.getMultipleRole().add(applicationId, tenantId, multiples);
 
             //提取(7)singleRolePermission,(13)multipleRolePermission
-            extractRolePermission(application, tenant, modelMap);
+            extractRolePermission(application, tenant, modelMap, result);
         }
     }
 
@@ -156,7 +156,7 @@ public class RoleExtractor {
                         , role.getOuterObjectCode()
                         , templateEntity.getCode()
                         , outerObjectPair.outerObjectEntity.getReferenceCode());
-                if not allowed TODO
+                 if not allowed TODO
 
             }
         }
