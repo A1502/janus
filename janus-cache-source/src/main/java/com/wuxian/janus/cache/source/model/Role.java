@@ -39,6 +39,7 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
     private List<User> users = new ArrayList<>();
 
     //---------------------------------------------------------------------------------------------------------------------------------
+
     protected Role(boolean multiple) {
         this.multiple = multiple;
     }
@@ -54,6 +55,7 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
         result.id = id;
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -90,6 +92,7 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------
+
     public Role(NativeRoleEnum code) {
         this(code == null ? null : code.getCode(), false);
     }
@@ -100,6 +103,7 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------
+
     public Role(String code, boolean multiple, String outerObjectTypeCode, String outerObjectCode, String permissionTemplateCode) {
         this(code, multiple);
         validateMultipleAndNull(multiple, outerObjectTypeCode, outerObjectCode);
@@ -118,6 +122,7 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------
+
     private static void validateMultipleAndNull(boolean multiple, String outerObjectTypeCode, String outerObjectCode) {
         OuterObject.validateNull(outerObjectTypeCode, outerObjectCode);
         if (!multiple && outerObjectTypeCode != null) {

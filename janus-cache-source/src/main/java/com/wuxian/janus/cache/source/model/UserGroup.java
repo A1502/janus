@@ -30,6 +30,7 @@ public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem 
     private List<Role> roles = new ArrayList<>();
 
     //---------------------------------------------------------------------------------------------------------------------------------
+
     protected UserGroup() {
     }
 
@@ -44,7 +45,9 @@ public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem 
         result.id = id;
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
+
     /**
      * code作为构造函数参数的时永远不能为null
      */
@@ -75,7 +78,9 @@ public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem 
         }
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
+
     public UserGroup(NativeUserGroupEnum code) {
         if (code == null) {
             throw ErrorFactory.createCodeCannotBeNullError();
@@ -87,7 +92,9 @@ public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem 
         String codeArg = (code == null ? null : code.getCode());
         return byId(id, codeArg);
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
+
     public UserGroup(String code, String outerObjectTypeCode, String outerObjectCode) {
         this(code);
         OuterObject.validateNull(outerObjectTypeCode, outerObjectCode);
@@ -102,6 +109,7 @@ public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem 
         result.outerObjectCode = outerObjectCode;
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
 
     public UserGroup addItem(UserGroupItem... items) {

@@ -22,6 +22,7 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
     private Boolean multiple;
 
     //---------------------------------------------------------------------------------------------------------------------------------
+
     protected PermissionTemplate() {
         this.multiple = false;
     }
@@ -37,6 +38,7 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
         result.id = id;
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -62,7 +64,9 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
         }
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
+
     public PermissionTemplate(NativePermissionTemplateEnum code) {
         this(code == null ? null : code.getCode());
         this.multiple = (code != null && code.getCoverageType() == CoverageTypeEnum.TENANT);
@@ -74,7 +78,9 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
         result.multiple = (code != null && code.getCoverageType() == CoverageTypeEnum.TENANT);
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
+
     public PermissionTemplate(String code, String outerObjectTypeCode) {
         this(code);
         validateCodeAndOuterObjectTypeCode(code, outerObjectTypeCode);
@@ -90,7 +96,9 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
         result.multiple = (outerObjectTypeCode != null);
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
+
     private static void validateCodeAndOuterObjectTypeCode(String code, String outerObjectTypeCode) {
         NativePermissionTemplateEnum nativeCode = NativePermissionTemplateEnum.getByCode(code);
         if (nativeCode != null && outerObjectTypeCode != null) {

@@ -18,6 +18,7 @@ public class User implements RoleItem, UserGroupItem {
     private List<String> scopes = new ArrayList<>();
 
     //---------------------------------------------------------------------------------------------------------------------------------
+
     protected User() {
     }
 
@@ -28,6 +29,7 @@ public class User implements RoleItem, UserGroupItem {
     public static User byId(String id) {
         return byId(id, (String) null);
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
 
     public static User byId(String id, String... scope) {

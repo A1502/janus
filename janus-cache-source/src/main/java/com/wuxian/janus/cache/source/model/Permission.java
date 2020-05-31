@@ -27,6 +27,7 @@ public class Permission extends BaseModel<PermissionEntity> implements TenantIte
     private String outerObjectTypeCode;
 
     //---------------------------------------------------------------------------------------------------------------------------------
+
     protected Permission() {
     }
 
@@ -41,7 +42,9 @@ public class Permission extends BaseModel<PermissionEntity> implements TenantIte
         result.id = id;
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
+
     /**
      * code作为构造函数参数的时永远不能为null
      */
@@ -69,7 +72,9 @@ public class Permission extends BaseModel<PermissionEntity> implements TenantIte
         }
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
+
     public Permission(NativePermissionTemplateEnum permissionTemplateCode) {
         this(permissionTemplateCode == null ? null : permissionTemplateCode.getCode());
     }
@@ -78,7 +83,9 @@ public class Permission extends BaseModel<PermissionEntity> implements TenantIte
         String codeArg = (permissionTemplateCode == null ? null : permissionTemplateCode.getCode());
         return byId(id, codeArg);
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
+
     public Permission(String permissionTemplateCode, String outerObjectTypeCode, String outerObjectCode) {
         this(permissionTemplateCode);
         OuterObject.validateNull(outerObjectTypeCode, outerObjectCode);
@@ -93,6 +100,7 @@ public class Permission extends BaseModel<PermissionEntity> implements TenantIte
         result.outerObjectCode = outerObjectCode;
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
 
     @Override

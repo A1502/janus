@@ -25,6 +25,7 @@ public class OuterObject extends CodeModel<OuterObjectEntity> {
     private List<User> users = new ArrayList<>();
 
     //---------------------------------------------------------------------------------------------------------------------------------
+
     protected OuterObject() {
     }
 
@@ -39,6 +40,7 @@ public class OuterObject extends CodeModel<OuterObjectEntity> {
         result.id = id;
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -59,6 +61,7 @@ public class OuterObject extends CodeModel<OuterObjectEntity> {
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------
+
     public OuterObject(String code, String outerObjectTypeCode) {
         this(code);
         if (outerObjectTypeCode == null) {
@@ -77,6 +80,7 @@ public class OuterObject extends CodeModel<OuterObjectEntity> {
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------
+
     public OuterObject addItem(User... users) {
         this.users.addAll(Arrays.asList(users));
         return this;
