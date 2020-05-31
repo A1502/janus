@@ -85,6 +85,10 @@ public class RolePrototype<ID, UID, AID, TID> extends JanusPrototype<ID, UID> {
     @ApiModelProperty(value = "绑定的权限模板id", example = "1")
     private ID permissionTemplateId;
 
+    @TableField("outer_object_type_id")
+    @ApiModelProperty(value = "外部对象类型id", example = "1")
+    private ID outerObjectTypeId;
+
     @TableField("outer_object_id")
     @ApiModelProperty(value = "绑定的外部对象id", example = "1")
     private ID outerObjectId;
