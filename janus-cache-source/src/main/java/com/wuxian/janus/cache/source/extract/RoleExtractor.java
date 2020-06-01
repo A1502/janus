@@ -148,6 +148,9 @@ public class RoleExtractor {
                         , permission.getPermissionTemplateCode()
                         , permission.toHashString());
 
+                permission的信息量不一定全，要转permissionEntity才全
+                String outerObjectCode
+
                 UserAndOuterObjectExtractor.OuterObjectPair outerObjectPair =
                         UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(result
                                 , permission.getOuterObjectTypeCode()
@@ -159,7 +162,7 @@ public class RoleExtractor {
                         , role.getOuterObjectCode()
                         , templateEntity.getCode()
                         , outerObjectPair.outerObjectEntity.getReferenceCode());
-                // if not allowed TODO
+                 if not allowed TODO
 
             }
         }
