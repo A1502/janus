@@ -29,7 +29,7 @@ public class SourceExtractor {
         PermissionExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
         //STEP5:提取(8)singleRole,(14)multipleRole DONE
-        //(7)singleRolePermission,(13)multipleRolePermission
+        //(7)singleRolePermission,(13)multipleRolePermission DONE
         RoleExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
         //STEP6:提取(4)userGroup DONE

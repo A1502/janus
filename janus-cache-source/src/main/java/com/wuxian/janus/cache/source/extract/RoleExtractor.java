@@ -1,5 +1,6 @@
 package com.wuxian.janus.cache.source.extract;
 
+import com.wuxian.janus.cache.source.ErrorFactory;
 import com.wuxian.janus.cache.source.IdGenerator;
 import com.wuxian.janus.cache.source.IdGeneratorFactory;
 import com.wuxian.janus.cache.source.IdUtils;
@@ -8,10 +9,7 @@ import com.wuxian.janus.core.RolePermissionUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.critical.CoverageTypeEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
-import com.wuxian.janus.entity.OuterObjectEntity;
-import com.wuxian.janus.entity.OuterObjectTypeEntity;
-import com.wuxian.janus.entity.PermissionTemplateEntity;
-import com.wuxian.janus.entity.RoleEntity;
+import com.wuxian.janus.entity.*;
 import com.wuxian.janus.entity.primary.ApplicationIdType;
 import com.wuxian.janus.entity.primary.IdType;
 import com.wuxian.janus.entity.primary.TenantIdType;
@@ -26,14 +24,16 @@ import java.util.stream.Collectors;
 public class RoleExtractor {
 
     static void extract(ApplicationGroup applicationGroup, IdGeneratorFactory idGeneratorFactory, DirectAccessControlSource result) {
-        IdGenerator idGenerator = IdUtils.createIdGenerator(idGeneratorFactory);
+        IdGenerator roleIdGenerator = IdUtils.createIdGenerator(idGeneratorFactory);
+        IdGenerator rolePermissionXIdGenerator = IdUtils.createIdGenerator(idGeneratorFactory);
 
         for (Application application : applicationGroup.getApplications()) {
-            extractRole(application, idGenerator, result);
+            extractRole(application, roleIdGenerator, rolePermissionXIdGenerator, result);
         }
     }
 
-    private static void extractRole(Application application, IdGenerator roleIdGenerator, DirectAccessControlSource result) {
+    private static void extractRole(Application application, IdGenerator roleIdGenerator
+            , IdGenerator rolePermissionXIdGenerator, DirectAccessControlSource result) {
 
         ApplicationIdType applicationId = IdUtils.createApplicationId(application.getId());
         //来源1
@@ -85,7 +85,7 @@ public class RoleExtractor {
             Map<IdType, RoleEntity> singles = new HashMap<>();
             Map<IdType, RoleEntity> multiples = new HashMap<>();
             for (Map.Entry<IdType, RoleEntity> entry : entityMap.entrySet()) {
-                if (!entry.getValue().getMultiple()) {
+                if (!isMultiple(entry.getValue())) {
                     singles.put(entry.getKey(), entry.getValue());
                 } else {
                     multiples.put(entry.getKey(), entry.getValue());
@@ -96,8 +96,18 @@ public class RoleExtractor {
             result.getMultipleRole().add(applicationId, tenantId, multiples);
 
             //提取(7)singleRolePermission,(13)multipleRolePermission
-            extractRolePermission(application, tenant, modelMap, result);
+            extractRolePermission(application, tenant, modelMap, rolePermissionXIdGenerator, result);
         }
+    }
+
+    private static boolean isMultiple(Role role) {
+        //这里必须要booleanValue(),让getMultiple == null 变成异常，而不是隐瞒问题
+        return role.getMultiple().booleanValue();
+    }
+
+    private static boolean isMultiple(RoleEntity role) {
+        //这里必须要booleanValue(),让getMultiple == null 变成异常，而不是隐瞒问题
+        return role.getMultiple().booleanValue();
     }
 
     private static RoleEntity convertToEntity(Role roleModel, Application application, DirectAccessControlSource source) {
@@ -134,38 +144,53 @@ public class RoleExtractor {
     }
 
     private static void extractRolePermission(Application application
-            , Tenant tenant, Map<IdType, Role> roleMap, DirectAccessControlSource result) {
-        if (true) {
-            return;
-        }
-        for (Role role : roleMap.values()) {
+            , Tenant tenant, Map<IdType, Role> roleMap, IdGenerator idGenerator, DirectAccessControlSource result) {
 
+        Map<IdType, RolePermissionXEntity> singles = new HashMap<>();
+        Map<IdType, RolePermissionXEntity> multiples = new HashMap<>();
+
+        for (Role role : roleMap.values()) {
+            boolean isMultiple = isMultiple(role);
             for (Permission permission : role.getPermissions()) {
 
-                PermissionTemplateEntity templateEntity
-                        = PermissionTemplateExtractor.findByPermissionTemplateCode(result
-                        , application
-                        , permission.getPermissionTemplateCode()
-                        , permission.toHashString());
-
-                permission的信息量不一定全，要转permissionEntity才全
-                String outerObjectCode
-
-                UserAndOuterObjectExtractor.OuterObjectPair outerObjectPair =
-                        UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(result
-                                , permission.getOuterObjectTypeCode()
-                                , permission.getOuterObjectCode()
-                                , permission.toHashString());
+                //permission是经过了PermissionExtractor的fillKeyFields处理的，所以能保证
+                //permission.getOuterObjectTypeCode(),getOuterObjectCode()值有效（哪怕是null)
 
                 boolean allowed = RolePermissionUtils.relationAllowed(role.getMultiple()
                         , role.getOuterObjectTypeCode()
                         , role.getOuterObjectCode()
-                        , templateEntity.getCode()
-                        , outerObjectPair.outerObjectEntity.getReferenceCode());
-                 if not allowed TODO
+                        //这里本来应取permissionTemplate的outerObjectCode
+                        //但可直接用permission.getOuterObjectTypeCode()简化
+                        //因为PermissionExtractor的checkOuterObjectTypeMatch方法保证了
+                        //permission和permissionTemplate的outerObjectCode一致
+                        , permission.getOuterObjectTypeCode()
+                        , permission.getOuterObjectCode());
 
+                if (!allowed) {
+                    throw ErrorFactory.createRoleAndPermissionRelationNotAllowedError(
+                            role.toHashString(), permission.toHashString());
+                }
+
+                IdType xIdType = idGenerator.generate();
+
+                RolePermissionXEntity xEntity = new RolePermissionXEntity();
+                xEntity.setId(xIdType.getValue());
+                xEntity.setRoleId(IdUtils.createId(role.getId()).getValue());
+                xEntity.setPermissionId(IdUtils.createId(permission.getId()).getValue());
+
+                if (isMultiple) {
+                    multiples.put(xIdType, xEntity);
+                } else {
+                    singles.put(xIdType, xEntity);
+                }
             }
         }
+
+        ApplicationIdType appId = IdUtils.createApplicationId(application.getId());
+        TenantIdType tId = IdUtils.createTenantId(tenant.getId());
+
+        result.getSingleRolePermissionX().add(appId, tId, singles);
+        result.getMultipleRolePermissionX().add(appId, tId, multiples);
     }
 
     private static void appendEntityTenantId(List<Role> list, TenantIdType tenantId) {
