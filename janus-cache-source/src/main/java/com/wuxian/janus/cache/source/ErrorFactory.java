@@ -50,6 +50,8 @@ public final class ErrorFactory {
 
     public final static String OUTER_OBJECT_TYPE_CODE_OF_MULTIPLE_ROLE_MUST_BE_NULL = PRE + "OUTER_OBJECT_TYPE_CODE_OF_MULTIPLE_ROLE_MUST_BE_NULL";
 
+    public final static String CREATE_ROLE_AND_PERMISSION_RELATION_NOT_ALLOWED = PRE + "CREATE_ROLE_AND_PERMISSION_RELATION_NOT_ALLOWED";
+
     public static ErrorCodeException createPermissionTemplateCodeCannotBeNullError() {
         String message = "PermissionTemplateCode不能为null";
         return new ErrorCodeException(PERMISSION_TEMPLATE_CODE_CANNOT_BE_NULL, message, null);
@@ -155,5 +157,11 @@ public final class ErrorFactory {
     public static ErrorCodeException createOuterObjectTypeCodeOfMultipleRoleMustBeNullError(String outerObjectTypeCode) {
         String message = "Multiple角色的outerObjectTypeCode:" + outerObjectTypeCode + "必须为null";
         return new ErrorCodeException(OUTER_OBJECT_TYPE_CODE_OF_MULTIPLE_ROLE_MUST_BE_NULL, message, null);
+    }
+
+    public static ErrorCodeException createRoleAndPermissionRelationNotAllowedError(String roleDesc
+            , String permissionDesc) {
+        String message = "role:" + roleDesc + "和permission:" + permissionDesc + " 的不满足建立关系的要求";
+        return new ErrorCodeException(CREATE_ROLE_AND_PERMISSION_RELATION_NOT_ALLOWED, message, null);
     }
 }
