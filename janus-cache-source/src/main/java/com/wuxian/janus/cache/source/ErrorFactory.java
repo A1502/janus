@@ -161,7 +161,7 @@ public final class ErrorFactory {
 
     public static ErrorCodeException createRoleAndPermissionRelationNotAllowedError(String roleDesc
             , String permissionDesc) {
-        String message = "role:" + roleDesc + "和permission:" + permissionDesc + " 的不满足建立关系的要求";
+        String message = "role:" + roleDesc + "和permission:" + permissionDesc + " 的不满足建立关系的规则，须参考RolePermissionUtils.relationAllowed";
         return new ErrorCodeException(CREATE_ROLE_AND_PERMISSION_RELATION_NOT_ALLOWED, message, null);
     }
 }
