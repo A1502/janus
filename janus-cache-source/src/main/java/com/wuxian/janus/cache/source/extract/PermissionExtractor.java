@@ -5,6 +5,7 @@ import com.wuxian.janus.cache.source.IdGenerator;
 import com.wuxian.janus.cache.source.IdGeneratorFactory;
 import com.wuxian.janus.cache.source.IdUtils;
 import com.wuxian.janus.cache.source.model.*;
+import com.wuxian.janus.core.PermissionTemplateUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.entity.OuterObjectEntity;
 import com.wuxian.janus.entity.OuterObjectTypeEntity;
@@ -123,22 +124,18 @@ class PermissionExtractor {
             , PermissionTemplateEntity permissionTemplateEntity
             , Permission permissionModel) {
 
-        boolean notMatch = false;
+        String outerObjectTypeCodeOfPermissionTemplate = null;
         if (permissionTemplateEntity.getOuterObjectTypeId() != null) {
             OuterObjectTypeEntity outerObjectTypeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeId(source
                     , IdUtils.createId(permissionTemplateEntity.getOuterObjectTypeId().toString())
                     , permissionModel.toHashString());
-            //二者outerObjectTypeCode不一致
-            if (permissionModel.getOuterObjectTypeCode() != outerObjectTypeEntity.getCode()) {
-                notMatch = true;
-            }
-        } else {
-            //二者outerObjectType一个为null，一个不为null
-            if (permissionModel.getOuterObjectTypeCode() != null) {
-                notMatch = true;
-            }
+            outerObjectTypeCodeOfPermissionTemplate = outerObjectTypeEntity.getCode();
         }
-        if (notMatch) {
+
+        boolean allowed = PermissionTemplateUtils.relationAllowed(outerObjectTypeCodeOfPermissionTemplate
+                , permissionModel.getOuterObjectTypeCode());
+
+        if (!allowed) {
             throw ErrorFactory.createOuterObjectTypeNotMatchError(
                     PermissionTemplate.byId(permissionTemplateEntity.getId().toString()
                             , permissionTemplateEntity.getCode()).toHashString()
