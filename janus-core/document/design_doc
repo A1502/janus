@@ -34,3 +34,14 @@ SingleRole不能再添入MultiplePermission。
 (5)
 MultipleRole，它的multiple = true, 但是OuterObject可为null，这样可以这个Role就可以装入各个OuterObjectType不
 同的MultiplePermission了
+
+-----------------------------------------------------------------------------------------------
+[C][E][D]
+UserGroupUserX
+RoleUserX
+RoleUserGroupX
+
+[C][D]
+Role
+UserGroup
+Permission
