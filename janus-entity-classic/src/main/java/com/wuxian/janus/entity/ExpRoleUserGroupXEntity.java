@@ -1,7 +1,7 @@
 package com.wuxian.janus.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.wuxian.janus.entity.prototype.ExpRoleUserGroupXPrototype;
+import com.wuxian.janus.entity.prototype.fourth.ExpRoleUserGroupXPrototype;
 import lombok.NoArgsConstructor;
 
 /**

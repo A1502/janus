@@ -3,7 +3,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import com.wuxian.janus.entity.prototype.LogPermissionUserAcXPrototype;
+import com.wuxian.janus.entity.prototype.fifth.LogPermissionUserAcXPrototype;
 
 /**
  * Prototype类

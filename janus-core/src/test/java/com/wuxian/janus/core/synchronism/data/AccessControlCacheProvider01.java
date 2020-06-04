@@ -9,7 +9,7 @@ import com.wuxian.janus.entity.primary.ApplicationIdType;
 import com.wuxian.janus.entity.primary.IdType;
 import com.wuxian.janus.entity.primary.TenantIdType;
 import com.wuxian.janus.entity.primary.UserIdType;
-import com.wuxian.janus.entity.prototype.base.JanusPrototype;
+import com.wuxian.janus.entity.prototype.JanusPrototype;
 
 import java.util.Collections;
 import java.util.HashMap;

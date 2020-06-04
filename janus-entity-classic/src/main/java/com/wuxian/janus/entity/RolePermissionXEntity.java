@@ -1,7 +1,7 @@
 package com.wuxian.janus.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.wuxian.janus.entity.prototype.RolePermissionXPrototype;
+import com.wuxian.janus.entity.prototype.second.RolePermissionXPrototype;
 
 /**
  * Prototype类

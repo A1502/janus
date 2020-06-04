@@ -1,0 +1,28 @@
+
+
+[first] {无依赖}
+    最内层功能，跟权限都无关，管理user&role,user&userGroup关系
+
+[second] {依赖first}
+    优先完备permission以及role&permission关系
+
+    TODO扩展：
+    权限模板100个，同时关联到200个outerObject，就会产生笛卡尔积100*200=20,000条权限数据。
+    可以这样改善：
+        在支持rolePermissionX的基础上。再增加一种cross,用100+200=300行来顶替20,000的极端情况
+    最后使用roleCrossX来记录这种方式代表的权限。判定是否有权限时，以rolePermissionX和
+    roleCross的并集来认定。
+    这个方案依然是先计算出user加入的role的集合，这个逻辑可以复用。得到role后再分别计算role
+    的permission和role的cross
+
+[third] {依赖first}
+    安全起见支持内核级log
+
+[fourth] {依赖first,third}
+    提供权限过期功能，因为过期导致变更会产生日志所以依赖third
+
+[fifth] {依赖second}
+    提供支配权管理以及支配权变更日志
+
+[sixth] {依赖second}
+    提供权限明细
