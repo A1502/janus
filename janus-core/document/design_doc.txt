@@ -49,3 +49,45 @@ Permission
 临时权限到期的做法是直接删除关系
 会产生LOG
 要查直接从临时权限表里查
+
+
+
+ 1:31:28
+1.100×200=20000行权限的问题，已经想好扩展方案【DONE】
+
+ 1:31:44
+2.UserGroupOtherX ,打算加上，会影响extractor要想想 TODO
+
+ 1:31:59
+3.高速缓存评估的事，进行中 TODO 2
+
+ 1:32:58
+4.对于role和userGroup的page页面，打算也用缓存实现。因为这个逻辑很绕，最好别再sql写一遍。也写不出来。【DONE】
+
+ 1:33:58
+5.权限过期方案，是把过期表要加一个列，表示过期已经执行了。执行的效果是直接删rolePermissionX和userGroupUserX。
+TODO 5
+
+ 1:34:49
+6.临时权限不纳入缓存。要显示是否临时，自己拿到缓存运算结果再去sql查一遍db，把结果融合后返回给前端
+【DONE】
+
+ 1:37:50
+7.UserOuterObjectXPrototype的outerObjectIdList违反范式，准备干掉这个逻辑。一并干掉virud_tp:create_outer_group这个内置权限
+TODO
+
+ 1:39:02
+8.role和userGroup的10AC全部纳入缓存索引中 TODO
+
+ 1:39:34
+9.缓存索引更新的方法需要设计 TODO 4
+
+10.“(Object[] fields) ->”丑陋部分要解决
+this.createIndex(OuterObjectTypeEntity.class, (Object[] fields) ->
+                new String[]{
+                        safeToString(fields[0])
+                }, USED_BY_USER_GROUP);  TODO 3
+
+11.extractor还没完 TODO 1
+
+12.role,userGroup支持禁用启用 TODO
