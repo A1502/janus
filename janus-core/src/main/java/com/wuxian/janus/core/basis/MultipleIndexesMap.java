@@ -3,10 +3,7 @@ package com.wuxian.janus.core.basis;
 import com.wuxian.janus.core.ErrorFactory;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -81,26 +78,23 @@ public class MultipleIndexesMap<K, V> {
         return sourceMap != null;
     }
 
-    public void createIndex(Class<V> clazz, Function<Object[], String[]> indexBuilder, String... fieldNames) {
+    public void createIndex(Class<V> clazz, NamedConverter... fieldNameAndConverters) {
         IndexedList<V> indexedList;
         try {
-            indexedList = new IndexedList<>(clazz, indexBuilder, fieldNames);
+            indexedList = new IndexedList<>(clazz, fieldNameAndConverters);
         } catch (NoSuchMethodException e) {
             throw ErrorFactory.createCreateIndexError(e.getMessage());
+        }
+
+        String[] fieldNames = new String[fieldNameAndConverters.length];
+        for (int i = 0; i < fieldNameAndConverters.length; i++) {
+            fieldNames[i] = fieldNameAndConverters[i].getName();
         }
         String indexName = getIndexName(fieldNames);
         indexedListMap.put(indexName, indexedList);
 
         if (sourceMap != null) {
             indexedList.setSource(this.sourceMap.values());
-        }
-    }
-
-    protected String safeToString(Object input) {
-        if (input != null) {
-            return input.toString();
-        } else {
-            return null;
         }
     }
 }

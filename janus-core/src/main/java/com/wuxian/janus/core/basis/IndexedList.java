@@ -9,20 +9,18 @@ class IndexedList<V> {
 
     private List<V> source = null;
 
-    private Method[] fieldGetters;
-
-    private Function<Object[], String[]> indexBuilder;
+    private FieldConverterWithGetter[] fieldConverters;
 
     private Map<String, List<V>> index;
 
     private String createIndexKey(V sample) throws InvocationTargetException, IllegalAccessException {
-
-        Object[] fields = new Object[this.fieldGetters.length];
-        for (int i = 0; i < fieldGetters.length; i++) {
-            fields[i] = fieldGetters[i].invoke(sample);
+        String[] fieldStringValues = new String[this.fieldConverters.length];
+        for (int i = 0; i < fieldConverters.length; i++) {
+            FieldConverterWithGetter converter = fieldConverters[i];
+            Object fieldObjectValue = converter.getGetter().invoke(sample);
+            fieldStringValues[i] = converter.getAction().apply(fieldObjectValue);
         }
-        String[] strings = indexBuilder.apply(fields);
-        return StringUtils.safeJoinStrings(strings);
+        return StringUtils.safeJoinStrings(fieldStringValues);
     }
 
     private void createIndex() throws InvocationTargetException, IllegalAccessException {
@@ -73,16 +71,17 @@ class IndexedList<V> {
         this.index = null;
     }
 
-    IndexedList(Class<V> clazz, Function<Object[], String[]> indexBuilder, String... fieldNames) throws NoSuchMethodException {
-        this.indexBuilder = indexBuilder;
+    IndexedList(Class<V> clazz, NamedConverter... fieldNameAndConverters) throws NoSuchMethodException {
 
-        fieldGetters = new Method[fieldNames.length];
-        for (int i = 0; i < fieldNames.length; i++) {
-            String fieldName = fieldNames[i];
-            fieldGetters[i] = ReflectUtils.findGetterMethodByFieldName(clazz, fieldName);
-            if (fieldGetters[i] == null) {
-                throw new NoSuchMethodException(clazz.toString() + "." + fieldName);
+        fieldConverters = new FieldConverterWithGetter[fieldNameAndConverters.length];
+
+        for (int i = 0; i < fieldConverters.length; i++) {
+            String fieldName = fieldNameAndConverters[i].getName();
+            Method getter = ReflectUtils.findGetterMethodByFieldName(clazz, fieldName);
+            if (getter == null) {
+                throw new NoSuchMethodException(clazz.getCanonicalName() + "." + fieldName);
             }
+            fieldConverters[i] = new FieldConverterWithGetter(fieldNameAndConverters[i], getter);
         }
     }
 }
