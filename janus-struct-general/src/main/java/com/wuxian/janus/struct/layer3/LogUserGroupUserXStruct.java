@@ -1,4 +1,4 @@
-package com.wuxian.janus.struct;import com.baomidou.mybatisplus.annotation.TableName;
+package com.wuxian.janus.struct.layer3;import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
