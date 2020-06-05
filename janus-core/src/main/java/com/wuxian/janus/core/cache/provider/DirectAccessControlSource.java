@@ -15,6 +15,8 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SuppressWarnings("all")
 public class DirectAccessControlSource {
@@ -218,15 +220,23 @@ public class DirectAccessControlSource {
         private <E> void printTenantMap(PrintStream stream, String
                 indent, TenantMap<IdType, E> tenantMap, Function<E, String> printStructHandler) {
             Map<ApplicationIdType, Set<TenantIdType>> ids = tenantMap.getIds();
-            for (ApplicationIdType aid : ids.keySet()) {
-                Set<TenantIdType> tids = StrictUtils.get(ids, aid);
+
+            //排序
+            Set<ApplicationIdType> sortedIds = sortApplicationIdTypeSet(ids.keySet()).collect(Collectors.toSet());
+
+            for (ApplicationIdType aid : sortedIds) {
+
+                //排序
+                Set<TenantIdType> tids = sortTenantIdTypeSet(StrictUtils.get(ids, aid)).collect(Collectors.toSet());
+
                 for (TenantIdType tid : tids) {
                     Map<IdType, E> elements = tenantMap.get(aid, tid);
 
                     stream.print(indent + "[ applicationId = " + aid.toString() + ", tenantId = " + tid.toString() + ", count = " + elements.size() + " ]");
                     stream.println();
 
-                    elements.entrySet().stream().forEach(
+                    //排序
+                    sortIdTypeMap(elements).forEach(
                             entry -> {
                                 stream.print(indent + BLANK + "[ id = " + entry.getKey().toString() + " ] ");
                                 stream.print(printStructHandler.apply(entry.getValue()));
@@ -239,14 +249,17 @@ public class DirectAccessControlSource {
 
         private <E> void printApplicationMap(PrintStream stream, String
                 indent, ApplicationMap<IdType, E> applicationMap, Function<E, String> printStructHandler) {
-            Set<ApplicationIdType> ids = applicationMap.getIds();
+            //排序
+            Set<ApplicationIdType> ids = sortApplicationIdTypeSet(applicationMap.getIds()).collect(Collectors.toSet());
+
             for (ApplicationIdType aid : ids) {
                 Map<IdType, E> elements = applicationMap.get(aid);
 
                 stream.print(indent + "[ applicationId = " + aid.toString() + ", count = " + elements.size() + " ]");
                 stream.println();
 
-                elements.entrySet().stream().forEach(
+                //排序
+                sortIdTypeMap(elements).forEach(
                         entry -> {
                             stream.print(indent + BLANK + "[ id = " + entry.getKey().toString() + " ] ");
                             stream.print(printStructHandler.apply(entry.getValue()));
@@ -259,14 +272,17 @@ public class DirectAccessControlSource {
         private <E> void printJanusMap(PrintStream stream, String indent, String
                 idName, JanusMap<IdType, E> janusMap, Function<E, String> printStructHandler) {
 
-            Set<IdType> ids = janusMap.getIds();
+            //排序
+            Set<IdType> ids = sortIdTypeSet(janusMap.getIds()).collect(Collectors.toSet());
+
             for (IdType id : ids) {
                 Map<IdType, E> elements = janusMap.get(id);
 
                 stream.print(indent + "[ " + idName + " = " + id.toString() + ", count = " + elements.size() + " ]");
                 stream.println();
 
-                elements.entrySet().stream().forEach(
+                //排序
+                sortIdTypeMap(elements).forEach(
                         entry -> {
                             stream.print(indent + BLANK + "[ id = " + entry.getKey().toString() + " ] ");
                             stream.print(printStructHandler.apply(entry.getValue()));
@@ -282,13 +298,38 @@ public class DirectAccessControlSource {
             stream.print(indent + "[ count = " + map.size() + " ]");
             stream.println();
 
-            map.entrySet().stream().forEach(
+            sortIdTypeMap(map).forEach(
                     entry -> {
                         stream.print(indent + BLANK + "[ id = " + entry.getKey().toString() + " ] ");
                         stream.print(printStructHandler.apply(entry.getValue()));
                         stream.println();
                     }
             );
+        }
+
+
+        private <E> Stream<Map.Entry<IdType, E>> sortIdTypeMap(Map<IdType, E> map) {
+            return map.entrySet().stream().sorted((a, b) -> {
+                return a.getKey().compareTo(b.getKey());
+            });
+        }
+
+        private Stream<ApplicationIdType> sortApplicationIdTypeSet(Set<ApplicationIdType> set) {
+            return set.stream().sorted((a, b) -> {
+                return a.getValue().compareTo(b.getValue());
+            });
+        }
+
+        private Stream<TenantIdType> sortTenantIdTypeSet(Set<TenantIdType> set) {
+            return set.stream().sorted((a, b) -> {
+                return a.getValue().compareTo(b.getValue());
+            });
+        }
+
+        private Stream<IdType> sortIdTypeSet(Set<IdType> set) {
+            return set.stream().sorted((a, b) -> {
+                return a.getValue().compareTo(b.getValue());
+            });
         }
     }
 
