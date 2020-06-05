@@ -1,5 +1,5 @@
 package com.wuxian.janus.entity;import com.baomidou.mybatisplus.annotation.TableName;
-import com.wuxian.janus.entity.prototype.third.LogUserGroupUserXPrototype;
+import com.wuxian.janus.entity.prototype.layer3.LogUserGroupUserXPrototype;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

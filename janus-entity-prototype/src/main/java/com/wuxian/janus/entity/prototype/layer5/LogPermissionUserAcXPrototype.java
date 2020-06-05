@@ -1,4 +1,4 @@
-package com.wuxian.janus.entity.prototype.third;
+package com.wuxian.janus.entity.prototype.layer5;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -20,17 +20,17 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("log_role_user_group_x")
-public class LogRoleUserGroupXPrototype<ID, UID> extends ControlPrototype<ID, UID> {
+@TableName("log_permission_user_ac_x")
+public class LogPermissionUserAcXPrototype<ID, UID> extends ControlPrototype<ID, UID> {
 
     private static final long serialVersionUID = 1L;
 
-    @TableField("role_id")
-    @ApiModelProperty(value = "角色id", example = "1")
-    private ID roleId;
+    @TableField("permission_id")
+    @ApiModelProperty(value = "权限id", example = "1")
+    private ID permissionId;
 
-    @TableField("user_group_id")
-    @ApiModelProperty(value = "用户组id", example = "1")
-    private ID userGroupId;
+    @TableField("user_id")
+    @ApiModelProperty(value = "用户id", example = "1")
+    private UID userId;
 
 }

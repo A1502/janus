@@ -1,9 +1,9 @@
 
 
-[first] {无依赖}
+[layer1] {无依赖}
     最内层功能，跟权限都无关，管理user&role,user&userGroup关系
 
-[second] {依赖first}
+[layer2] {依赖layer1}
     优先完备permission以及role&permission关系
 
     TODO扩展：
@@ -15,14 +15,14 @@
     这个方案依然是先计算出user加入的role的集合，这个逻辑可以复用。得到role后再分别计算role
     的permission和role的cross
 
-[third] {依赖first}
+[layer3] {依赖layer1}
     安全起见支持内核级log
 
-[fourth] {依赖first,third}
-    提供权限过期功能，因为过期导致变更会产生日志所以依赖third
+[layer4] {依赖layer1,layer3}
+    提供权限过期功能，因为过期导致变更会产生日志所以依赖layer3
 
-[fifth] {依赖second}
+[layer5] {依赖layer2}
     提供支配权管理以及支配权变更日志
 
-[sixth] {依赖second}
+[layer6] {依赖layer2}
     提供权限明细

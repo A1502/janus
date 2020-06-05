@@ -1,8 +1,8 @@
-package com.wuxian.janus.entity.prototype.first;
+package com.wuxian.janus.entity.prototype.layer1;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.wuxian.janus.entity.prototype.ControlPrototype;
+import com.wuxian.janus.entity.prototype.AccessPrototype;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,30 +22,20 @@ import java.util.Date;
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("role_user_x")
-public class RoleUserXPrototype<ID, UID> extends ControlPrototype<ID, UID> {
+@TableName("role_other_x")
+public class RoleOtherXPrototype<ID, UID> extends AccessPrototype<ID, UID> {
 
-    private static final long serialVersionUID = 1L;
-
-    public void fill(ID id, ID roleId, UID userId
+    public void fill(ID id, ID roleId
             , Boolean viewAccess, Boolean executeAccess, Boolean editAccess, Boolean deleteAccess, Boolean enableAccess
-            , Boolean viewControl, Boolean executeControl, Boolean editControl, Boolean deleteControl, Boolean enableControl
             , UID createdBy, Date createdDate, UID lastModifiedBy, Date lastModifiedDate, Integer version) {
         setId(id);
         setRoleId(roleId);
-        setUserId(userId);
 
         setViewAccess(viewAccess);
         setExecuteAccess(executeAccess);
         setEditAccess(editAccess);
         setDeleteAccess(deleteAccess);
         setEnableAccess(enableAccess);
-
-        setViewControl(viewControl);
-        setExecuteControl(executeControl);
-        setEditControl(editControl);
-        setDeleteControl(deleteControl);
-        setEnableControl(enableControl);
 
         setCreationProposer(createdBy);
         setModificationProposer(lastModifiedBy);
@@ -56,21 +46,15 @@ public class RoleUserXPrototype<ID, UID> extends ControlPrototype<ID, UID> {
         setVersion(version);
     }
 
+    private static final long serialVersionUID = 1L;
+
     @TableField("role_id")
     @ApiModelProperty(value = "角色id", example = "1")
     private ID roleId;
 
-    @TableField("user_id")
-    @ApiModelProperty(value = "用户id", example = "1")
-    private UID userId;
-
     @TableField("execute_access")
     @ApiModelProperty(value = "加入访问权:能否加入", example = "true")
     private boolean executeAccess;
-
-    @TableField("execute_control")
-    @ApiModelProperty(value = "加入控制权:能否管理他人加入", example = "true")
-    private boolean executeControl;
 
     @TableField("version")
     @ApiModelProperty(value = "乐观锁", example = "998")

@@ -1,7 +1,7 @@
 package com.wuxian.janus.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.wuxian.janus.entity.prototype.sixth.UserOuterObjectXPrototype;
+import com.wuxian.janus.entity.prototype.layer6.UserOuterObjectXPrototype;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

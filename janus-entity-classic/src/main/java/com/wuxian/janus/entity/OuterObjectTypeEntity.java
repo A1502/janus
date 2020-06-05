@@ -1,7 +1,7 @@
 package com.wuxian.janus.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.wuxian.janus.entity.prototype.first.OuterObjectTypePrototype;
+import com.wuxian.janus.entity.prototype.layer1.OuterObjectTypePrototype;
 
 /**
  * 外部对象类型实体

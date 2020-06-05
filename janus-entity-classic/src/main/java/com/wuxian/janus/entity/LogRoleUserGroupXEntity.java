@@ -1,5 +1,5 @@
 package com.wuxian.janus.entity;import com.baomidou.mybatisplus.annotation.TableName;
-import com.wuxian.janus.entity.prototype.third.LogRoleUserGroupXPrototype;
+import com.wuxian.janus.entity.prototype.layer3.LogRoleUserGroupXPrototype;
 
 /**
  * Prototype类

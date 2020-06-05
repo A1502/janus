@@ -1,4 +1,4 @@
-package com.wuxian.janus.entity.prototype.sixth;
+package com.wuxian.janus.entity.prototype.layer1;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -11,29 +11,21 @@ import lombok.experimental.Accessors;
 
 import java.util.Date;
 
-/**
- * Prototype类
- *
- * @author wuxian
- * @email
- * @date 2019/07/11
- */
 @Accessors(chain = true)
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("user_outer_object_x")
-public class UserOuterObjectXPrototype<ID, UID> extends JanusPrototype<ID, UID> {
+@TableName("scope_user_group_user_x")
+public class ScopeUserGroupUserXPrototype<ID, UID> extends JanusPrototype<ID, UID> {
 
     private static final long serialVersionUID = 1L;
 
-    public void fill(ID id, ID outerObjectTypeId, String scope, UID userId, String outerObjectIdList
+    public void fill(ID id, String scope, ID userGroupId, UID userId
             , UID createdBy, Date createdDate, UID lastModifiedBy, Date lastModifiedDate) {
         setId(id);
-        setOuterObjectTypeId(outerObjectTypeId);
         setScope(scope);
+        setUserGroupId(userGroupId);
         setUserId(userId);
-        setOuterObjectIdList(outerObjectIdList);
 
         setCreationProposer(createdBy);
         setModificationProposer(lastModifiedBy);
@@ -43,24 +35,21 @@ public class UserOuterObjectXPrototype<ID, UID> extends JanusPrototype<ID, UID> 
         setLastModifiedDate(lastModifiedDate);
     }
 
-    @TableField("outer_object_type_id")
-    @ApiModelProperty(value = "外部对象类型id", example = "1")
-    private ID outerObjectTypeId;
-
     /**
-    和角色以及用户组的scope概念相同
+    用户可以在不同的scope下加入角色和用户组。达到在不同scope下的权限不同效果。
      */
     @TableField("scope")
     @ApiModelProperty(value = "范围", example = "null")
     private String scope;
 
+    @TableField("user_group_id")
+    @ApiModelProperty(value = "用户组id", example = "1")
+    private ID userGroupId;
+
     @TableField("user_id")
     @ApiModelProperty(value = "用户id", example = "1")
     private UID userId;
 
-    @TableField("outer_object_id_list")
-    @ApiModelProperty(value = "外部对象id的集合，逗号连接多个", example = "1,2,3,4")
-    private String outerObjectIdList;
-
     //无需version
+
 }

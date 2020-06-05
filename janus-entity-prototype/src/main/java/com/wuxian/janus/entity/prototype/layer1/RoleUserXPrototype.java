@@ -1,4 +1,4 @@
-package com.wuxian.janus.entity.prototype.first;
+package com.wuxian.janus.entity.prototype.layer1;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -22,17 +22,17 @@ import java.util.Date;
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("user_group_user_x")
-public class UserGroupUserXPrototype<ID, UID> extends ControlPrototype<ID, UID> {
+@TableName("role_user_x")
+public class RoleUserXPrototype<ID, UID> extends ControlPrototype<ID, UID> {
 
     private static final long serialVersionUID = 1L;
 
-    public void fill(ID id, ID userGroupId, UID userId
+    public void fill(ID id, ID roleId, UID userId
             , Boolean viewAccess, Boolean executeAccess, Boolean editAccess, Boolean deleteAccess, Boolean enableAccess
             , Boolean viewControl, Boolean executeControl, Boolean editControl, Boolean deleteControl, Boolean enableControl
             , UID createdBy, Date createdDate, UID lastModifiedBy, Date lastModifiedDate, Integer version) {
         setId(id);
-        setUserGroupId(userGroupId);
+        setRoleId(roleId);
         setUserId(userId);
 
         setViewAccess(viewAccess);
@@ -56,9 +56,9 @@ public class UserGroupUserXPrototype<ID, UID> extends ControlPrototype<ID, UID> 
         setVersion(version);
     }
 
-    @TableField("user_group_id")
-    @ApiModelProperty(value = "用户组id", example = "1")
-    private ID userGroupId;
+    @TableField("role_id")
+    @ApiModelProperty(value = "角色id", example = "1")
+    private ID roleId;
 
     @TableField("user_id")
     @ApiModelProperty(value = "用户id", example = "1")
@@ -75,5 +75,4 @@ public class UserGroupUserXPrototype<ID, UID> extends ControlPrototype<ID, UID> 
     @TableField("version")
     @ApiModelProperty(value = "乐观锁", example = "998")
     private Integer version;
-
 }

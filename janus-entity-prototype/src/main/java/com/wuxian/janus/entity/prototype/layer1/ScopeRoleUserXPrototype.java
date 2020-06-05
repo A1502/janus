@@ -1,4 +1,4 @@
-package com.wuxian.janus.entity.prototype.second;
+package com.wuxian.janus.entity.prototype.layer1;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -11,29 +11,21 @@ import lombok.experimental.Accessors;
 
 import java.util.Date;
 
-/**
- * Prototype类
- *
- * @author wuxian
- * @email
- * @date 2019/07/09
- */
 @Accessors(chain = true)
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("role_permission_x")
-public class RolePermissionXPrototype<ID, UID> extends JanusPrototype<ID, UID> {
+@TableName("scope_role_user_x")
+public class ScopeRoleUserXPrototype<ID, UID> extends JanusPrototype<ID, UID> {
 
     private static final long serialVersionUID = 1L;
 
-    public void fill(ID id, ID roleId, ID permissionId
-            , UID createdBy, Date createdDate, UID lastModifiedBy
-            , Date lastModifiedDate, Integer version) {
+    public void fill(ID id, String scope, ID roleId, UID userId
+            , UID createdBy, Date createdDate, UID lastModifiedBy, Date lastModifiedDate) {
         setId(id);
+        setScope(scope);
         setRoleId(roleId);
-        setPermissionId(permissionId);
-        setVersion(version);
+        setUserId(userId);
 
         setCreationProposer(createdBy);
         setModificationProposer(lastModifiedBy);
@@ -43,15 +35,21 @@ public class RolePermissionXPrototype<ID, UID> extends JanusPrototype<ID, UID> {
         setLastModifiedDate(lastModifiedDate);
     }
 
+    /**
+     * 用户可以在不同的scope下加入角色和用户组。达到在不同scope下的权限不同效果。
+     */
+    @TableField("scope")
+    @ApiModelProperty(value = "范围", example = "null")
+    private String scope;
+
     @TableField("role_id")
     @ApiModelProperty(value = "角色id", example = "1")
     private ID roleId;
 
-    @TableField("permission_id")
-    @ApiModelProperty(value = "权限id", example = "1")
-    private ID permissionId;
+    @TableField("user_id")
+    @ApiModelProperty(value = "用户id", example = "1")
+    private UID userId;
 
-    @TableField("version")
-    @ApiModelProperty(value = "乐观锁", example = "998")
-    private Integer version;
+    //无需version
+
 }

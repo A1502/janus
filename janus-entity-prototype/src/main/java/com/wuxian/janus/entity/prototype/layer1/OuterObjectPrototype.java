@@ -1,4 +1,4 @@
-package com.wuxian.janus.entity.prototype.first;
+package com.wuxian.janus.entity.prototype.layer1;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;

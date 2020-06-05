@@ -1,5 +1,5 @@
 package com.wuxian.janus.entity;import com.baomidou.mybatisplus.annotation.TableName;
-import com.wuxian.janus.entity.prototype.fifth.PermissionUserAcXPrototype;
+import com.wuxian.janus.entity.prototype.layer5.PermissionUserAcXPrototype;
 
 /**
  * Prototype类
