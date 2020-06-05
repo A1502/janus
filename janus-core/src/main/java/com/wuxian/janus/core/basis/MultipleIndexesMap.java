@@ -1,6 +1,5 @@
 package com.wuxian.janus.core.basis;
 
-import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.ErrorFactory;
 
 import java.lang.reflect.InvocationTargetException;

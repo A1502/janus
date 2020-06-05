@@ -2,7 +2,7 @@ package com.wuxian.janus.struct;
 
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.IdBuilder;
-import com.wuxian.janus.core.StrictUtils;
+import com.wuxian.janus.core.basis.StrictUtils;
 import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

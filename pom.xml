@@ -14,15 +14,13 @@
         <module>janus-struct-prototype</module>
         <module>janus-struct-classic</module>
         <module>janus-struct-general</module>
-        <module>janus-cache-source</module>
+        <module>janus-cache-model</module>
     </modules>
 
     <properties>
         <junit.jupiter.verion>5.3.2</junit.jupiter.verion>
         <junit.platform.version>1.3.2</junit.platform.version>
         <lombok.version>1.18.10</lombok.version>
-        <mybatis-plus.version>3.2.0</mybatis-plus.version>
-        <swagger-annotations.version>1.5.20</swagger-annotations.version>
         <module.version>1.0.0</module.version>
     </properties>
 

@@ -1,6 +1,6 @@
 package com.wuxian.janus.core.critical;
 
-import com.wuxian.janus.core.StrictUtils;
+import com.wuxian.janus.core.basis.StrictUtils;
 import lombok.Getter;
 
 import java.util.ArrayList;

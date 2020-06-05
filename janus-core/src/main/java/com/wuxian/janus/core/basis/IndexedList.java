@@ -1,7 +1,5 @@
 package com.wuxian.janus.core.basis;
 
-import com.wuxian.janus.core.StrictUtils;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;

@@ -1,6 +1,5 @@
 package com.wuxian.janus.core.basis;
 
-import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.TestTemplate;
 import com.wuxian.janus.core.basis.data.MultipleIndexesMapData;
 import org.junit.jupiter.api.AfterEach;
