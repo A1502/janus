@@ -9,7 +9,7 @@ import com.wuxian.janus.struct.primary.IdType;
  * @author wuxian
  */
 
-public class OuterObjectMap extends AutoFillMultipleIndexesMap<IdType, OuterObjectStruct> {
+public class OuterObjectMap extends SimpleIndexesMap<IdType, OuterObjectStruct> {
 
     public OuterObjectMap(SourceLoader<IdType, OuterObjectStruct> sourceLoader) {
         super(sourceLoader);

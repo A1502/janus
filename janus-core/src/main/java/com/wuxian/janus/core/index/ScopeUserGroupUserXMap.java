@@ -12,16 +12,13 @@ import java.util.List;
  * @author wuxian
  */
 
-public class ScopeUserGroupUserXMap extends AutoFillMultipleIndexesMap<IdType, ScopeUserGroupUserXStruct> {
+public class ScopeUserGroupUserXMap extends SimpleIndexesMap<IdType, ScopeUserGroupUserXStruct> {
 
     private static final String USER_ID = "userId";
 
     public ScopeUserGroupUserXMap(SourceLoader<IdType, ScopeUserGroupUserXStruct> sourceLoader) {
         super(sourceLoader);
-        this.createIndex(ScopeUserGroupUserXStruct.class, (Object[] fields) ->
-                new String[]{
-                        safeToString(fields[0])
-                }, USER_ID);
+        this.createIndex(ScopeUserGroupUserXStruct.class, USER_ID);
     }
 
     public List<ScopeUserGroupUserXStruct> getByUserId(UserIdType userId) {

@@ -11,16 +11,13 @@ import java.util.List;
  * @author wuxian
  */
 
-public class RolePermissionXMap extends AutoFillMultipleIndexesMap<IdType, RolePermissionXStruct> {
+public class RolePermissionXMap extends SimpleIndexesMap<IdType, RolePermissionXStruct> {
 
     private final static String ROLE_ID = "roleId";
 
     public RolePermissionXMap(SourceLoader<IdType, RolePermissionXStruct> sourceLoader) {
         super(sourceLoader);
-        this.createIndex(RolePermissionXStruct.class, (Object[] fields) ->
-                new String[]{
-                        safeToString(fields[0])
-                }, ROLE_ID);
+        this.createIndex(RolePermissionXStruct.class, ROLE_ID);
     }
 
     public List<RolePermissionXStruct> getByRoleId(IdType roleId) {

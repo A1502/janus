@@ -11,16 +11,13 @@ import java.util.List;
  * @author wuxian
  */
 
-public class OuterObjectTypeMap extends AutoFillMultipleIndexesMap<IdType, OuterObjectTypeStruct> {
+public class OuterObjectTypeMap extends SimpleIndexesMap<IdType, OuterObjectTypeStruct> {
 
     private final static String USED_BY_USER_GROUP = "usedByUserGroup";
 
     public OuterObjectTypeMap(SourceLoader<IdType, OuterObjectTypeStruct> sourceLoader) {
         super(sourceLoader);
-        this.createIndex(OuterObjectTypeStruct.class, (Object[] fields) ->
-                new String[]{
-                        safeToString(fields[0])
-                }, USED_BY_USER_GROUP);
+        this.createIndex(OuterObjectTypeStruct.class, USED_BY_USER_GROUP);
     }
 
     public List<OuterObjectTypeStruct> getByUsedByUserGroup(boolean usedByUserGroup) {

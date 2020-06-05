@@ -11,18 +11,14 @@ import java.util.List;
  * @author wuxian
  */
 
-public class RoleUserGroupXMap extends AutoFillMultipleIndexesMap<IdType, RoleUserGroupXStruct> {
+public class RoleUserGroupXMap extends SimpleIndexesMap<IdType, RoleUserGroupXStruct> {
 
     private static final String USER_GROUP_ID = "userGroupId";
     private static final String EXECUTE_ACCESS = "executeAccess";
 
     public RoleUserGroupXMap(SourceLoader<IdType, RoleUserGroupXStruct> sourceLoader) {
         super(sourceLoader);
-        this.createIndex(RoleUserGroupXStruct.class, (Object[] fields) ->
-                new String[]{
-                        safeToString(fields[0]),
-                        safeToString(fields[1])
-                }, USER_GROUP_ID, EXECUTE_ACCESS);
+        this.createIndex(RoleUserGroupXStruct.class, USER_GROUP_ID, EXECUTE_ACCESS);
     }
 
     public List<RoleUserGroupXStruct> getByUserGroupIdExecuteAccess(IdType userGroupId, boolean executeAccess) {

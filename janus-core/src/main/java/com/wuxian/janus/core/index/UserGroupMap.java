@@ -11,17 +11,14 @@ import java.util.List;
  * @author wuxian
  */
 
-public class UserGroupMap extends AutoFillMultipleIndexesMap<IdType, UserGroupStruct> {
+public class UserGroupMap extends SimpleIndexesMap<IdType, UserGroupStruct> {
 
     private static final String OUTER_GROUP_ID = "outerObjectId";
 
 
     public UserGroupMap(SourceLoader<IdType, UserGroupStruct> sourceLoader) {
         super(sourceLoader);
-        this.createIndex(UserGroupStruct.class, (Object[] fields) ->
-                new String[]{
-                        safeToString(fields[0])
-                }, OUTER_GROUP_ID);
+        this.createIndex(UserGroupStruct.class, OUTER_GROUP_ID);
     }
 
     public List<UserGroupStruct> getByOuterGroupId(IdType outerGroupId) {

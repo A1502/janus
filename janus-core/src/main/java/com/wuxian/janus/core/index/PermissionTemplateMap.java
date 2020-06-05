@@ -7,17 +7,13 @@ import com.wuxian.janus.struct.primary.IdType;
 
 import java.util.List;
 
-public class PermissionTemplateMap extends AutoFillMultipleIndexesMap<IdType, PermissionTemplateStruct> {
+public class PermissionTemplateMap extends SimpleIndexesMap<IdType, PermissionTemplateStruct> {
 
     private static final String CODE = "code";
 
     public PermissionTemplateMap(SourceLoader<IdType, PermissionTemplateStruct> sourceLoader) {
         super(sourceLoader);
-
-        this.createIndex(PermissionTemplateStruct.class, (Object[] fields) ->
-                new String[]{
-                        safeToString(fields[0])
-                }, CODE);
+        this.createIndex(PermissionTemplateStruct.class, CODE);
     }
 
     public List<PermissionTemplateStruct> getByCode(String code) {

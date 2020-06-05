@@ -11,16 +11,13 @@ import java.util.List;
  * @author wuxian
  */
 
-public class RoleOtherXMap extends AutoFillMultipleIndexesMap<IdType, RoleOtherXStruct> {
+public class RoleOtherXMap extends SimpleIndexesMap<IdType, RoleOtherXStruct> {
 
     private static final String EXECUTE_ACCESS = "executeAccess";
 
     public RoleOtherXMap(SourceLoader<IdType, RoleOtherXStruct> sourceLoader) {
         super(sourceLoader);
-        this.createIndex(RoleOtherXStruct.class, (Object[] fields) ->
-                new String[]{
-                        safeToString(fields[0])
-                }, EXECUTE_ACCESS);
+        this.createIndex(RoleOtherXStruct.class, EXECUTE_ACCESS);
     }
 
     public List<RoleOtherXStruct> getByExecuteAccess(boolean executeAccess) {

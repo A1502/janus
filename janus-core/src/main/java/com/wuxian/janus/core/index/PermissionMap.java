@@ -11,17 +11,13 @@ import java.util.List;
  * @author wuxian
  */
 
-public class PermissionMap extends AutoFillMultipleIndexesMap<IdType, PermissionStruct> {
+public class PermissionMap extends SimpleIndexesMap<IdType, PermissionStruct> {
 
     private static final String PERMISSION_TEMPLATE_ID = "permissionTemplateId";
 
     public PermissionMap(SourceLoader<IdType, PermissionStruct> sourceLoader) {
         super(sourceLoader);
-
-        this.createIndex(PermissionStruct.class, (Object[] fields) ->
-                new String[]{
-                        safeToString(fields[0])
-                }, PERMISSION_TEMPLATE_ID);
+        this.createIndex(PermissionStruct.class, PERMISSION_TEMPLATE_ID);
     }
 
     public List<PermissionStruct> getByPermissionTemplateId(IdType permissionTemplateId) {

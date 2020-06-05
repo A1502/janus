@@ -12,16 +12,13 @@ import java.util.List;
  * @author wuxian
  */
 
-public class UserOuterObjectXMap extends AutoFillMultipleIndexesMap<IdType, UserOuterObjectXStruct> {
+public class UserOuterObjectXMap extends SimpleIndexesMap<IdType, UserOuterObjectXStruct> {
 
     private static final String USER_ID = "userId";
 
     public UserOuterObjectXMap(SourceLoader<IdType, UserOuterObjectXStruct> sourceLoader) {
         super(sourceLoader);
-        this.createIndex(UserOuterObjectXStruct.class, (Object[] fields) ->
-                new String[]{
-                        safeToString(fields[0])
-                }, USER_ID);
+        this.createIndex(UserOuterObjectXStruct.class, USER_ID);
     }
 
     public List<UserOuterObjectXStruct> getByUserId(UserIdType userId) {
