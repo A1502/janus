@@ -1,4 +1,4 @@
-package com.wuxian.janus.struct;
+package com.wuxian.janus.struct.layer4;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.wuxian.janus.struct.prototype.layer4.ExpRoleUserGroupXPrototype;
