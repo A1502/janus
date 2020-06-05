@@ -1,7 +1,7 @@
 package com.wuxian.janus.core;
 
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
-import com.wuxian.janus.struct.PermissionTemplateStruct;
+import com.wuxian.janus.struct.layer2.PermissionTemplateStruct;
 
 public class PermissionTemplateUtils {
 

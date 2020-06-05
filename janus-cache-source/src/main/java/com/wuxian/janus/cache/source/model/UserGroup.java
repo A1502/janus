@@ -5,7 +5,7 @@ import com.wuxian.janus.cache.source.model.item.TenantItem;
 import com.wuxian.janus.cache.source.model.item.UserGroupItem;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
-import com.wuxian.janus.struct.UserGroupStruct;
+import com.wuxian.janus.struct.layer1.UserGroupStruct;
 import lombok.Getter;
 import lombok.Setter;
 

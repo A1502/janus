@@ -1,6 +1,10 @@
 package com.wuxian.janus;
 
-import com.wuxian.janus.struct.*;
+import com.wuxian.janus.struct.layer1.*;
+import com.wuxian.janus.struct.layer2.PermissionStruct;
+import com.wuxian.janus.struct.layer2.PermissionTemplateStruct;
+import com.wuxian.janus.struct.layer2.RolePermissionXStruct;
+import com.wuxian.janus.struct.layer6.UserOuterObjectXStruct;
 
 import java.util.Date;
 

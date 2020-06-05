@@ -1,7 +1,5 @@
 package com.wuxian.janus.struct.prototype.layer1;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.wuxian.janus.struct.prototype.ControlPrototype;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -22,7 +20,6 @@ import java.util.Date;
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("role_user_x")
 public class RoleUserXPrototype<ID, UID> extends ControlPrototype<ID, UID> {
 
     private static final long serialVersionUID = 1L;
@@ -56,23 +53,18 @@ public class RoleUserXPrototype<ID, UID> extends ControlPrototype<ID, UID> {
         setVersion(version);
     }
 
-    @TableField("role_id")
     @ApiModelProperty(value = "角色id", example = "1")
     private ID roleId;
 
-    @TableField("user_id")
     @ApiModelProperty(value = "用户id", example = "1")
     private UID userId;
 
-    @TableField("execute_access")
     @ApiModelProperty(value = "加入访问权:能否加入", example = "true")
     private boolean executeAccess;
 
-    @TableField("execute_control")
     @ApiModelProperty(value = "加入控制权:能否管理他人加入", example = "true")
     private boolean executeControl;
 
-    @TableField("version")
     @ApiModelProperty(value = "乐观锁", example = "998")
     private Integer version;
 }

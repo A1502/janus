@@ -1,7 +1,7 @@
 package com.wuxian.janus.cache.source.model;
 
 import com.wuxian.janus.core.StrictUtils;
-import com.wuxian.janus.struct.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
 import com.wuxian.janus.cache.source.ErrorFactory;
 
 import java.util.function.Function;

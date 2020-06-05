@@ -1,8 +1,8 @@
 package com.wuxian.janus.cache.source;
 
-import com.wuxian.janus.struct.OuterObjectStruct;
-import com.wuxian.janus.struct.OuterObjectTypeStruct;
-import com.wuxian.janus.struct.UserOuterObjectXStruct;
+import com.wuxian.janus.struct.layer1.OuterObjectStruct;
+import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.layer6.UserOuterObjectXStruct;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.UserIdType;
 import com.wuxian.janus.cache.source.model.ApplicationGroup;

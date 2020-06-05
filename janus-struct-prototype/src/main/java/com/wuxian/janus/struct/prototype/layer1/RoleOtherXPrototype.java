@@ -1,7 +1,5 @@
 package com.wuxian.janus.struct.prototype.layer1;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.wuxian.janus.struct.prototype.AccessPrototype;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -22,7 +20,6 @@ import java.util.Date;
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("role_other_x")
 public class RoleOtherXPrototype<ID, UID> extends AccessPrototype<ID, UID> {
 
     public void fill(ID id, ID roleId
@@ -48,15 +45,12 @@ public class RoleOtherXPrototype<ID, UID> extends AccessPrototype<ID, UID> {
 
     private static final long serialVersionUID = 1L;
 
-    @TableField("role_id")
     @ApiModelProperty(value = "角色id", example = "1")
     private ID roleId;
 
-    @TableField("execute_access")
     @ApiModelProperty(value = "加入访问权:能否加入", example = "true")
     private boolean executeAccess;
 
-    @TableField("version")
     @ApiModelProperty(value = "乐观锁", example = "998")
     private Integer version;
 }

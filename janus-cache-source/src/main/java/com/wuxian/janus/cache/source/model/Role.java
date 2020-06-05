@@ -6,7 +6,7 @@ import com.wuxian.janus.cache.source.model.item.TenantItem;
 import com.wuxian.janus.cache.source.model.item.UserGroupItem;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
-import com.wuxian.janus.struct.RoleStruct;
+import com.wuxian.janus.struct.layer1.RoleStruct;
 import lombok.Getter;
 import lombok.Setter;
 

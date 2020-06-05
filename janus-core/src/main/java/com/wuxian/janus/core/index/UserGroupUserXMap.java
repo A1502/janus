@@ -1,6 +1,6 @@
 package com.wuxian.janus.core.index;
 
-import com.wuxian.janus.struct.UserGroupUserXStruct;
+import com.wuxian.janus.struct.layer1.UserGroupUserXStruct;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.UserIdType;
 import com.wuxian.janus.core.basis.AutoFillMultipleIndexesMap;

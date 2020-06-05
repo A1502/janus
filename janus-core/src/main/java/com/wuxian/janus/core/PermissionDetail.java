@@ -1,9 +1,9 @@
 package com.wuxian.janus.core;
 
 import lombok.Data;
-import com.wuxian.janus.struct.OuterObjectStruct;
-import com.wuxian.janus.struct.OuterObjectTypeStruct;
-import com.wuxian.janus.struct.PermissionStruct;
+import com.wuxian.janus.struct.layer1.OuterObjectStruct;
+import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.layer2.PermissionStruct;
 
 /**
  * @author wuxian

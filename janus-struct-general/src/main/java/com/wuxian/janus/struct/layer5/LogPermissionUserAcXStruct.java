@@ -1,9 +1,10 @@
-package com.wuxian.janus.struct.layer5;import com.baomidou.mybatisplus.annotation.TableName;
+package com.wuxian.janus.struct.layer5;
+
+import com.wuxian.janus.struct.prototype.layer5.LogPermissionUserAcXPrototype;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import com.wuxian.janus.struct.prototype.layer5.LogPermissionUserAcXPrototype;
 
 /**
  * Prototype类
@@ -16,7 +17,6 @@ import com.wuxian.janus.struct.prototype.layer5.LogPermissionUserAcXPrototype;
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("log_permission_user_ac_x")
 public class LogPermissionUserAcXStruct extends LogPermissionUserAcXPrototype<Long, String> {
     //<ID, UID>
 }

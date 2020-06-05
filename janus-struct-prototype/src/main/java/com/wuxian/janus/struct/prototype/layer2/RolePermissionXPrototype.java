@@ -1,7 +1,5 @@
 package com.wuxian.janus.struct.prototype.layer2;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.wuxian.janus.struct.prototype.JanusPrototype;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -22,7 +20,6 @@ import java.util.Date;
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("role_permission_x")
 public class RolePermissionXPrototype<ID, UID> extends JanusPrototype<ID, UID> {
 
     private static final long serialVersionUID = 1L;
@@ -43,15 +40,12 @@ public class RolePermissionXPrototype<ID, UID> extends JanusPrototype<ID, UID> {
         setLastModifiedDate(lastModifiedDate);
     }
 
-    @TableField("role_id")
     @ApiModelProperty(value = "角色id", example = "1")
     private ID roleId;
 
-    @TableField("permission_id")
     @ApiModelProperty(value = "权限id", example = "1")
     private ID permissionId;
 
-    @TableField("version")
     @ApiModelProperty(value = "乐观锁", example = "998")
     private Integer version;
 }

@@ -1,6 +1,5 @@
 package com.wuxian.janus.struct.layer2;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.wuxian.janus.struct.prototype.layer2.PermissionPrototype;
 
 /**
@@ -10,7 +9,6 @@ import com.wuxian.janus.struct.prototype.layer2.PermissionPrototype;
  * @email
  * @date 2019/07/11
  */
-@TableName("permission")
 public class PermissionStruct extends PermissionPrototype<Long, String, String> {
     //<ID, UID, TID>
 }

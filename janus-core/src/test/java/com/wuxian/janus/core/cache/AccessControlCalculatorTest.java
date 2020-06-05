@@ -7,7 +7,7 @@ import com.wuxian.janus.core.cache.provider.BaseAccessControlCacheProvider;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.synchronism.ClassicChangeRecorder;
-import com.wuxian.janus.struct.RoleStruct;
+import com.wuxian.janus.struct.layer1.RoleStruct;
 import com.wuxian.janus.struct.primary.IdType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

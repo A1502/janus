@@ -1,7 +1,5 @@
 package com.wuxian.janus.struct.prototype.layer6;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.wuxian.janus.struct.prototype.JanusPrototype;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -22,7 +20,6 @@ import java.util.Date;
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("user_outer_object_x")
 public class UserOuterObjectXPrototype<ID, UID> extends JanusPrototype<ID, UID> {
 
     private static final long serialVersionUID = 1L;
@@ -43,22 +40,18 @@ public class UserOuterObjectXPrototype<ID, UID> extends JanusPrototype<ID, UID> 
         setLastModifiedDate(lastModifiedDate);
     }
 
-    @TableField("outer_object_type_id")
     @ApiModelProperty(value = "外部对象类型id", example = "1")
     private ID outerObjectTypeId;
 
     /**
     和角色以及用户组的scope概念相同
      */
-    @TableField("scope")
     @ApiModelProperty(value = "范围", example = "null")
     private String scope;
 
-    @TableField("user_id")
     @ApiModelProperty(value = "用户id", example = "1")
     private UID userId;
 
-    @TableField("outer_object_id_list")
     @ApiModelProperty(value = "外部对象id的集合，逗号连接多个", example = "1,2,3,4")
     private String outerObjectIdList;
 

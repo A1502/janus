@@ -6,7 +6,12 @@ import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.index.PermissionMap;
 import com.wuxian.janus.core.index.PermissionTemplateMap;
 import com.wuxian.janus.core.index.RolePermissionXMap;
-import com.wuxian.janus.struct.*;
+import com.wuxian.janus.struct.layer1.OuterObjectStruct;
+import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.layer1.RoleStruct;
+import com.wuxian.janus.struct.layer2.PermissionStruct;
+import com.wuxian.janus.struct.layer2.PermissionTemplateStruct;
+import com.wuxian.janus.struct.layer2.RolePermissionXStruct;
 import com.wuxian.janus.struct.primary.IdType;
 
 import java.util.*;

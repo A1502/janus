@@ -5,7 +5,7 @@ import com.wuxian.janus.core.critical.AccessControlLevel;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
 import com.wuxian.janus.core.index.*;
-import com.wuxian.janus.struct.*;
+import com.wuxian.janus.struct.layer1.*;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.UserIdType;
 

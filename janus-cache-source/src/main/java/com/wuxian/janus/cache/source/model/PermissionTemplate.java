@@ -5,7 +5,7 @@ import com.wuxian.janus.cache.source.model.item.ApplicationItem;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.critical.CoverageTypeEnum;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
-import com.wuxian.janus.struct.PermissionTemplateStruct;
+import com.wuxian.janus.struct.layer2.PermissionTemplateStruct;
 import lombok.Getter;
 import lombok.Setter;
 

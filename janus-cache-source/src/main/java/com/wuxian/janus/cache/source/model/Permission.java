@@ -6,7 +6,7 @@ import com.wuxian.janus.cache.source.model.item.TenantItem;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.basis.StringUtils;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
-import com.wuxian.janus.struct.PermissionStruct;
+import com.wuxian.janus.struct.layer2.PermissionStruct;
 import lombok.Getter;
 import lombok.Setter;
 

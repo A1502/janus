@@ -1,7 +1,7 @@
 package com.wuxian.janus.core.cache;
 
-import com.wuxian.janus.struct.OuterObjectStruct;
-import com.wuxian.janus.struct.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.layer1.OuterObjectStruct;
+import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.index.OuterObjectMap;

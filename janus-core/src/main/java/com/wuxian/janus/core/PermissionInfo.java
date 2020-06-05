@@ -1,7 +1,7 @@
 package com.wuxian.janus.core;
 
 import lombok.Data;
-import com.wuxian.janus.struct.PermissionTemplateStruct;
+import com.wuxian.janus.struct.layer2.PermissionTemplateStruct;
 
 import java.util.List;
 

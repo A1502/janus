@@ -1,7 +1,5 @@
 package com.wuxian.janus.struct.prototype.layer1;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.wuxian.janus.struct.prototype.JanusPrototype;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -22,7 +20,6 @@ import java.util.Date;
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("outer_object_type")
 public class OuterObjectTypePrototype<ID, UID> extends JanusPrototype<ID, UID> {
 
     private static final long serialVersionUID = 1L;
@@ -46,27 +43,21 @@ public class OuterObjectTypePrototype<ID, UID> extends JanusPrototype<ID, UID> {
         setLastModifiedDate(lastModifiedDate);
     }
 
-    @TableField("code")
     @ApiModelProperty(value = "编码", example = "BOSS_ORG")
     private String code;
 
-    @TableField("name")
     @ApiModelProperty(value = "名称", example = "组织")
     private String name;
 
-    @TableField("reference_id_remark")
     @ApiModelProperty(value = "reference_id的组成类型", example = "application_id;tenant_id")
     private String referenceIdRemark;
 
-    @TableField("used_by_user_group")
     @ApiModelProperty(value = "是否作为用户组的关联对象", example = "false")
     private boolean usedByUserGroup;
 
-    @TableField("used_by_permission")
     @ApiModelProperty(value = "是否作为数据级权限的关联对象", example = "false")
     private boolean usedByPermission;
 
-    @TableField("version")
     @ApiModelProperty(value = "乐观锁", example = "998")
     private Integer version;
 

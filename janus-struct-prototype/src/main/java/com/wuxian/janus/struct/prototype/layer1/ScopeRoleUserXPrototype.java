@@ -1,7 +1,5 @@
 package com.wuxian.janus.struct.prototype.layer1;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.wuxian.janus.struct.prototype.JanusPrototype;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -15,7 +13,6 @@ import java.util.Date;
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("scope_role_user_x")
 public class ScopeRoleUserXPrototype<ID, UID> extends JanusPrototype<ID, UID> {
 
     private static final long serialVersionUID = 1L;
@@ -38,15 +35,12 @@ public class ScopeRoleUserXPrototype<ID, UID> extends JanusPrototype<ID, UID> {
     /**
      * 用户可以在不同的scope下加入角色和用户组。达到在不同scope下的权限不同效果。
      */
-    @TableField("scope")
     @ApiModelProperty(value = "范围", example = "null")
     private String scope;
 
-    @TableField("role_id")
     @ApiModelProperty(value = "角色id", example = "1")
     private ID roleId;
 
-    @TableField("user_id")
     @ApiModelProperty(value = "用户id", example = "1")
     private UID userId;
 

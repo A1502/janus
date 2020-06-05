@@ -1,4 +1,5 @@
-package com.wuxian.janus.struct.layer3;import com.baomidou.mybatisplus.annotation.TableName;
+package com.wuxian.janus.struct.layer3;
+
 import com.wuxian.janus.struct.prototype.layer3.LogRoleUserGroupXPrototype;
 
 /**
@@ -8,7 +9,6 @@ import com.wuxian.janus.struct.prototype.layer3.LogRoleUserGroupXPrototype;
  * @email
  * @date 2019/07/09
  */
-@TableName("log_role_user_group_x")
 public class LogRoleUserGroupXStruct extends LogRoleUserGroupXPrototype<Long, String> {
     //<ID, UID>
 }

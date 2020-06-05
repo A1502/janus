@@ -8,7 +8,7 @@ import com.wuxian.janus.cache.source.model.ApplicationGroup;
 import com.wuxian.janus.cache.source.model.Tenant;
 import com.wuxian.janus.cache.source.model.UserGroup;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
-import com.wuxian.janus.struct.UserGroupUserXStruct;
+import com.wuxian.janus.struct.layer1.UserGroupUserXStruct;
 import com.wuxian.janus.struct.primary.ApplicationIdType;
 
 import java.util.List;

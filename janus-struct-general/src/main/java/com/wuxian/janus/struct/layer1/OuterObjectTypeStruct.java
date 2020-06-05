@@ -1,6 +1,5 @@
 package com.wuxian.janus.struct.layer1;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.wuxian.janus.struct.prototype.layer1.OuterObjectTypePrototype;
 
 /**
@@ -11,7 +10,6 @@ import com.wuxian.janus.struct.prototype.layer1.OuterObjectTypePrototype;
  * @date 2019/07/11
  */
 
-@TableName("outer_object_type")
 public class OuterObjectTypeStruct extends OuterObjectTypePrototype<Long, String> {
     //<ID, UID>
 }

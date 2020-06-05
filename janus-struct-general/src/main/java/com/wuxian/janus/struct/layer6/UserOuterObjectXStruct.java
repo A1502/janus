@@ -1,6 +1,5 @@
 package com.wuxian.janus.struct.layer6;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.wuxian.janus.struct.prototype.layer6.UserOuterObjectXPrototype;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,6 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @NoArgsConstructor
-@TableName("user_outer_object_x")
 public class UserOuterObjectXStruct extends UserOuterObjectXPrototype<Long, String> {
     //<ID, UID>
 }

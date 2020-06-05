@@ -7,8 +7,8 @@ import com.wuxian.janus.cache.source.IdUtils;
 import com.wuxian.janus.cache.source.model.*;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
-import com.wuxian.janus.struct.OuterObjectTypeStruct;
-import com.wuxian.janus.struct.PermissionTemplateStruct;
+import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.layer2.PermissionTemplateStruct;
 import com.wuxian.janus.struct.primary.ApplicationIdType;
 import com.wuxian.janus.struct.primary.IdType;
 

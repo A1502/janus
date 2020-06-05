@@ -1,8 +1,7 @@
 package com.wuxian.janus.struct.layer4;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.NoArgsConstructor;
 import com.wuxian.janus.struct.prototype.layer4.ExpRoleUserGroupXPrototype;
+import lombok.NoArgsConstructor;
 
 /**
  * Prototype类
@@ -13,7 +12,6 @@ import com.wuxian.janus.struct.prototype.layer4.ExpRoleUserGroupXPrototype;
  */
 
 @NoArgsConstructor
-@TableName("exp_role_user_group_x")
 public class ExpRoleUserGroupXStruct extends ExpRoleUserGroupXPrototype<Long, String> {
     //<ID, UID>
 }

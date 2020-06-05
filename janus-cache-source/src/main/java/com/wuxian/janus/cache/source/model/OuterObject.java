@@ -3,7 +3,7 @@ package com.wuxian.janus.cache.source.model;
 import com.wuxian.janus.cache.source.ErrorFactory;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.basis.StringUtils;
-import com.wuxian.janus.struct.OuterObjectStruct;
+import com.wuxian.janus.struct.layer1.OuterObjectStruct;
 import lombok.Getter;
 import lombok.Setter;
 

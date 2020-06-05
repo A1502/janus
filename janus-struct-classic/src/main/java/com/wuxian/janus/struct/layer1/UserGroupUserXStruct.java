@@ -1,6 +1,5 @@
 package com.wuxian.janus.struct.layer1;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.wuxian.janus.struct.prototype.layer1.UserGroupUserXPrototype;
 
 /**
@@ -10,7 +9,6 @@ import com.wuxian.janus.struct.prototype.layer1.UserGroupUserXPrototype;
  * @email
  * @date 2019/07/09
  */
-@TableName("role_permission_x")
 public class UserGroupUserXStruct extends UserGroupUserXPrototype<Long, Long> {
     //<ID, UID>
 }
