@@ -31,12 +31,10 @@ public class AutoFillMultipleIndexesMapTest extends TestTemplate<MultipleIndexes
                 () -> this.getData().loadSource()
         );
 
-        map.createIndex(MultipleIndexesMapData.Student.class, (Object[] objects) ->
-                        new String[]{(String) objects[0],
-                                String.valueOf((int) objects[1]),
-                                String.valueOf((boolean) objects[2])
-                        },
-                "address", "age", "multiple");
+        map.createIndex(MultipleIndexesMapData.Student.class,
+                new NamedConverter("address", o -> (String) o)
+                , new NamedConverter("age", o -> String.valueOf((int) o))
+                , new NamedConverter("multiple", o -> String.valueOf((boolean) o)));
         map.setSource(this.getData().loadSource());
     }
 
