@@ -3,11 +3,11 @@ package com.wuxian.janus.core.cache.provider;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.basis.SourceLoader;
 import com.wuxian.janus.core.basis.StringUtils;
-import com.wuxian.janus.entity.*;
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.BaseIdType;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.TenantIdType;
+import com.wuxian.janus.struct.*;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.BaseIdType;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.TenantIdType;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -113,67 +113,67 @@ public class DirectAccessControlCacheProvider extends BaseAccessControlCacheProv
         DirectAccessControlCacheProvider provider = new DirectAccessControlCacheProvider();
 
         //1
-        provider.fillSourceLoaderMap(source.getScopeSingleRoleUserX(), ScopeRoleUserXEntity.class, true);
+        provider.fillSourceLoaderMap(source.getScopeSingleRoleUserX(), ScopeRoleUserXStruct.class, true);
 
         //2
-        provider.fillSourceLoaderMap(source.getScopeMultipleRoleUserX(), ScopeRoleUserXEntity.class, false);
+        provider.fillSourceLoaderMap(source.getScopeMultipleRoleUserX(), ScopeRoleUserXStruct.class, false);
 
         //3
-        provider.fillSourceLoaderMap(source.getScopeUserGroupUserX(), ScopeUserGroupUserXEntity.class, null);
+        provider.fillSourceLoaderMap(source.getScopeUserGroupUserX(), ScopeUserGroupUserXStruct.class, null);
 
         //4
-        provider.fillSourceLoaderMap(source.getUserGroup(), UserGroupEntity.class, null);
+        provider.fillSourceLoaderMap(source.getUserGroup(), UserGroupStruct.class, null);
 
         //5
-        provider.fillSourceLoaderMap(source.getUserGroupUserX(), UserGroupUserXEntity.class, null);
+        provider.fillSourceLoaderMap(source.getUserGroupUserX(), UserGroupUserXStruct.class, null);
 
         //6
-        provider.fillSourceLoaderMap(source.getSinglePermission(), PermissionEntity.class, true);
+        provider.fillSourceLoaderMap(source.getSinglePermission(), PermissionStruct.class, true);
 
         //7
-        provider.fillSourceLoaderMap(source.getSingleRolePermissionX(), RolePermissionXEntity.class, true);
+        provider.fillSourceLoaderMap(source.getSingleRolePermissionX(), RolePermissionXStruct.class, true);
 
         //8
-        provider.fillSourceLoaderMap(source.getSingleRole(), RoleEntity.class, true);
+        provider.fillSourceLoaderMap(source.getSingleRole(), RoleStruct.class, true);
 
         //9
-        provider.fillSourceLoaderMap(source.getSingleRoleOtherX(), RoleOtherXEntity.class, true);
+        provider.fillSourceLoaderMap(source.getSingleRoleOtherX(), RoleOtherXStruct.class, true);
 
         //10
-        provider.fillSourceLoaderMap(source.getSingleRoleUserGroupX(), RoleUserGroupXEntity.class, true);
+        provider.fillSourceLoaderMap(source.getSingleRoleUserGroupX(), RoleUserGroupXStruct.class, true);
 
         //11
-        provider.fillSourceLoaderMap(source.getSingleRoleUserX(), RoleUserXEntity.class, true);
+        provider.fillSourceLoaderMap(source.getSingleRoleUserX(), RoleUserXStruct.class, true);
 
         //12
-        provider.fillSourceLoaderMap(source.getMultiplePermission(), PermissionEntity.class, false);
+        provider.fillSourceLoaderMap(source.getMultiplePermission(), PermissionStruct.class, false);
 
         //13
-        provider.fillSourceLoaderMap(source.getMultipleRolePermissionX(), RolePermissionXEntity.class, false);
+        provider.fillSourceLoaderMap(source.getMultipleRolePermissionX(), RolePermissionXStruct.class, false);
 
         //14
-        provider.fillSourceLoaderMap(source.getMultipleRole(), RoleEntity.class, false);
+        provider.fillSourceLoaderMap(source.getMultipleRole(), RoleStruct.class, false);
 
         //15
-        provider.fillSourceLoaderMap(source.getMultipleRoleOtherX(), RoleOtherXEntity.class, false);
+        provider.fillSourceLoaderMap(source.getMultipleRoleOtherX(), RoleOtherXStruct.class, false);
 
         //16
-        provider.fillSourceLoaderMap(source.getMultipleRoleUserGroupX(), RoleUserGroupXEntity.class, false);
+        provider.fillSourceLoaderMap(source.getMultipleRoleUserGroupX(), RoleUserGroupXStruct.class, false);
 
         //17
-        provider.fillSourceLoaderMap(source.getMultipleRoleUserX(), RoleUserXEntity.class, false);
+        provider.fillSourceLoaderMap(source.getMultipleRoleUserX(), RoleUserXStruct.class, false);
 
         //18
-        provider.fillSourceLoaderMap(source.getPermissionTemplate(), PermissionTemplateEntity.class);
+        provider.fillSourceLoaderMap(source.getPermissionTemplate(), PermissionTemplateStruct.class);
 
         //19
-        provider.fillSourceLoaderMap(source.getOuterObjectType(), OuterObjectTypeEntity.class);
+        provider.fillSourceLoaderMap(source.getOuterObjectType(), OuterObjectTypeStruct.class);
 
         //20
-        provider.fillSourceLoaderMap(source.getOuterObject(), OuterObjectEntity.class);
+        provider.fillSourceLoaderMap(source.getOuterObject(), OuterObjectStruct.class);
 
         //21
-        provider.fillSourceLoaderMap(source.getUserOuterObjectX(), UserOuterObjectXEntity.class);
+        provider.fillSourceLoaderMap(source.getUserOuterObjectX(), UserOuterObjectXStruct.class);
 
         return provider;
     }
@@ -186,108 +186,108 @@ public class DirectAccessControlCacheProvider extends BaseAccessControlCacheProv
     }
 
     @Override
-    protected SourceLoader<IdType, ScopeRoleUserXEntity> createScopeSingleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(ScopeRoleUserXEntity.class, true, applicationId, tenantId);
+    protected SourceLoader<IdType, ScopeRoleUserXStruct> createScopeSingleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(ScopeRoleUserXStruct.class, true, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, ScopeRoleUserXEntity> createScopeMultipleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(ScopeRoleUserXEntity.class, false, applicationId, tenantId);
+    protected SourceLoader<IdType, ScopeRoleUserXStruct> createScopeMultipleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(ScopeRoleUserXStruct.class, false, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, ScopeUserGroupUserXEntity> createScopeUserGroupUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(ScopeUserGroupUserXEntity.class, null, applicationId, tenantId);
+    protected SourceLoader<IdType, ScopeUserGroupUserXStruct> createScopeUserGroupUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(ScopeUserGroupUserXStruct.class, null, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, UserGroupEntity> createUserGroupLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(UserGroupEntity.class, null, applicationId, tenantId);
+    protected SourceLoader<IdType, UserGroupStruct> createUserGroupLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(UserGroupStruct.class, null, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, UserGroupUserXEntity> createUserGroupUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(UserGroupUserXEntity.class, null, applicationId, tenantId);
+    protected SourceLoader<IdType, UserGroupUserXStruct> createUserGroupUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(UserGroupUserXStruct.class, null, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, PermissionEntity> createSinglePermissionLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(PermissionEntity.class, true, applicationId, tenantId);
+    protected SourceLoader<IdType, PermissionStruct> createSinglePermissionLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(PermissionStruct.class, true, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, RolePermissionXEntity> createSingleRolePermissionXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(RolePermissionXEntity.class, true, applicationId, tenantId);
+    protected SourceLoader<IdType, RolePermissionXStruct> createSingleRolePermissionXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(RolePermissionXStruct.class, true, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, RoleEntity> createSingleRoleLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(RoleEntity.class, true, applicationId, tenantId);
+    protected SourceLoader<IdType, RoleStruct> createSingleRoleLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(RoleStruct.class, true, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, RoleOtherXEntity> createSingleRoleOtherXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(RoleOtherXEntity.class, true, applicationId, tenantId);
+    protected SourceLoader<IdType, RoleOtherXStruct> createSingleRoleOtherXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(RoleOtherXStruct.class, true, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, RoleUserGroupXEntity> createSingleRoleUserGroupXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(RoleUserGroupXEntity.class, true, applicationId, tenantId);
+    protected SourceLoader<IdType, RoleUserGroupXStruct> createSingleRoleUserGroupXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(RoleUserGroupXStruct.class, true, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, RoleUserXEntity> createSingleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(RoleUserXEntity.class, true, applicationId, tenantId);
+    protected SourceLoader<IdType, RoleUserXStruct> createSingleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(RoleUserXStruct.class, true, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, PermissionEntity> createMultiplePermissionLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(PermissionEntity.class, false, applicationId, tenantId);
+    protected SourceLoader<IdType, PermissionStruct> createMultiplePermissionLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(PermissionStruct.class, false, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, RolePermissionXEntity> createMultipleRolePermissionXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(RolePermissionXEntity.class, false, applicationId, tenantId);
+    protected SourceLoader<IdType, RolePermissionXStruct> createMultipleRolePermissionXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(RolePermissionXStruct.class, false, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, RoleEntity> createMultipleRoleLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(RoleEntity.class, false, applicationId, tenantId);
+    protected SourceLoader<IdType, RoleStruct> createMultipleRoleLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(RoleStruct.class, false, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, RoleOtherXEntity> createMultipleRoleOtherXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(RoleEntity.class, false, applicationId, tenantId);
+    protected SourceLoader<IdType, RoleOtherXStruct> createMultipleRoleOtherXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(RoleStruct.class, false, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, RoleUserGroupXEntity> createMultipleRoleUserGroupXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(RoleUserGroupXEntity.class, false, applicationId, tenantId);
+    protected SourceLoader<IdType, RoleUserGroupXStruct> createMultipleRoleUserGroupXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(RoleUserGroupXStruct.class, false, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, RoleUserXEntity> createMultipleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
-        return getFromSourceLoaderMap(RoleUserXEntity.class, false, applicationId, tenantId);
+    protected SourceLoader<IdType, RoleUserXStruct> createMultipleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(RoleUserXStruct.class, false, applicationId, tenantId);
     }
 
     @Override
-    protected SourceLoader<IdType, PermissionTemplateEntity> createPermissionTemplateLoader(ApplicationIdType applicationId) {
-        return getFromSourceLoaderMap(RoleUserXEntity.class, null, applicationId, null);
+    protected SourceLoader<IdType, PermissionTemplateStruct> createPermissionTemplateLoader(ApplicationIdType applicationId) {
+        return getFromSourceLoaderMap(RoleUserXStruct.class, null, applicationId, null);
     }
 
     @Override
-    protected SourceLoader<IdType, OuterObjectTypeEntity> createOuterObjectTypeLoader() {
-        return getFromSourceLoaderMap(OuterObjectTypeEntity.class, null, null, null);
+    protected SourceLoader<IdType, OuterObjectTypeStruct> createOuterObjectTypeLoader() {
+        return getFromSourceLoaderMap(OuterObjectTypeStruct.class, null, null, null);
     }
 
     @Override
-    protected SourceLoader<IdType, OuterObjectEntity> createOuterObjectLoader(IdType outerObjectTypeId) {
-        return getFromSourceLoaderMap(OuterObjectEntity.class, null, outerObjectTypeId, null);
+    protected SourceLoader<IdType, OuterObjectStruct> createOuterObjectLoader(IdType outerObjectTypeId) {
+        return getFromSourceLoaderMap(OuterObjectStruct.class, null, outerObjectTypeId, null);
     }
 
     @Override
-    protected SourceLoader<IdType, UserOuterObjectXEntity> createUserOuterObjectXLoader(IdType outerObjectTypeId) {
-        return getFromSourceLoaderMap(UserOuterObjectXEntity.class, null, outerObjectTypeId, null);
+    protected SourceLoader<IdType, UserOuterObjectXStruct> createUserOuterObjectXLoader(IdType outerObjectTypeId) {
+        return getFromSourceLoaderMap(UserOuterObjectXStruct.class, null, outerObjectTypeId, null);
     }
 
     //</editor-fold>

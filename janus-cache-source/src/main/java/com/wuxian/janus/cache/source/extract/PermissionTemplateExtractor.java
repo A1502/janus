@@ -7,10 +7,10 @@ import com.wuxian.janus.cache.source.IdUtils;
 import com.wuxian.janus.cache.source.model.*;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
-import com.wuxian.janus.entity.OuterObjectTypeEntity;
-import com.wuxian.janus.entity.PermissionTemplateEntity;
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.IdType;
+import com.wuxian.janus.struct.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.PermissionTemplateStruct;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.IdType;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -81,22 +81,22 @@ public class PermissionTemplateExtractor {
         all.addAll(from5);
         ExtractUtils.fixIdAndKeyFields(all, templateIdGenerator);
 
-        Map<IdType, PermissionTemplateEntity> map = ExtractUtils.groupByIdAndMergeToEntity(all,
-                //在model上面有applicationId,所以在生成entity时补上这个属性通过merge进入到结果中
+        Map<IdType, PermissionTemplateStruct> map = ExtractUtils.groupByIdAndMergeToStruct(all,
+                //在model上面有applicationId,所以在生成struct时补上这个属性通过merge进入到结果中
                 (model) -> {
                     PermissionTemplate permissionTemplateModel = (PermissionTemplate) model;
 
-                    PermissionTemplateEntity entity = new PermissionTemplateEntity();
-                    entity.setApplicationId(applicationId.getValue());
+                    PermissionTemplateStruct struct = new PermissionTemplateStruct();
+                    struct.setApplicationId(applicationId.getValue());
 
                     String outerObjectTypeCode = permissionTemplateModel.getOuterObjectTypeCode();
                     if (outerObjectTypeCode != null) {
-                        OuterObjectTypeEntity typeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeCode(result,
+                        OuterObjectTypeStruct typeStruct = OuterObjectTypeExtractor.findByOuterObjectTypeCode(result,
                                 outerObjectTypeCode, permissionTemplateModel.toHashString());
-                        entity.setOuterObjectTypeId(typeEntity.getId());
-                        entity.setMultiple(permissionTemplateModel.getMultiple());
+                        struct.setOuterObjectTypeId(typeStruct.getId());
+                        struct.setMultiple(permissionTemplateModel.getMultiple());
                     }
-                    return entity;
+                    return struct;
                 });
 
         //还原temp逻辑对结果中multiple的影响
@@ -118,7 +118,7 @@ public class PermissionTemplateExtractor {
     /**
      * 将临时multiple按null处理的，全部转false作为最终值
      */
-    private static void processTempMultiple(Collection<PermissionTemplateEntity> input) {
+    private static void processTempMultiple(Collection<PermissionTemplateStruct> input) {
         input.stream().forEach(o -> {
             if (o.getMultiple() == null) {
                 o.setMultiple(false);
@@ -126,13 +126,13 @@ public class PermissionTemplateExtractor {
         });
     }
 
-    static PermissionTemplateEntity findByPermissionTemplateCode(DirectAccessControlSource source
+    static PermissionTemplateStruct findByPermissionTemplateCode(DirectAccessControlSource source
             , Application application, String permissionTemplateCode, String context) {
 
-        Map<IdType, PermissionTemplateEntity> map =
+        Map<IdType, PermissionTemplateStruct> map =
                 source.getPermissionTemplate().get(IdUtils.createApplicationId(application.getId()));
 
-        String targetDesc = "Map<IdType, PermissionTemplateEntity>";
+        String targetDesc = "Map<IdType, PermissionTemplateStruct>";
         if (map == null) {
             throw ErrorFactory.createNothingFoundError(targetDesc
                     , "applicationId = " + application.getId(),
@@ -140,10 +140,10 @@ public class PermissionTemplateExtractor {
         }
 
         targetDesc = "PermissionTemplate";
-        PermissionTemplateEntity entity = ExtractUtils.findFirst(map.values(),
+        PermissionTemplateStruct struct = ExtractUtils.findFirst(map.values(),
                 o -> StrictUtils.equals(permissionTemplateCode, o.getCode()));
-        if (entity != null) {
-            return entity;
+        if (struct != null) {
+            return struct;
         } else {
             throw ErrorFactory.createNothingFoundError(targetDesc
                     , "applicationId = " + application.getId() + ", permissionTemplateCode = " + permissionTemplateCode

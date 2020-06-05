@@ -3,10 +3,10 @@ package com.wuxian.janus.core.cache.provider;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.basis.ReflectUtils;
 import com.wuxian.janus.core.basis.SourceLoader;
-import com.wuxian.janus.entity.*;
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.TenantIdType;
+import com.wuxian.janus.struct.*;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.TenantIdType;
 import lombok.Getter;
 
 import java.io.PrintStream;
@@ -22,87 +22,87 @@ public class DirectAccessControlSource {
     //<editor-fold desc="属性">
 
     @Getter //1
-    private TenantMap<IdType, ScopeRoleUserXEntity> scopeSingleRoleUserX
+    private TenantMap<IdType, ScopeRoleUserXStruct> scopeSingleRoleUserX
             = new TenantMap<>();
 
     @Getter //2
-    private TenantMap<IdType, ScopeRoleUserXEntity> scopeMultipleRoleUserX
+    private TenantMap<IdType, ScopeRoleUserXStruct> scopeMultipleRoleUserX
             = new TenantMap<>();
 
     @Getter //3
-    private TenantMap<IdType, ScopeUserGroupUserXEntity> scopeUserGroupUserX
+    private TenantMap<IdType, ScopeUserGroupUserXStruct> scopeUserGroupUserX
             = new TenantMap<>();
 
     @Getter //4
-    private TenantMap<IdType, UserGroupEntity> userGroup
+    private TenantMap<IdType, UserGroupStruct> userGroup
             = new TenantMap<>();
 
     @Getter //5
-    private TenantMap<IdType, UserGroupUserXEntity> userGroupUserX
+    private TenantMap<IdType, UserGroupUserXStruct> userGroupUserX
             = new TenantMap<>();
 
     @Getter //6
-    private TenantMap<IdType, PermissionEntity> singlePermission
+    private TenantMap<IdType, PermissionStruct> singlePermission
             = new TenantMap<>();
 
     @Getter //7
-    private TenantMap<IdType, RolePermissionXEntity> singleRolePermissionX
+    private TenantMap<IdType, RolePermissionXStruct> singleRolePermissionX
             = new TenantMap<>();
 
     @Getter //8
-    private TenantMap<IdType, RoleEntity> singleRole
+    private TenantMap<IdType, RoleStruct> singleRole
             = new TenantMap<>();
 
     @Getter //9
-    private TenantMap<IdType, RoleOtherXEntity> singleRoleOtherX
+    private TenantMap<IdType, RoleOtherXStruct> singleRoleOtherX
             = new TenantMap<>();
 
     @Getter //10
-    private TenantMap<IdType, RoleUserGroupXEntity> singleRoleUserGroupX
+    private TenantMap<IdType, RoleUserGroupXStruct> singleRoleUserGroupX
             = new TenantMap<>();
 
     @Getter //11
-    private TenantMap<IdType, RoleUserXEntity> singleRoleUserX
+    private TenantMap<IdType, RoleUserXStruct> singleRoleUserX
             = new TenantMap<>();
 
     @Getter //12
-    private TenantMap<IdType, PermissionEntity> multiplePermission
+    private TenantMap<IdType, PermissionStruct> multiplePermission
             = new TenantMap<>();
 
     @Getter //13
-    private TenantMap<IdType, RolePermissionXEntity> multipleRolePermissionX
+    private TenantMap<IdType, RolePermissionXStruct> multipleRolePermissionX
             = new TenantMap<>();
 
     @Getter //14
-    private TenantMap<IdType, RoleEntity> multipleRole
+    private TenantMap<IdType, RoleStruct> multipleRole
             = new TenantMap<>();
 
     @Getter //15
-    private TenantMap<IdType, RoleOtherXEntity> multipleRoleOtherX
+    private TenantMap<IdType, RoleOtherXStruct> multipleRoleOtherX
             = new TenantMap<>();
 
     @Getter //16
-    private TenantMap<IdType, RoleUserGroupXEntity> multipleRoleUserGroupX
+    private TenantMap<IdType, RoleUserGroupXStruct> multipleRoleUserGroupX
             = new TenantMap<>();
 
     @Getter //17
-    private TenantMap<IdType, RoleUserXEntity> multipleRoleUserX
+    private TenantMap<IdType, RoleUserXStruct> multipleRoleUserX
             = new TenantMap<>();
 
     @Getter //18
-    private ApplicationMap<IdType, PermissionTemplateEntity> permissionTemplate
+    private ApplicationMap<IdType, PermissionTemplateStruct> permissionTemplate
             = new ApplicationMap<>();
 
     @Getter //19
-    private Map<IdType, OuterObjectTypeEntity> outerObjectType
+    private Map<IdType, OuterObjectTypeStruct> outerObjectType
             = new HashMap<>();
 
     @Getter //20
-    private JanusMap<IdType, OuterObjectEntity> outerObject
+    private JanusMap<IdType, OuterObjectStruct> outerObject
             = new JanusMap<>();
 
     @Getter //21
-    private JanusMap<IdType, UserOuterObjectXEntity> userOuterObjectX
+    private JanusMap<IdType, UserOuterObjectXStruct> userOuterObjectX
             = new JanusMap<>();
 
     //</editor-fold>
@@ -119,58 +119,58 @@ public class DirectAccessControlSource {
 
         private void print(PrintStream stream) {
             //1
-            fullPrintTenantMap("[ ScopeSingleRoleUserX ]", stream, BLANK, scopeSingleRoleUserX, o -> print(stream, ScopeRoleUserXEntity.class, o));
+            fullPrintTenantMap("[ ScopeSingleRoleUserX ]", stream, BLANK, scopeSingleRoleUserX, o -> print(stream, ScopeRoleUserXStruct.class, o));
             //2
-            fullPrintTenantMap("[ ScopeMultipleRoleUserX ]", stream, BLANK, scopeMultipleRoleUserX, o -> print(stream, ScopeRoleUserXEntity.class, o));
+            fullPrintTenantMap("[ ScopeMultipleRoleUserX ]", stream, BLANK, scopeMultipleRoleUserX, o -> print(stream, ScopeRoleUserXStruct.class, o));
             //3
-            fullPrintTenantMap("[ ScopeUserGroupUserX ]", stream, BLANK, scopeUserGroupUserX, o -> print(stream, ScopeUserGroupUserXEntity.class, o));
+            fullPrintTenantMap("[ ScopeUserGroupUserX ]", stream, BLANK, scopeUserGroupUserX, o -> print(stream, ScopeUserGroupUserXStruct.class, o));
             //4
-            fullPrintTenantMap("[ UserGroup ]", stream, BLANK, userGroup, o -> print(stream, UserGroupEntity.class, o));
+            fullPrintTenantMap("[ UserGroup ]", stream, BLANK, userGroup, o -> print(stream, UserGroupStruct.class, o));
             //5
-            fullPrintTenantMap("[ UserGroupUserX ]", stream, BLANK, userGroupUserX, o -> print(stream, UserGroupUserXEntity.class, o));
+            fullPrintTenantMap("[ UserGroupUserX ]", stream, BLANK, userGroupUserX, o -> print(stream, UserGroupUserXStruct.class, o));
             //6
-            fullPrintTenantMap("[ SinglePermission ]", stream, BLANK, singlePermission, o -> print(stream, PermissionEntity.class, o));
+            fullPrintTenantMap("[ SinglePermission ]", stream, BLANK, singlePermission, o -> print(stream, PermissionStruct.class, o));
             //7
-            fullPrintTenantMap("[ SingleRolePermissionX ]", stream, BLANK, singleRolePermissionX, o -> print(stream, RolePermissionXEntity.class, o));
+            fullPrintTenantMap("[ SingleRolePermissionX ]", stream, BLANK, singleRolePermissionX, o -> print(stream, RolePermissionXStruct.class, o));
             //8
-            fullPrintTenantMap("[ SingleRole ]", stream, BLANK, singleRole, o -> print(stream, RoleEntity.class, o));
+            fullPrintTenantMap("[ SingleRole ]", stream, BLANK, singleRole, o -> print(stream, RoleStruct.class, o));
             //9
-            fullPrintTenantMap("[ SingleRoleOtherX ]", stream, BLANK, singleRoleOtherX, o -> print(stream, RoleOtherXEntity.class, o));
+            fullPrintTenantMap("[ SingleRoleOtherX ]", stream, BLANK, singleRoleOtherX, o -> print(stream, RoleOtherXStruct.class, o));
             //10
-            fullPrintTenantMap("[ SingleRoleUserGroupX ]", stream, BLANK, singleRoleUserGroupX, o -> print(stream, RoleUserGroupXEntity.class, o));
+            fullPrintTenantMap("[ SingleRoleUserGroupX ]", stream, BLANK, singleRoleUserGroupX, o -> print(stream, RoleUserGroupXStruct.class, o));
             //11
-            fullPrintTenantMap("[ SingleRoleUserX ]", stream, BLANK, singleRoleUserX, o -> print(stream, RoleUserXEntity.class, o));
+            fullPrintTenantMap("[ SingleRoleUserX ]", stream, BLANK, singleRoleUserX, o -> print(stream, RoleUserXStruct.class, o));
             //12
-            fullPrintTenantMap("[ MultiplePermission ]", stream, BLANK, multiplePermission, o -> print(stream, PermissionEntity.class, o));
+            fullPrintTenantMap("[ MultiplePermission ]", stream, BLANK, multiplePermission, o -> print(stream, PermissionStruct.class, o));
             //13
-            fullPrintTenantMap("[ MultipleRolePermissionX ]", stream, BLANK, multipleRolePermissionX, o -> print(stream, RolePermissionXEntity.class, o));
+            fullPrintTenantMap("[ MultipleRolePermissionX ]", stream, BLANK, multipleRolePermissionX, o -> print(stream, RolePermissionXStruct.class, o));
             //14
-            fullPrintTenantMap("[ MultipleRole ]", stream, BLANK, multipleRole, o -> print(stream, RoleEntity.class, o));
+            fullPrintTenantMap("[ MultipleRole ]", stream, BLANK, multipleRole, o -> print(stream, RoleStruct.class, o));
             //15
-            fullPrintTenantMap("[ MultipleRoleOtherX ]", stream, BLANK, multipleRoleOtherX, o -> print(stream, RoleOtherXEntity.class, o));
+            fullPrintTenantMap("[ MultipleRoleOtherX ]", stream, BLANK, multipleRoleOtherX, o -> print(stream, RoleOtherXStruct.class, o));
             //16
-            fullPrintTenantMap("[ multipleRoleUserGroupX ]", stream, BLANK, multipleRoleUserGroupX, o -> print(stream, RoleUserGroupXEntity.class, o));
+            fullPrintTenantMap("[ multipleRoleUserGroupX ]", stream, BLANK, multipleRoleUserGroupX, o -> print(stream, RoleUserGroupXStruct.class, o));
             //17
-            fullPrintTenantMap("[ MultipleRoleUserX ]", stream, BLANK, multipleRoleUserX, o -> print(stream, RoleUserXEntity.class, o));
+            fullPrintTenantMap("[ MultipleRoleUserX ]", stream, BLANK, multipleRoleUserX, o -> print(stream, RoleUserXStruct.class, o));
             //18
             stream.print("[ PermissionTemplate ]");
             stream.println();
-            printApplicationMap(stream, BLANK, permissionTemplate, o -> print(stream, PermissionTemplateEntity.class, o));
+            printApplicationMap(stream, BLANK, permissionTemplate, o -> print(stream, PermissionTemplateStruct.class, o));
             stream.println();
             //19
             stream.print("[ OuterObjectType ]");
             stream.println();
-            printMap(stream, BLANK, outerObjectType, o -> print(stream, OuterObjectTypeEntity.class, o));
+            printMap(stream, BLANK, outerObjectType, o -> print(stream, OuterObjectTypeStruct.class, o));
             stream.println();
             //20
             stream.print("[ OuterObject ]");
             stream.println();
-            printJanusMap(stream, BLANK, "outerObjectTypeId", outerObject, o -> print(stream, OuterObjectEntity.class, o));
+            printJanusMap(stream, BLANK, "outerObjectTypeId", outerObject, o -> print(stream, OuterObjectStruct.class, o));
             stream.println();
             //21
             stream.print("[ UserOuterObjectX ]");
             stream.println();
-            printJanusMap(stream, BLANK, "outerObjectTypeId", userOuterObjectX, o -> print(stream, UserOuterObjectXEntity.class, o));
+            printJanusMap(stream, BLANK, "outerObjectTypeId", userOuterObjectX, o -> print(stream, UserOuterObjectXStruct.class, o));
             stream.println();
         }
 
@@ -208,15 +208,15 @@ public class DirectAccessControlSource {
 
 
         private <E> void fullPrintTenantMap(String title, PrintStream stream, String
-                indent, TenantMap<IdType, E> tenantMap, Function<E, String> printEntityHandler) {
+                indent, TenantMap<IdType, E> tenantMap, Function<E, String> printStructHandler) {
             stream.print(title);
             stream.println();
-            printTenantMap(stream, indent, tenantMap, printEntityHandler);
+            printTenantMap(stream, indent, tenantMap, printStructHandler);
             stream.println();
         }
 
         private <E> void printTenantMap(PrintStream stream, String
-                indent, TenantMap<IdType, E> tenantMap, Function<E, String> printEntityHandler) {
+                indent, TenantMap<IdType, E> tenantMap, Function<E, String> printStructHandler) {
             Map<ApplicationIdType, Set<TenantIdType>> ids = tenantMap.getIds();
             for (ApplicationIdType aid : ids.keySet()) {
                 Set<TenantIdType> tids = StrictUtils.get(ids, aid);
@@ -229,7 +229,7 @@ public class DirectAccessControlSource {
                     elements.entrySet().stream().forEach(
                             entry -> {
                                 stream.print(indent + BLANK + "[ id = " + entry.getKey().toString() + " ] ");
-                                stream.print(printEntityHandler.apply(entry.getValue()));
+                                stream.print(printStructHandler.apply(entry.getValue()));
                                 stream.println();
                             }
                     );
@@ -238,7 +238,7 @@ public class DirectAccessControlSource {
         }
 
         private <E> void printApplicationMap(PrintStream stream, String
-                indent, ApplicationMap<IdType, E> applicationMap, Function<E, String> printEntityHandler) {
+                indent, ApplicationMap<IdType, E> applicationMap, Function<E, String> printStructHandler) {
             Set<ApplicationIdType> ids = applicationMap.getIds();
             for (ApplicationIdType aid : ids) {
                 Map<IdType, E> elements = applicationMap.get(aid);
@@ -249,7 +249,7 @@ public class DirectAccessControlSource {
                 elements.entrySet().stream().forEach(
                         entry -> {
                             stream.print(indent + BLANK + "[ id = " + entry.getKey().toString() + " ] ");
-                            stream.print(printEntityHandler.apply(entry.getValue()));
+                            stream.print(printStructHandler.apply(entry.getValue()));
                             stream.println();
                         }
                 );
@@ -257,7 +257,7 @@ public class DirectAccessControlSource {
         }
 
         private <E> void printJanusMap(PrintStream stream, String indent, String
-                idName, JanusMap<IdType, E> janusMap, Function<E, String> printEntityHandler) {
+                idName, JanusMap<IdType, E> janusMap, Function<E, String> printStructHandler) {
 
             Set<IdType> ids = janusMap.getIds();
             for (IdType id : ids) {
@@ -269,7 +269,7 @@ public class DirectAccessControlSource {
                 elements.entrySet().stream().forEach(
                         entry -> {
                             stream.print(indent + BLANK + "[ id = " + entry.getKey().toString() + " ] ");
-                            stream.print(printEntityHandler.apply(entry.getValue()));
+                            stream.print(printStructHandler.apply(entry.getValue()));
                             stream.println();
                         }
                 );
@@ -277,7 +277,7 @@ public class DirectAccessControlSource {
         }
 
         private <E> void printMap(PrintStream stream, String
-                indent, Map<IdType, E> map, Function<E, String> printEntityHandler) {
+                indent, Map<IdType, E> map, Function<E, String> printStructHandler) {
 
             stream.print(indent + "[ count = " + map.size() + " ]");
             stream.println();
@@ -285,7 +285,7 @@ public class DirectAccessControlSource {
             map.entrySet().stream().forEach(
                     entry -> {
                         stream.print(indent + BLANK + "[ id = " + entry.getKey().toString() + " ] ");
-                        stream.print(printEntityHandler.apply(entry.getValue()));
+                        stream.print(printStructHandler.apply(entry.getValue()));
                         stream.println();
                     }
             );

@@ -15,27 +15,27 @@ class BeanCopyManager<T> {
 
     private Map<String, Method> fieldSetters;
 
-    private void initGetterSetter(Class<T> entityClazz) {
+    private void initGetterSetter(Class<T> structClazz) {
         fieldGetters = new HashMap<>();
         fieldSetters = new HashMap<>();
 
-        List<Field> fields = ReflectUtils.getAllFields(entityClazz).stream().filter(
+        List<Field> fields = ReflectUtils.getAllFields(structClazz).stream().filter(
                 o -> !Modifier.isStatic(o.getModifiers())
         ).collect(Collectors.toList());
 
         for (Field field : fields) {
 
-            Method getter = ReflectUtils.findGetterMethodByFieldName(entityClazz, field.getName());
+            Method getter = ReflectUtils.findGetterMethodByFieldName(structClazz, field.getName());
             fieldGetters.put(field.getName(), getter);
 
-            Method setter = ReflectUtils.findSetterMethodByFieldName(entityClazz, field.getName());
+            Method setter = ReflectUtils.findSetterMethodByFieldName(structClazz, field.getName());
             fieldSetters.put(field.getName(), setter);
         }
     }
 
-    void copy(T copyTo, T copyFrom, Class<T> entityClazz, FieldCopyHandler handler) {
+    void copy(T copyTo, T copyFrom, Class<T> structClazz, FieldCopyHandler handler) {
         if (fieldGetters == null) {
-            initGetterSetter(entityClazz);
+            initGetterSetter(structClazz);
         }
         for (String fieldName : fieldGetters.keySet()) {
             try {

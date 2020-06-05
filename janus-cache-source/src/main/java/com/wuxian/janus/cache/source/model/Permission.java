@@ -6,13 +6,13 @@ import com.wuxian.janus.cache.source.model.item.TenantItem;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.basis.StringUtils;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
-import com.wuxian.janus.entity.PermissionEntity;
+import com.wuxian.janus.struct.PermissionStruct;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.function.Function;
 
-public class Permission extends BaseModel<PermissionEntity> implements TenantItem, RoleItem {
+public class Permission extends BaseModel<PermissionStruct> implements TenantItem, RoleItem {
 
     @Getter
     @Setter
@@ -64,11 +64,11 @@ public class Permission extends BaseModel<PermissionEntity> implements TenantIte
         return result;
     }
 
-    public static Permission byEntity(String permissionTemplateCode, PermissionEntity entity) {
+    public static Permission byStruct(String permissionTemplateCode, PermissionStruct struct) {
         Permission result = new Permission(permissionTemplateCode);
-        result.setEntity(entity);
-        if (entity.getId() != null) {
-            result.setId(entity.getId().toString());
+        result.setStruct(struct);
+        if (struct.getId() != null) {
+            result.setId(struct.getId().toString());
         }
         return result;
     }
@@ -104,8 +104,8 @@ public class Permission extends BaseModel<PermissionEntity> implements TenantIte
     //---------------------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected Class<PermissionEntity> getEntityClass() {
-        return PermissionEntity.class;
+    protected Class<PermissionStruct> getStructClass() {
+        return PermissionStruct.class;
     }
 
     @Override
@@ -114,14 +114,14 @@ public class Permission extends BaseModel<PermissionEntity> implements TenantIte
     }
 
     @Override
-    public PermissionEntity buildEntity(Function<BaseModel<PermissionEntity>, PermissionEntity> otherFieldBuilder) {
-        PermissionEntity entity = super.buildEntity(otherFieldBuilder);
-        entity.setId(this.buildIdType().getValue());
-        return entity;
+    public PermissionStruct buildStruct(Function<BaseModel<PermissionStruct>, PermissionStruct> otherFieldBuilder) {
+        PermissionStruct struct = super.buildStruct(otherFieldBuilder);
+        struct.setId(this.buildIdType().getValue());
+        return struct;
     }
 
     @Override
-    public boolean keyFieldsEquals(BaseModel<PermissionEntity> other) {
+    public boolean keyFieldsEquals(BaseModel<PermissionStruct> other) {
         if (other instanceof Permission) {
             Permission otherModel = (Permission) other;
             return StrictUtils.equals(this.permissionTemplateCode, otherModel.permissionTemplateCode)
@@ -133,7 +133,7 @@ public class Permission extends BaseModel<PermissionEntity> implements TenantIte
     }
 
     @Override
-    public void fillKeyFields(BaseModel<PermissionEntity> other) {
+    public void fillKeyFields(BaseModel<PermissionStruct> other) {
         if (other instanceof Permission) {
             Permission otherModel = (Permission) other;
             this.permissionTemplateCode = otherModel.permissionTemplateCode;

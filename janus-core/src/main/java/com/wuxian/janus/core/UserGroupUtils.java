@@ -1,11 +1,11 @@
 package com.wuxian.janus.core;
 
-import com.wuxian.janus.entity.OuterObjectEntity;
-import com.wuxian.janus.entity.OuterObjectTypeEntity;
-import com.wuxian.janus.entity.UserGroupEntity;
-import com.wuxian.janus.entity.UserOuterObjectXEntity;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.UserIdType;
+import com.wuxian.janus.struct.OuterObjectStruct;
+import com.wuxian.janus.struct.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.UserGroupStruct;
+import com.wuxian.janus.struct.UserOuterObjectXStruct;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.UserIdType;
 import com.wuxian.janus.core.cache.BaseOuterObjectTypeCache;
 import com.wuxian.janus.core.cache.BaseOuterObjectTypeCachePool;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
@@ -14,33 +14,33 @@ import com.wuxian.janus.core.index.UserGroupMap;
 import java.util.*;
 
 public class UserGroupUtils {
-    static List<UserGroupEntity> getExecuteAccessOuterUserGroups(UserIdType userId,
+    static List<UserGroupStruct> getExecuteAccessOuterUserGroups(UserIdType userId,
                                                                  List<String> scopes,
                                                                  BaseOuterObjectTypeCachePool outerObjectCache,
                                                                  UserGroupMap userGroupSource,
                                                                  ErrorDataRecorder recorder) {
 
-        Map<IdType, UserGroupEntity> resultMap = new HashMap<>();
+        Map<IdType, UserGroupStruct> resultMap = new HashMap<>();
 
 
-        List<OuterObjectTypeEntity> outerUserGroupTypes = outerObjectCache
+        List<OuterObjectTypeStruct> outerUserGroupTypes = outerObjectCache
                 .getOuterObjectTypeMap()
                 .getByUsedByUserGroup(true);
 
-        for (OuterObjectTypeEntity type : outerUserGroupTypes) {
+        for (OuterObjectTypeStruct type : outerUserGroupTypes) {
 
             BaseOuterObjectTypeCache outerObjectTypeCache = outerObjectCache.getOuterObjectTypeCache(new IdType(type.getId()));
 
-            List<UserGroupEntity> userGroupList = getExecuteAccessOuterUserGroups(userId,
+            List<UserGroupStruct> userGroupList = getExecuteAccessOuterUserGroups(userId,
                     scopes,
                     outerObjectTypeCache,
                     userGroupSource,
                     recorder);
 
-            //在resultMap中收集所有id不重复的UserGroupEntity
-            for (UserGroupEntity userGroupEntity : userGroupList) {
-                if (!StrictUtils.containsKey(resultMap, new IdType(userGroupEntity.getId()))) {
-                    resultMap.put(new IdType(userGroupEntity.getId()), userGroupEntity);
+            //在resultMap中收集所有id不重复的UserGroupStruct
+            for (UserGroupStruct userGroupStruct : userGroupList) {
+                if (!StrictUtils.containsKey(resultMap, new IdType(userGroupStruct.getId()))) {
+                    resultMap.put(new IdType(userGroupStruct.getId()), userGroupStruct);
                 }
             }
         }
@@ -48,15 +48,15 @@ public class UserGroupUtils {
         return new ArrayList<>(resultMap.values());
     }
 
-    static List<UserGroupEntity> getExecuteAccessOuterUserGroups(UserIdType userId,
+    static List<UserGroupStruct> getExecuteAccessOuterUserGroups(UserIdType userId,
                                                                  List<String> scopes,
                                                                  BaseOuterObjectTypeCache outerObjectTypeCache,
                                                                  UserGroupMap userGroupSource,
                                                                  ErrorDataRecorder recorder) {
-        Map<IdType, UserGroupEntity> resultMap = new HashMap<>();
+        Map<IdType, UserGroupStruct> resultMap = new HashMap<>();
 
         //按userId查找数据
-        List<UserOuterObjectXEntity> list = outerObjectTypeCache.getUserOuterObjectX().getByUserId(userId);
+        List<UserOuterObjectXStruct> list = outerObjectTypeCache.getUserOuterObjectX().getByUserId(userId);
 
         //group by scope后检查数量是否唯一
         Map<String, Integer> countMap = new HashMap<>();
@@ -91,7 +91,7 @@ public class UserGroupUtils {
         //提取scope匹配的数据
         Set<IdType> groupIdList = new HashSet<>();
 
-        for (UserOuterObjectXEntity userOuterObjectX : list) {
+        for (UserOuterObjectXStruct userOuterObjectX : list) {
 
             //scopes == null时，表示不过滤，全部数据都要处理
             if (scopes != null && !scopes.contains(userOuterObjectX.getScope())) {
@@ -118,8 +118,8 @@ public class UserGroupUtils {
                 }
 
                 //通过groupId找OuterObject
-                OuterObjectEntity outerObjectEntity = outerObjectTypeCache.getOuterObject().getByKey(groupId);
-                if (outerObjectEntity == null) {
+                OuterObjectStruct outerObjectStruct = outerObjectTypeCache.getOuterObject().getByKey(groupId);
+                if (outerObjectStruct == null) {
                     recorder.add(ErrorDataRecorder.TableSchema.UserOuterObjectX.TABLE_NAME,
                             new IdType(userOuterObjectX.getId()),
                             ErrorDataRecorder.TableSchema.UserOuterObjectX.OUTER_GROUP_ID_LIST,
@@ -132,7 +132,7 @@ public class UserGroupUtils {
                     continue;
                 }
                 //校验下找到的OuterObjectTypeId和输入的type.getId是否匹配
-                if (!StrictUtils.equals(outerObjectEntity.getOuterObjectTypeId(), userOuterObjectX.getOuterObjectTypeId())) {
+                if (!StrictUtils.equals(outerObjectStruct.getOuterObjectTypeId(), userOuterObjectX.getOuterObjectTypeId())) {
                     recorder.add(ErrorDataRecorder.TableSchema.UserOuterObjectX.TABLE_NAME,
                             new IdType(userOuterObjectX.getId()),
                             ErrorDataRecorder.TableSchema.UserOuterObjectX.OUTER_GROUP_ID_LIST,
@@ -142,7 +142,7 @@ public class UserGroupUtils {
                                             "中找到对应一行数据的列" + ErrorDataRecorder.TableSchema.OuterObject.OUTER_OBJECT_TYPE_ID + "的值[%s]" +
                                             "与当前数据的同名列的值[%s]不一致",
                                     groupId,
-                                    outerObjectEntity.getOuterObjectTypeId(),
+                                    outerObjectStruct.getOuterObjectTypeId(),
                                     userOuterObjectX.getOuterObjectTypeId()
                             )
                     );
@@ -155,12 +155,12 @@ public class UserGroupUtils {
 
         for (IdType groupId : groupIdList) {
             //在userGroup表中查找已经被作为外部用户组的数据
-            List<UserGroupEntity> userGroupList = userGroupSource.getByOuterGroupId(groupId);
+            List<UserGroupStruct> userGroupList = userGroupSource.getByOuterGroupId(groupId);
 
-            //在resultMap中收集所有id不重复的UserGroupEntity
-            for (UserGroupEntity userGroupEntity : userGroupList) {
-                if (!StrictUtils.containsKey(resultMap, new IdType(userGroupEntity.getId()))) {
-                    resultMap.put(new IdType(userGroupEntity.getId()), userGroupEntity);
+            //在resultMap中收集所有id不重复的UserGroupStruct
+            for (UserGroupStruct userGroupStruct : userGroupList) {
+                if (!StrictUtils.containsKey(resultMap, new IdType(userGroupStruct.getId()))) {
+                    resultMap.put(new IdType(userGroupStruct.getId()), userGroupStruct);
                 }
             }
         }
@@ -168,10 +168,10 @@ public class UserGroupUtils {
         return new ArrayList<>(resultMap.values());
     }
 
-    public static Set<NativeUserGroupEnum> getNativeUserGroupEnums(List<UserGroupEntity> userGroups) {
+    public static Set<NativeUserGroupEnum> getNativeUserGroupEnums(List<UserGroupStruct> userGroups) {
         Set<NativeUserGroupEnum> result = new HashSet<>();
-        for (UserGroupEntity userGroupEntity : userGroups) {
-            NativeUserGroupEnum nativeUserGroupEnum = NativeUserGroupEnum.getByCode(userGroupEntity.getCode());
+        for (UserGroupStruct userGroupStruct : userGroups) {
+            NativeUserGroupEnum nativeUserGroupEnum = NativeUserGroupEnum.getByCode(userGroupStruct.getCode());
             if (nativeUserGroupEnum != null) {
                 result.add(nativeUserGroupEnum);
             }
@@ -179,12 +179,12 @@ public class UserGroupUtils {
         return result;
     }
 
-    public static Set<UserGroupEntity> getNativeUserGroups(List<UserGroupEntity> userGroups) {
-        Map<NativeUserGroupEnum, UserGroupEntity> result = new HashMap<>();
-        for (UserGroupEntity userGroupEntity : userGroups) {
-            NativeUserGroupEnum nativeUserGroupEnum = NativeUserGroupEnum.getByCode(userGroupEntity.getCode());
+    public static Set<UserGroupStruct> getNativeUserGroups(List<UserGroupStruct> userGroups) {
+        Map<NativeUserGroupEnum, UserGroupStruct> result = new HashMap<>();
+        for (UserGroupStruct userGroupStruct : userGroups) {
+            NativeUserGroupEnum nativeUserGroupEnum = NativeUserGroupEnum.getByCode(userGroupStruct.getCode());
             if (nativeUserGroupEnum != null && !StrictUtils.containsKey(result, nativeUserGroupEnum)) {
-                result.put(nativeUserGroupEnum, userGroupEntity);
+                result.put(nativeUserGroupEnum, userGroupStruct);
             }
         }
         return new HashSet<>(result.values());

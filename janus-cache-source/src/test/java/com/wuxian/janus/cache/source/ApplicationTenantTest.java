@@ -9,7 +9,7 @@ import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.synchronism.ClassicChangeRecorder;
-import com.wuxian.janus.entity.primary.IdType;
+import com.wuxian.janus.struct.primary.IdType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

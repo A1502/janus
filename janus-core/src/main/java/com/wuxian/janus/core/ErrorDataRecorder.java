@@ -1,6 +1,6 @@
 package com.wuxian.janus.core;
 
-import com.wuxian.janus.entity.primary.IdType;
+import com.wuxian.janus.struct.primary.IdType;
 
 import java.util.ArrayList;
 import java.util.List;

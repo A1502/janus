@@ -3,7 +3,7 @@ package com.wuxian.janus.cache.source.model;
 import com.wuxian.janus.cache.source.ErrorFactory;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.basis.StringUtils;
-import com.wuxian.janus.entity.OuterObjectEntity;
+import com.wuxian.janus.struct.OuterObjectStruct;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +15,7 @@ import java.util.function.Function;
 /**
  * model包下的BaseModel子类都有共同特点：有构造函数以及对应的byId静态方法。对于nullable有固定规则，查看具体方法注释
  */
-public class OuterObject extends CodeModel<OuterObjectEntity> {
+public class OuterObject extends CodeModel<OuterObjectStruct> {
 
     @Getter
     @Setter
@@ -87,8 +87,8 @@ public class OuterObject extends CodeModel<OuterObjectEntity> {
     }
 
     @Override
-    protected Class<OuterObjectEntity> getEntityClass() {
-        return OuterObjectEntity.class;
+    protected Class<OuterObjectStruct> getStructClass() {
+        return OuterObjectStruct.class;
     }
 
     @Override
@@ -97,15 +97,15 @@ public class OuterObject extends CodeModel<OuterObjectEntity> {
     }
 
     @Override
-    public OuterObjectEntity buildEntity(Function<BaseModel<OuterObjectEntity>, OuterObjectEntity> otherFieldBuilder) {
-        OuterObjectEntity entity = super.buildEntity(otherFieldBuilder);
-        entity.setId(this.buildIdType().getValue());
-        entity.setReferenceCode(this.getCode());
-        return entity;
+    public OuterObjectStruct buildStruct(Function<BaseModel<OuterObjectStruct>, OuterObjectStruct> otherFieldBuilder) {
+        OuterObjectStruct struct = super.buildStruct(otherFieldBuilder);
+        struct.setId(this.buildIdType().getValue());
+        struct.setReferenceCode(this.getCode());
+        return struct;
     }
 
     @Override
-    public boolean keyFieldsEquals(BaseModel<OuterObjectEntity> other) {
+    public boolean keyFieldsEquals(BaseModel<OuterObjectStruct> other) {
         if (other instanceof OuterObject) {
             OuterObject otherModel = (OuterObject) other;
             return StrictUtils.equals(this.code, otherModel.code)
@@ -116,7 +116,7 @@ public class OuterObject extends CodeModel<OuterObjectEntity> {
     }
 
     @Override
-    public void fillKeyFields(BaseModel<OuterObjectEntity> other) {
+    public void fillKeyFields(BaseModel<OuterObjectStruct> other) {
         if (other instanceof OuterObject) {
             OuterObject otherModel = (OuterObject) other;
             this.code = otherModel.code;

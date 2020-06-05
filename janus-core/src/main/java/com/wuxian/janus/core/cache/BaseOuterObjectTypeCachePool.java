@@ -1,8 +1,8 @@
 package com.wuxian.janus.core.cache;
 
-import com.wuxian.janus.entity.OuterObjectEntity;
-import com.wuxian.janus.entity.OuterObjectTypeEntity;
-import com.wuxian.janus.entity.primary.IdType;
+import com.wuxian.janus.struct.OuterObjectStruct;
+import com.wuxian.janus.struct.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.index.OuterObjectMap;
 import com.wuxian.janus.core.index.OuterObjectTypeMap;
@@ -65,16 +65,16 @@ public abstract class BaseOuterObjectTypeCachePool {
         }
     }
 
-    public OuterObjectEntity getOuterObjectInstance(IdType outerObjectId) {
+    public OuterObjectStruct getOuterObjectInstance(IdType outerObjectId) {
 
         OuterObjectTypeMap outerObjectTypeMap = getOuterObjectTypeMap();
 
-        for (OuterObjectTypeEntity outerObjectTypeEntity : outerObjectTypeMap.getAll()) {
-            BaseOuterObjectTypeCache cache = getOuterObjectTypeCache(new IdType(outerObjectTypeEntity.getId()));
+        for (OuterObjectTypeStruct outerObjectTypeStruct : outerObjectTypeMap.getAll()) {
+            BaseOuterObjectTypeCache cache = getOuterObjectTypeCache(new IdType(outerObjectTypeStruct.getId()));
             OuterObjectMap outerObjectSource = cache.getOuterObject();
-            OuterObjectEntity entity = outerObjectSource.getByKey(outerObjectId);
-            if (entity != null) {
-                return entity;
+            OuterObjectStruct struct = outerObjectSource.getByKey(outerObjectId);
+            if (struct != null) {
+                return struct;
             }
         }
         return null;

@@ -11,9 +11,9 @@
     <name>janus</name>
     <modules>
         <module>janus-core</module>
-        <module>janus-entity-prototype</module>
-        <module>janus-entity-classic</module>
-        <module>janus-entity-general</module>
+        <module>janus-struct-prototype</module>
+        <module>janus-struct-classic</module>
+        <module>janus-struct-general</module>
         <module>janus-cache-source</module>
     </modules>
 
@@ -31,19 +31,19 @@
 
             <dependency>
                 <groupId>com.wuxian</groupId>
-                <artifactId>janus-entity-general</artifactId>
+                <artifactId>janus-struct-general</artifactId>
                 <version>${module.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.wuxian</groupId>
-                <artifactId>janus-entity-classic</artifactId>
+                <artifactId>janus-struct-classic</artifactId>
                 <version>${module.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.wuxian</groupId>
-                <artifactId>janus-entity-prototype</artifactId>
+                <artifactId>janus-struct-prototype</artifactId>
                 <version>${module.version}</version>
             </dependency>
 

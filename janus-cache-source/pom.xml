@@ -50,7 +50,7 @@
         </dependency>
         <dependency>
             <groupId>com.wuxian</groupId>
-            <artifactId>janus-entity-general</artifactId>
+            <artifactId>janus-struct-general</artifactId>
         </dependency>
     </dependencies>
 

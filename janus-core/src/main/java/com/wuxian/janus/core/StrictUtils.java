@@ -1,9 +1,9 @@
 package com.wuxian.janus.core;
 
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.TenantIdType;
-import com.wuxian.janus.entity.primary.UserIdType;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.TenantIdType;
+import com.wuxian.janus.struct.primary.UserIdType;
 
 import java.util.List;
 import java.util.Map;

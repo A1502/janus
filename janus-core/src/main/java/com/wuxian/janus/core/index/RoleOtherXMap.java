@@ -2,8 +2,8 @@ package com.wuxian.janus.core.index;
 
 import com.wuxian.janus.core.basis.AutoFillMultipleIndexesMap;
 import com.wuxian.janus.core.basis.SourceLoader;
-import com.wuxian.janus.entity.RoleOtherXEntity;
-import com.wuxian.janus.entity.primary.IdType;
+import com.wuxian.janus.struct.RoleOtherXStruct;
+import com.wuxian.janus.struct.primary.IdType;
 
 import java.util.List;
 
@@ -11,20 +11,20 @@ import java.util.List;
  * @author wuxian
  */
 
-public class RoleOtherXMap extends AutoFillMultipleIndexesMap<IdType, RoleOtherXEntity> {
+public class RoleOtherXMap extends AutoFillMultipleIndexesMap<IdType, RoleOtherXStruct> {
 
     private static final String EXECUTE_ACCESS = "executeAccess";
 
-    public RoleOtherXMap(SourceLoader<IdType, RoleOtherXEntity> sourceLoader) {
+    public RoleOtherXMap(SourceLoader<IdType, RoleOtherXStruct> sourceLoader) {
         super(sourceLoader);
-        this.createIndex(RoleOtherXEntity.class, (Object[] fields) ->
+        this.createIndex(RoleOtherXStruct.class, (Object[] fields) ->
                 new String[]{
                         safeToString(fields[0])
                 }, EXECUTE_ACCESS);
     }
 
-    public List<RoleOtherXEntity> getByExecuteAccess(boolean executeAccess) {
-        return this.getByCondition((RoleOtherXEntity) new RoleOtherXEntity()
+    public List<RoleOtherXStruct> getByExecuteAccess(boolean executeAccess) {
+        return this.getByCondition((RoleOtherXStruct) new RoleOtherXStruct()
                         .setExecuteAccess(executeAccess),
                 EXECUTE_ACCESS);
     }

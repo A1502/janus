@@ -5,10 +5,10 @@ import com.wuxian.janus.core.cache.*;
 import com.wuxian.janus.core.index.*;
 import com.wuxian.janus.core.synchronism.BaseChangeRecorder;
 import com.wuxian.janus.core.synchronism.BaseStatusSynchronizer;
-import com.wuxian.janus.entity.*;
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.TenantIdType;
+import com.wuxian.janus.struct.*;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.TenantIdType;
 
 import java.util.Map;
 import java.util.Set;
@@ -18,67 +18,67 @@ public abstract class BaseAccessControlCacheProvider {
     protected abstract Map<ApplicationIdType, Set<TenantIdType>> loadApplicationIdTenantIdRange();
 
     //1
-    protected abstract SourceLoader<IdType, ScopeRoleUserXEntity> createScopeSingleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, ScopeRoleUserXStruct> createScopeSingleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //2
-    protected abstract SourceLoader<IdType, ScopeRoleUserXEntity> createScopeMultipleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, ScopeRoleUserXStruct> createScopeMultipleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //3
-    protected abstract SourceLoader<IdType, ScopeUserGroupUserXEntity> createScopeUserGroupUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, ScopeUserGroupUserXStruct> createScopeUserGroupUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //4
-    protected abstract SourceLoader<IdType, UserGroupEntity> createUserGroupLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, UserGroupStruct> createUserGroupLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //5
-    protected abstract SourceLoader<IdType, UserGroupUserXEntity> createUserGroupUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, UserGroupUserXStruct> createUserGroupUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //6
-    protected abstract SourceLoader<IdType, PermissionEntity> createSinglePermissionLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, PermissionStruct> createSinglePermissionLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //7
-    protected abstract SourceLoader<IdType, RolePermissionXEntity> createSingleRolePermissionXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, RolePermissionXStruct> createSingleRolePermissionXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //8
-    protected abstract SourceLoader<IdType, RoleEntity> createSingleRoleLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, RoleStruct> createSingleRoleLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //9
-    protected abstract SourceLoader<IdType, RoleOtherXEntity> createSingleRoleOtherXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, RoleOtherXStruct> createSingleRoleOtherXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //10
-    protected abstract SourceLoader<IdType, RoleUserGroupXEntity> createSingleRoleUserGroupXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, RoleUserGroupXStruct> createSingleRoleUserGroupXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //11
-    protected abstract SourceLoader<IdType, RoleUserXEntity> createSingleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, RoleUserXStruct> createSingleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //12
-    protected abstract SourceLoader<IdType, PermissionEntity> createMultiplePermissionLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, PermissionStruct> createMultiplePermissionLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //13
-    protected abstract SourceLoader<IdType, RolePermissionXEntity> createMultipleRolePermissionXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, RolePermissionXStruct> createMultipleRolePermissionXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //14
-    protected abstract SourceLoader<IdType, RoleEntity> createMultipleRoleLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, RoleStruct> createMultipleRoleLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //15
-    protected abstract SourceLoader<IdType, RoleOtherXEntity> createMultipleRoleOtherXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, RoleOtherXStruct> createMultipleRoleOtherXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //16
-    protected abstract SourceLoader<IdType, RoleUserGroupXEntity> createMultipleRoleUserGroupXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, RoleUserGroupXStruct> createMultipleRoleUserGroupXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //17
-    protected abstract SourceLoader<IdType, RoleUserXEntity> createMultipleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
+    protected abstract SourceLoader<IdType, RoleUserXStruct> createMultipleRoleUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId);
 
     //18
-    protected abstract SourceLoader<IdType, PermissionTemplateEntity> createPermissionTemplateLoader(ApplicationIdType applicationId);
+    protected abstract SourceLoader<IdType, PermissionTemplateStruct> createPermissionTemplateLoader(ApplicationIdType applicationId);
 
     //19
-    protected abstract SourceLoader<IdType, OuterObjectTypeEntity> createOuterObjectTypeLoader();
+    protected abstract SourceLoader<IdType, OuterObjectTypeStruct> createOuterObjectTypeLoader();
 
     //20
-    protected abstract SourceLoader<IdType, OuterObjectEntity> createOuterObjectLoader(IdType outerObjectTypeId);
+    protected abstract SourceLoader<IdType, OuterObjectStruct> createOuterObjectLoader(IdType outerObjectTypeId);
 
     //21
-    protected abstract SourceLoader<IdType, UserOuterObjectXEntity> createUserOuterObjectXLoader(IdType outerObjectTypeId);
+    protected abstract SourceLoader<IdType, UserOuterObjectXStruct> createUserOuterObjectXLoader(IdType outerObjectTypeId);
 
     public class TenantCache extends BaseTenantCache {
 
@@ -165,7 +165,7 @@ public abstract class BaseAccessControlCacheProvider {
         }
 
         @Override
-        protected RoleMap createMultipleRoleEntityMap() {
+        protected RoleMap createMultipleRoleStructMap() {
             RoleMap result = new RoleMap(BaseAccessControlCacheProvider.this.createMultipleRoleLoader(applicationId, tenantId));
             return result;
         }

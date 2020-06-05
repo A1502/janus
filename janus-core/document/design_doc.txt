@@ -4,7 +4,7 @@ Permission：表示这个Role这个角色中的任意一个权限
 以上二者通过RolePermissionX关联。
 
 PS:以下结论没有提是Id还是Code，是作为省略，因为Id和Code是同时null或非null的。
-Role.PermissionTemplate的意思是指Role.PermissionTemplateCode和RoleEntity.PermissionTemplateId
+Role.PermissionTemplate的意思是指Role.PermissionTemplateCode和RoleStruct.PermissionTemplateId
 ------------------------------------------------------------------------------------------------
 有以下结论：
 这些结论通过代码的方式实现了逻辑，在RolePermissionUtils里
@@ -83,7 +83,7 @@ TODO
 9.缓存索引更新的方法需要设计 TODO 4
 
 10.“(Object[] fields) ->”丑陋部分要解决
-this.createIndex(OuterObjectTypeEntity.class, (Object[] fields) ->
+this.createIndex(OuterObjectTypeStruct.class, (Object[] fields) ->
                 new String[]{
                         safeToString(fields[0])
                 }, USED_BY_USER_GROUP);  TODO 3

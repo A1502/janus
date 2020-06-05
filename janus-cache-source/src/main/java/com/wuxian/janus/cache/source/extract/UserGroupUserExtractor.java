@@ -8,8 +8,8 @@ import com.wuxian.janus.cache.source.model.ApplicationGroup;
 import com.wuxian.janus.cache.source.model.Tenant;
 import com.wuxian.janus.cache.source.model.UserGroup;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
-import com.wuxian.janus.entity.UserGroupUserXEntity;
-import com.wuxian.janus.entity.primary.ApplicationIdType;
+import com.wuxian.janus.struct.UserGroupUserXStruct;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class UserGroupUserExtractor {
 
     private class UserGroupUserX {
 
-        UserGroupUserXEntity entity;
+        UserGroupUserXStruct struct;
         List<String> scope;
     }
 

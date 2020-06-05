@@ -2,7 +2,7 @@ package com.wuxian.janus.core;
 
 import lombok.Getter;
 import lombok.Setter;
-import com.wuxian.janus.entity.RoleEntity;
+import com.wuxian.janus.struct.RoleStruct;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,5 +14,5 @@ public class ExecuteAccessRolePackage {
     private Boolean executeAccessOfTenantCustomRoles = false;
 
     @Getter
-    private List<RoleEntity> roles = new ArrayList<>();
+    private List<RoleStruct> roles = new ArrayList<>();
 }

@@ -4,12 +4,12 @@ import com.wuxian.janus.IdBuilder;
 import com.wuxian.janus.core.cache.BaseApplicationCachePool;
 import com.wuxian.janus.core.cache.BaseOuterObjectTypeCachePool;
 import com.wuxian.janus.core.synchronism.data.AccessControlCacheProvider01;
-import com.wuxian.janus.entity.*;
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.TenantIdType;
-import com.wuxian.janus.entity.primary.UserIdType;
-import com.wuxian.janus.entity.prototype.JanusPrototype;
+import com.wuxian.janus.struct.*;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.TenantIdType;
+import com.wuxian.janus.struct.primary.UserIdType;
+import com.wuxian.janus.struct.prototype.JanusPrototype;
 import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ public class ClassicChangeRecorderTest {
         ClassicChangeRecorder recorder = new ClassicChangeRecorder();
         AccessControlCacheProvider01 cacheProvider = new AccessControlCacheProvider01();
 
-        IdType entityId = cacheProvider.getDefaultEntityId();
+        IdType structId = cacheProvider.getDefaultStructId();
 
         //outerObject数据源
         BaseOuterObjectTypeCachePool outerObjectTypeCachePool = cacheProvider.new OuterObjectCachePool();
@@ -45,21 +45,21 @@ public class ClassicChangeRecorderTest {
         statusSynchronizer.refresh(applicationId, tenantId, outerObjectTypeCachePool, applicationCachePool);
 
         //2.先取数据出来，id应该为5【因为cacheProvider.setLastModifiedBy(5)】
-        List<OuterObjectTypeEntity> typeList = outerObjectTypeCachePool.getOuterObjectTypeMap().getAll();
-        List<OuterObjectEntity> outerObjectList = outerObjectTypeCachePool.getOuterObjectTypeCache(entityId).getOuterObject().getAll();
-        List<UserOuterObjectXEntity> userOuterObjectList = outerObjectTypeCachePool.getOuterObjectTypeCache(entityId).getUserOuterObjectX().getAll();
+        List<OuterObjectTypeStruct> typeList = outerObjectTypeCachePool.getOuterObjectTypeMap().getAll();
+        List<OuterObjectStruct> outerObjectList = outerObjectTypeCachePool.getOuterObjectTypeCache(structId).getOuterObject().getAll();
+        List<UserOuterObjectXStruct> userOuterObjectList = outerObjectTypeCachePool.getOuterObjectTypeCache(structId).getUserOuterObjectX().getAll();
 
         //3.验证
-        testList(typeList, entityId, firstLastModifiedBy);
-        testList(outerObjectList, entityId, firstLastModifiedBy);
-        testList(userOuterObjectList, entityId, firstLastModifiedBy);
+        testList(typeList, structId, firstLastModifiedBy);
+        testList(outerObjectList, structId, firstLastModifiedBy);
+        testList(userOuterObjectList, structId, firstLastModifiedBy);
 
         //4-1.模拟更新数据源 =>所有表的数据的最后修改人属性都改为secondLastModifiedBy
         cacheProvider.setLastModifiedBy(secondLastModifiedBy);
         //4-2.更新缓存标志位
         ChangeStatus status = new ChangeStatus();
         status.setOuterObjectTypeStatus(true);
-        status.changeOuterObjectTypeCacheStatus(entityId, OuterObjectTypeCacheChangePart.OUTER_OBJECT, true);
+        status.changeOuterObjectTypeCacheStatus(structId, OuterObjectTypeCacheChangePart.OUTER_OBJECT, true);
         //故意不更新下面这行的USER_OUTER_OBJECT
         //status.changeOuterObjectTypeCacheStatus(firstLastModifiedBy, OuterObjectTypeCacheChangePart.USER_OUTER_OBJECT, true);
         recorder.accept(status);
@@ -69,14 +69,14 @@ public class ClassicChangeRecorderTest {
 
         //6.再取数据
         typeList = outerObjectTypeCachePool.getOuterObjectTypeMap().getAll();
-        outerObjectList = outerObjectTypeCachePool.getOuterObjectTypeCache(entityId).getOuterObject().getAll();
-        userOuterObjectList = outerObjectTypeCachePool.getOuterObjectTypeCache(entityId).getUserOuterObjectX().getAll();
+        outerObjectList = outerObjectTypeCachePool.getOuterObjectTypeCache(structId).getOuterObject().getAll();
+        userOuterObjectList = outerObjectTypeCachePool.getOuterObjectTypeCache(structId).getUserOuterObjectX().getAll();
 
         //7-1.再验证，应该lastModifiedBy都是最新的,即secondLastModifiedBy
-        testList(typeList, entityId, secondLastModifiedBy);
-        testList(outerObjectList, entityId, secondLastModifiedBy);
+        testList(typeList, structId, secondLastModifiedBy);
+        testList(outerObjectList, structId, secondLastModifiedBy);
         //7-2.因为没有更新，所以还是firstLastModifiedBy
-        testList(userOuterObjectList, entityId, firstLastModifiedBy);
+        testList(userOuterObjectList, structId, firstLastModifiedBy);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class ClassicChangeRecorderTest {
         ClassicChangeRecorder recorder = new ClassicChangeRecorder();
         AccessControlCacheProvider01 cacheProvider = new AccessControlCacheProvider01();
 
-        IdType entityId = cacheProvider.getDefaultEntityId();
+        IdType structId = cacheProvider.getDefaultStructId();
 
         //outerObject数据源
         BaseOuterObjectTypeCachePool outerObjectTypeCachePool = cacheProvider.new OuterObjectCachePool();
@@ -102,16 +102,16 @@ public class ClassicChangeRecorderTest {
         statusSynchronizer.refresh(applicationId, tenantId, outerObjectTypeCachePool, applicationCachePool);
 
         //2.先取数据出来，id应该为5【因为cacheProvider.setLastModifiedBy(5)】
-        List<RoleEntity> singleRoleList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRole().getAll();
-        List<RoleEntity> multipleRoleList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRole().getAll();
-        List<PermissionEntity> singlePermissionList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSinglePermission().getAll();
-        List<PermissionTemplateEntity> permissionTemplateList = applicationCachePool.getApplicationCache(applicationId).getPermissionTemplateMap().getAll();
+        List<RoleStruct> singleRoleList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRole().getAll();
+        List<RoleStruct> multipleRoleList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRole().getAll();
+        List<PermissionStruct> singlePermissionList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSinglePermission().getAll();
+        List<PermissionTemplateStruct> permissionTemplateList = applicationCachePool.getApplicationCache(applicationId).getPermissionTemplateMap().getAll();
 
         //3.验证
-        testList(singleRoleList, entityId, firstLastModifiedBy);
-        testList(multipleRoleList, entityId, firstLastModifiedBy);
-        testList(singlePermissionList, entityId, firstLastModifiedBy);
-        testList(permissionTemplateList, entityId, firstLastModifiedBy);
+        testList(singleRoleList, structId, firstLastModifiedBy);
+        testList(multipleRoleList, structId, firstLastModifiedBy);
+        testList(singlePermissionList, structId, firstLastModifiedBy);
+        testList(permissionTemplateList, structId, firstLastModifiedBy);
 
         //4-1.模拟更新数据源 =>所有表的数据的最后修改人属性都改为secondLastModifiedBy
         cacheProvider.setLastModifiedBy(secondLastModifiedBy);
@@ -141,16 +141,16 @@ public class ClassicChangeRecorderTest {
         recorder.accept(status);
 
         //6.再取数据出来，id应该为8【因为cacheProvider.setLastModifiedBy(8)】
-        List<RoleEntity> singleRoleListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRole().getAll();
-        List<RoleEntity> multipleRoleListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRole().getAll();
-        List<PermissionEntity> singlePermissionListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSinglePermission().getAll();
-        List<PermissionTemplateEntity> permissionTemplateListLater = applicationCachePool.getApplicationCache(applicationId).getPermissionTemplateMap().getAll();
+        List<RoleStruct> singleRoleListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRole().getAll();
+        List<RoleStruct> multipleRoleListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRole().getAll();
+        List<PermissionStruct> singlePermissionListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSinglePermission().getAll();
+        List<PermissionTemplateStruct> permissionTemplateListLater = applicationCachePool.getApplicationCache(applicationId).getPermissionTemplateMap().getAll();
 
         //7-1.再验证，singleRoleLists,multipleRoleLists应该lastModifiedBy是最新的,即secondLastModifiedBy
-        testList(singleRoleListLater, entityId, secondLastModifiedBy);
-        testList(multipleRoleListLater, entityId, secondLastModifiedBy);
-        testList(singlePermissionListLater, entityId, firstLastModifiedBy);
-        testList(permissionTemplateListLater, entityId, secondLastModifiedBy);
+        testList(singleRoleListLater, structId, secondLastModifiedBy);
+        testList(multipleRoleListLater, structId, secondLastModifiedBy);
+        testList(singlePermissionListLater, structId, firstLastModifiedBy);
+        testList(permissionTemplateListLater, structId, secondLastModifiedBy);
     }
 
     @Test
@@ -160,7 +160,7 @@ public class ClassicChangeRecorderTest {
         ClassicChangeRecorder recorder = new ClassicChangeRecorder();
         AccessControlCacheProvider01 cacheProvider = new AccessControlCacheProvider01();
 
-        IdType entityId = cacheProvider.getDefaultEntityId();
+        IdType structId = cacheProvider.getDefaultStructId();
 
         //outerObject数据源
         BaseOuterObjectTypeCachePool outerObjectTypeCachePool = cacheProvider.new OuterObjectCachePool();
@@ -176,36 +176,36 @@ public class ClassicChangeRecorderTest {
         statusSynchronizer.refresh(applicationId, tenantId, outerObjectTypeCachePool, applicationCachePool);
 
         //2.先取数据出来，id应该为5【因为cacheProvider.setLastModifiedBy(5)】
-        List<RoleEntity> singleRoleList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRole().getAll();
-        List<RoleEntity> multipleRoleList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRole().getAll();
+        List<RoleStruct> singleRoleList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRole().getAll();
+        List<RoleStruct> multipleRoleList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRole().getAll();
 
-        List<RoleOtherXEntity> singleRoleOtherList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRoleOtherX().getAll();
-        List<RoleOtherXEntity> multipleRoleOtherList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRoleOtherX().getAll();
+        List<RoleOtherXStruct> singleRoleOtherList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRoleOtherX().getAll();
+        List<RoleOtherXStruct> multipleRoleOtherList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRoleOtherX().getAll();
 
-        List<RolePermissionXEntity> singleRolePermList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRolePermissionX().getAll();
-        List<RolePermissionXEntity> multipleRolePermList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRolePermissionX().getAll();
+        List<RolePermissionXStruct> singleRolePermList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRolePermissionX().getAll();
+        List<RolePermissionXStruct> multipleRolePermList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRolePermissionX().getAll();
 
-        List<RoleUserGroupXEntity> singleRoleUserGList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRoleUserGroupX().getAll();
-        List<RoleUserGroupXEntity> multipleRoleUserGList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRoleUserGroupX().getAll();
+        List<RoleUserGroupXStruct> singleRoleUserGList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRoleUserGroupX().getAll();
+        List<RoleUserGroupXStruct> multipleRoleUserGList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRoleUserGroupX().getAll();
 
-        List<RoleUserXEntity> singleRoleUserXList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRoleUserX().getAll();
-        List<RoleUserXEntity> multipleRoleUserXList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRoleUserX().getAll();
+        List<RoleUserXStruct> singleRoleUserXList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRoleUserX().getAll();
+        List<RoleUserXStruct> multipleRoleUserXList = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRoleUserX().getAll();
 
         //3.验证
-        testList(singleRoleList, entityId, firstLastModifiedBy);
-        testList(multipleRoleList, entityId, firstLastModifiedBy);
+        testList(singleRoleList, structId, firstLastModifiedBy);
+        testList(multipleRoleList, structId, firstLastModifiedBy);
 
-        testList(singleRoleOtherList, entityId, firstLastModifiedBy);
-        testList(multipleRoleOtherList, entityId, firstLastModifiedBy);
+        testList(singleRoleOtherList, structId, firstLastModifiedBy);
+        testList(multipleRoleOtherList, structId, firstLastModifiedBy);
 
-        testList(singleRolePermList, entityId, firstLastModifiedBy);
-        testList(multipleRolePermList, entityId, firstLastModifiedBy);
+        testList(singleRolePermList, structId, firstLastModifiedBy);
+        testList(multipleRolePermList, structId, firstLastModifiedBy);
 
-        testList(singleRoleUserGList, entityId, firstLastModifiedBy);
-        testList(multipleRoleUserGList, entityId, firstLastModifiedBy);
+        testList(singleRoleUserGList, structId, firstLastModifiedBy);
+        testList(multipleRoleUserGList, structId, firstLastModifiedBy);
 
-        testList(singleRoleUserXList, entityId, firstLastModifiedBy);
-        testList(multipleRoleUserXList, entityId, firstLastModifiedBy);
+        testList(singleRoleUserXList, structId, firstLastModifiedBy);
+        testList(multipleRoleUserXList, structId, firstLastModifiedBy);
 
         //4-1.模拟更新数据源 =>所有表的数据的最后修改人属性都改为secondLastModifiedBy
         cacheProvider.setLastModifiedBy(secondLastModifiedBy);
@@ -242,41 +242,41 @@ public class ClassicChangeRecorderTest {
         recorder.accept(status);
 
         //6.再取数据出来，id应该为8【因为cacheProvider.setLastModifiedBy(8)】
-        List<RoleEntity> singleRoleListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRole().getAll();
-        List<RoleEntity> multipleRoleListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRole().getAll();
+        List<RoleStruct> singleRoleListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRole().getAll();
+        List<RoleStruct> multipleRoleListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRole().getAll();
 
-        List<RoleOtherXEntity> singleRoleOtherListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRoleOtherX().getAll();
-        List<RoleOtherXEntity> multipleRoleOtherListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRoleOtherX().getAll();
+        List<RoleOtherXStruct> singleRoleOtherListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRoleOtherX().getAll();
+        List<RoleOtherXStruct> multipleRoleOtherListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRoleOtherX().getAll();
 
-        List<RolePermissionXEntity> singleRolePermListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRolePermissionX().getAll();
-        List<RolePermissionXEntity> multipleRolePermListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRolePermissionX().getAll();
+        List<RolePermissionXStruct> singleRolePermListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRolePermissionX().getAll();
+        List<RolePermissionXStruct> multipleRolePermListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRolePermissionX().getAll();
 
-        List<RoleUserGroupXEntity> singleRoleUserGListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRoleUserGroupX().getAll();
-        List<RoleUserGroupXEntity> multipleRoleUserGListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRoleUserGroupX().getAll();
+        List<RoleUserGroupXStruct> singleRoleUserGListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRoleUserGroupX().getAll();
+        List<RoleUserGroupXStruct> multipleRoleUserGListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRoleUserGroupX().getAll();
 
-        List<RoleUserXEntity> singleRoleUserXListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRoleUserX().getAll();
-        List<RoleUserXEntity> multipleRoleUserXListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRoleUserX().getAll();
+        List<RoleUserXStruct> singleRoleUserXListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getSingleRoleUserX().getAll();
+        List<RoleUserXStruct> multipleRoleUserXListLater = applicationCachePool.getApplicationCache(applicationId).getTenantCache(tenantId).getMultipleRoleUserX().getAll();
 
         //7-1.再验证，singleRoleLists,multipleRoleLists应该lastModifiedBy是最新的,即secondLastModifiedBy
-        testList(singleRoleListLater, entityId, secondLastModifiedBy);
-        testList(multipleRoleListLater, entityId, secondLastModifiedBy);
+        testList(singleRoleListLater, structId, secondLastModifiedBy);
+        testList(multipleRoleListLater, structId, secondLastModifiedBy);
 
-        testList(singleRoleOtherListLater, entityId, secondLastModifiedBy);
-        testList(multipleRoleOtherListLater, entityId, secondLastModifiedBy);
+        testList(singleRoleOtherListLater, structId, secondLastModifiedBy);
+        testList(multipleRoleOtherListLater, structId, secondLastModifiedBy);
 
-        testList(singleRolePermListLater, entityId, secondLastModifiedBy);
-        testList(multipleRolePermListLater, entityId, secondLastModifiedBy);
+        testList(singleRolePermListLater, structId, secondLastModifiedBy);
+        testList(multipleRolePermListLater, structId, secondLastModifiedBy);
 
-        testList(singleRoleUserGListLater, entityId, secondLastModifiedBy);
-        testList(multipleRoleUserGListLater, entityId, secondLastModifiedBy);
+        testList(singleRoleUserGListLater, structId, secondLastModifiedBy);
+        testList(multipleRoleUserGListLater, structId, secondLastModifiedBy);
 
-        testList(singleRoleUserXListLater, entityId, secondLastModifiedBy);
-        testList(multipleRoleUserXListLater, entityId, secondLastModifiedBy);
+        testList(singleRoleUserXListLater, structId, secondLastModifiedBy);
+        testList(multipleRoleUserXListLater, structId, secondLastModifiedBy);
     }
 
-    <T extends JanusPrototype> void testList(List<T> list, IdType entityId, UserIdType lastModifiedBy) {
+    <T extends JanusPrototype> void testList(List<T> list, IdType structId, UserIdType lastModifiedBy) {
         Assert.assertEquals(list.size(), 1);
-        Assert.assertEquals(list.stream().filter(t -> entityId.getValue().equals(t.getId())
+        Assert.assertEquals(list.stream().filter(t -> structId.getValue().equals(t.getId())
                 && lastModifiedBy.getValue().equals(t.getLastModifiedBy())).count(), 1);
     }
 }

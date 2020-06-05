@@ -1,7 +1,7 @@
 package com.wuxian.janus.core;
 
 import lombok.Getter;
-import com.wuxian.janus.entity.primary.IdType;
+import com.wuxian.janus.struct.primary.IdType;
 
 import java.util.HashMap;
 import java.util.Map;

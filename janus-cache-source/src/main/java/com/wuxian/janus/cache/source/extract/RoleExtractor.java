@@ -9,10 +9,10 @@ import com.wuxian.janus.core.RolePermissionUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.critical.CoverageTypeEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
-import com.wuxian.janus.entity.*;
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.TenantIdType;
+import com.wuxian.janus.struct.*;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.TenantIdType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +59,7 @@ public class RoleExtractor {
             List<Role> allTenant = new ArrayList<>(from2Tenant);
             allTenant.addAll(from3Tenant);
             allTenant.addAll(from4Tenant);
-            appendEntityTenantId(allTenant, tenantId);
+            appendStructTenantId(allTenant, tenantId);
 
             //来源合并
             List<Role> all = new ArrayList<>(from1Application);
@@ -71,20 +71,20 @@ public class RoleExtractor {
             Map<IdType, Role> modelMap = ExtractUtils.groupByIdAndMerge(all);
 
             //SingleRole,MultipleRole需要
-            Map<IdType, RoleEntity> entityMap = modelMap.entrySet().stream()
+            Map<IdType, RoleStruct> structMap = modelMap.entrySet().stream()
                     .collect(Collectors.toMap(Map.Entry::getKey,
                             (entry) -> {
                                 Role role = entry.getValue();
-                                Function<BaseModel<RoleEntity>, RoleEntity> lambda =
-                                        model -> convertToEntity((Role) model, application, result);
-                                return role.buildEntity(lambda);
+                                Function<BaseModel<RoleStruct>, RoleStruct> lambda =
+                                        model -> convertToStruct((Role) model, application, result);
+                                return role.buildStruct(lambda);
                             }
                     ));
 
             //按single,multiple收录到结果中
-            Map<IdType, RoleEntity> singles = new HashMap<>();
-            Map<IdType, RoleEntity> multiples = new HashMap<>();
-            for (Map.Entry<IdType, RoleEntity> entry : entityMap.entrySet()) {
+            Map<IdType, RoleStruct> singles = new HashMap<>();
+            Map<IdType, RoleStruct> multiples = new HashMap<>();
+            for (Map.Entry<IdType, RoleStruct> entry : structMap.entrySet()) {
                 if (!isMultiple(entry.getValue())) {
                     singles.put(entry.getKey(), entry.getValue());
                 } else {
@@ -105,49 +105,49 @@ public class RoleExtractor {
         return role.getMultiple().booleanValue();
     }
 
-    private static boolean isMultiple(RoleEntity role) {
+    private static boolean isMultiple(RoleStruct role) {
         //这里必须要booleanValue(),让getMultiple == null 变成异常，而不是隐瞒问题
         return role.getMultiple().booleanValue();
     }
 
-    private static RoleEntity convertToEntity(Role roleModel, Application application, DirectAccessControlSource source) {
-        RoleEntity entity = new RoleEntity();
-        //在roleModel上面有applicationId,所以在生成entity时补上这个属性通过merge进入到结果中
-        entity.setApplicationId(application.getId());
+    private static RoleStruct convertToStruct(Role roleModel, Application application, DirectAccessControlSource source) {
+        RoleStruct struct = new RoleStruct();
+        //在roleModel上面有applicationId,所以在生成struct时补上这个属性通过merge进入到结果中
+        struct.setApplicationId(IdUtils.createApplicationId(application.getId()).getValue());
 
         //PermissionTemplateCode  -->  PermissionTemplateId
         if (roleModel.getPermissionTemplateCode() != null) {
-            PermissionTemplateEntity permissionTemplateEntity
+            PermissionTemplateStruct permissionTemplateStruct
                     = PermissionTemplateExtractor.findByPermissionTemplateCode(source
                     , application, roleModel.getPermissionTemplateCode()
                     , roleModel.toHashString());
-            entity.setPermissionTemplateId(permissionTemplateEntity.getId());
+            struct.setPermissionTemplateId(permissionTemplateStruct.getId());
         }
 
         //OuterObjectTypeCode  --> OuterObjectTypeId
         if (roleModel.getOuterObjectTypeCode() != null) {
-            OuterObjectTypeEntity typeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeCode(source
+            OuterObjectTypeStruct typeStruct = OuterObjectTypeExtractor.findByOuterObjectTypeCode(source
                     , roleModel.getOuterObjectTypeCode(), roleModel.toHashString());
-            entity.setOuterObjectTypeId(typeEntity.getId());
+            struct.setOuterObjectTypeId(typeStruct.getId());
         }
 
         //OuterObjectTypeCode + OuterObjectCode  --> OuterObjectId
         if (roleModel.getOuterObjectCode() != null) {
-            OuterObjectEntity outerObjectEntity =
+            OuterObjectStruct outerObjectStruct =
                     UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(source
                             , roleModel.getOuterObjectTypeCode()
                             , roleModel.getOuterObjectCode()
-                            , roleModel.toHashString()).outerObjectEntity;
-            entity.setOuterObjectId(outerObjectEntity.getId());
+                            , roleModel.toHashString()).outerObjectStruct;
+            struct.setOuterObjectId(outerObjectStruct.getId());
         }
-        return entity;
+        return struct;
     }
 
     private static void extractRolePermission(Application application
             , Tenant tenant, Map<IdType, Role> roleMap, IdGenerator idGenerator, DirectAccessControlSource result) {
 
-        Map<IdType, RolePermissionXEntity> singles = new HashMap<>();
-        Map<IdType, RolePermissionXEntity> multiples = new HashMap<>();
+        Map<IdType, RolePermissionXStruct> singles = new HashMap<>();
+        Map<IdType, RolePermissionXStruct> multiples = new HashMap<>();
 
         for (Role role : roleMap.values()) {
             boolean isMultiple = isMultiple(role);
@@ -173,15 +173,15 @@ public class RoleExtractor {
 
                 IdType xIdType = idGenerator.generate();
 
-                RolePermissionXEntity xEntity = new RolePermissionXEntity();
-                xEntity.setId(xIdType.getValue());
-                xEntity.setRoleId(IdUtils.createId(role.getId()).getValue());
-                xEntity.setPermissionId(IdUtils.createId(permission.getId()).getValue());
+                RolePermissionXStruct xStruct = new RolePermissionXStruct();
+                xStruct.setId(xIdType.getValue());
+                xStruct.setRoleId(IdUtils.createId(role.getId()).getValue());
+                xStruct.setPermissionId(IdUtils.createId(permission.getId()).getValue());
 
                 if (isMultiple) {
-                    multiples.put(xIdType, xEntity);
+                    multiples.put(xIdType, xStruct);
                 } else {
-                    singles.put(xIdType, xEntity);
+                    singles.put(xIdType, xStruct);
                 }
             }
         }
@@ -193,16 +193,16 @@ public class RoleExtractor {
         result.getMultipleRolePermissionX().add(appId, tId, multiples);
     }
 
-    private static void appendEntityTenantId(List<Role> list, TenantIdType tenantId) {
+    private static void appendStructTenantId(List<Role> list, TenantIdType tenantId) {
         for (Role role : list) {
-            if (role.getEntity() == null) {
-                role.setEntity(new RoleEntity());
+            if (role.getStruct() == null) {
+                role.setStruct(new RoleStruct());
             }
             NativeRoleEnum nativeRole = NativeRoleEnum.getByCode(role.getCode());
             if (nativeRole != null && nativeRole.getCoverageType().equals(CoverageTypeEnum.APPLICATION)) {
                 continue;
             }
-            role.getEntity().setTenantId(tenantId.getValue());
+            role.getStruct().setTenantId(tenantId.getValue());
         }
     }
 

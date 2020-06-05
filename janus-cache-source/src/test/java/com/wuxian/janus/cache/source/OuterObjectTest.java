@@ -1,10 +1,10 @@
 package com.wuxian.janus.cache.source;
 
-import com.wuxian.janus.entity.OuterObjectEntity;
-import com.wuxian.janus.entity.OuterObjectTypeEntity;
-import com.wuxian.janus.entity.UserOuterObjectXEntity;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.UserIdType;
+import com.wuxian.janus.struct.OuterObjectStruct;
+import com.wuxian.janus.struct.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.UserOuterObjectXStruct;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.UserIdType;
 import com.wuxian.janus.cache.source.model.ApplicationGroup;
 import com.wuxian.janus.cache.source.model.OuterObject;
 import com.wuxian.janus.cache.source.model.OuterObjectType;
@@ -94,17 +94,17 @@ public class OuterObjectTest {
         checkUserOuterObjectXContains(source, "2", null, "10");
         checkUserOuterObjectXContains(source, "1", "C", "11");
 
-        JanusMap<IdType, UserOuterObjectXEntity> janusMap = source.getUserOuterObjectX();
+        JanusMap<IdType, UserOuterObjectXStruct> janusMap = source.getUserOuterObjectX();
         Assert.assertEquals(2, janusMap.getIds().size());
-        long xEntityCount = janusMap.getIds().stream()
+        long xStructCount = janusMap.getIds().stream()
                 .map(id -> janusMap.get(id).values())
                 .mapToLong(Collection::size).sum();
-        Assert.assertEquals(7, xEntityCount);
+        Assert.assertEquals(7, xStructCount);
 
     }
 
     private void checkUserOuterObjectXContains(DirectAccessControlSource source, String userId, String scope, String outerObjectIdList) {
-        JanusMap<IdType, UserOuterObjectXEntity> map = source.getUserOuterObjectX();
+        JanusMap<IdType, UserOuterObjectXStruct> map = source.getUserOuterObjectX();
 
         long count = 0L;
         for (IdType id : map.getIds()) {
@@ -118,9 +118,9 @@ public class OuterObjectTest {
 
     private void checkOuterObjectTypeContainsId(DirectAccessControlSource source, String outerObjectTypeCode, String[] outerObjectIds) {
 
-        Collection<OuterObjectTypeEntity> outerObjectTypes = source.getOuterObjectType().values();
-        OuterObjectTypeEntity typeEntity = TestUtils.findFirst(outerObjectTypes, o -> o.getCode().equals(outerObjectTypeCode));
-        Map<IdType, OuterObjectEntity> objMap = source.getOuterObject().get(new IdType(typeEntity.getId()));
+        Collection<OuterObjectTypeStruct> outerObjectTypes = source.getOuterObjectType().values();
+        OuterObjectTypeStruct typeStruct = TestUtils.findFirst(outerObjectTypes, o -> o.getCode().equals(outerObjectTypeCode));
+        Map<IdType, OuterObjectStruct> objMap = source.getOuterObject().get(new IdType(typeStruct.getId()));
 
         if (outerObjectIds.length == 0) {
             Assert.assertNull(objMap);
@@ -171,44 +171,44 @@ public class OuterObjectTest {
 
     @Test
     @DisplayName("测试模型的合并实体功能")
-    void testMergeEntity() {
+    void testMergeStruct() {
         OuterObject copyFromModel = new OuterObject("oo1", "subject_outer");
-        OuterObjectEntity entity1 = new OuterObjectEntity();
-        entity1.setId(createIdType("888").getValue());
-        entity1.setCreatedBy(createUserIdType("200").getValue());
-        entity1.setLastModifiedBy(createUserIdType("201").getValue());
-        entity1.setCreatedDate(new Date());
-        entity1.setLastModifiedDate(new Date());
-        entity1.setOuterObjectTypeId(createIdType("888").getValue());
+        OuterObjectStruct struct1 = new OuterObjectStruct();
+        struct1.setId(createIdType("888").getValue());
+        struct1.setCreatedBy(createUserIdType("200").getValue());
+        struct1.setLastModifiedBy(createUserIdType("201").getValue());
+        struct1.setCreatedDate(new Date());
+        struct1.setLastModifiedDate(new Date());
+        struct1.setOuterObjectTypeId(createIdType("888").getValue());
 
-        //entity1.setReferenceId("refId-999");   //故意在entity1屏蔽掉这行留给entity2
-        entity1.setReferenceCode("refCode-999");
-        entity1.setReferenceName("refName-999");
-        entity1.setCreationProposer(createUserIdType("200").getValue());
-        entity1.setModificationProposer(createUserIdType("201").getValue());
-        copyFromModel.setEntity(entity1);
+        //struct1.setReferenceId("refId-999");   //故意在struct1屏蔽掉这行留给struct2
+        struct1.setReferenceCode("refCode-999");
+        struct1.setReferenceName("refName-999");
+        struct1.setCreationProposer(createUserIdType("200").getValue());
+        struct1.setModificationProposer(createUserIdType("201").getValue());
+        copyFromModel.setStruct(struct1);
 
         OuterObject subject = new OuterObject("oo1");
-        OuterObjectEntity entity2 = new OuterObjectEntity();
-        entity1.setReferenceId("refId-888");
-        subject.setEntity(entity2);
+        OuterObjectStruct struct2 = new OuterObjectStruct();
+        struct1.setReferenceId("refId-888");
+        subject.setStruct(struct2);
 
         //执行合并
         subject.mergeFrom(copyFromModel);
 
-        Assert.assertEquals(subject.getEntity().getId(), entity1.getId());
-        Assert.assertEquals(subject.getEntity().getCreatedBy(), entity1.getCreatedBy());
-        Assert.assertEquals(subject.getEntity().getLastModifiedBy(), entity1.getLastModifiedBy());
-        Assert.assertEquals(subject.getEntity().getCreatedDate(), entity1.getCreatedDate());
-        Assert.assertEquals(subject.getEntity().getLastModifiedDate(), entity1.getLastModifiedDate());
-        Assert.assertEquals(subject.getEntity().getOuterObjectTypeId(), entity1.getOuterObjectTypeId());
-        Assert.assertEquals(subject.getEntity().getReferenceCode(), entity1.getReferenceCode());
-        Assert.assertEquals(subject.getEntity().getReferenceName(), entity1.getReferenceName());
-        Assert.assertEquals(subject.getEntity().getCreationProposer(), entity1.getCreationProposer());
-        Assert.assertEquals(subject.getEntity().getModificationProposer(), entity1.getModificationProposer());
+        Assert.assertEquals(subject.getStruct().getId(), struct1.getId());
+        Assert.assertEquals(subject.getStruct().getCreatedBy(), struct1.getCreatedBy());
+        Assert.assertEquals(subject.getStruct().getLastModifiedBy(), struct1.getLastModifiedBy());
+        Assert.assertEquals(subject.getStruct().getCreatedDate(), struct1.getCreatedDate());
+        Assert.assertEquals(subject.getStruct().getLastModifiedDate(), struct1.getLastModifiedDate());
+        Assert.assertEquals(subject.getStruct().getOuterObjectTypeId(), struct1.getOuterObjectTypeId());
+        Assert.assertEquals(subject.getStruct().getReferenceCode(), struct1.getReferenceCode());
+        Assert.assertEquals(subject.getStruct().getReferenceName(), struct1.getReferenceName());
+        Assert.assertEquals(subject.getStruct().getCreationProposer(), struct1.getCreationProposer());
+        Assert.assertEquals(subject.getStruct().getModificationProposer(), struct1.getModificationProposer());
 
         //注意下面测试是关键
-        Assert.assertEquals(subject.getEntity().getReferenceId(), entity2.getReferenceId());
+        Assert.assertEquals(subject.getStruct().getReferenceId(), struct2.getReferenceId());
         Assert.assertEquals(subject.getOuterObjectTypeCode(), copyFromModel.getOuterObjectTypeCode());
     }
 

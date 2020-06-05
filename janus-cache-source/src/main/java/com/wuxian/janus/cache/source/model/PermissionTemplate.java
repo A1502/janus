@@ -5,13 +5,13 @@ import com.wuxian.janus.cache.source.model.item.ApplicationItem;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.critical.CoverageTypeEnum;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
-import com.wuxian.janus.entity.PermissionTemplateEntity;
+import com.wuxian.janus.struct.PermissionTemplateStruct;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.function.Function;
 
-public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> implements ApplicationItem {
+public class PermissionTemplate extends CodeModel<PermissionTemplateStruct> implements ApplicationItem {
 
     @Getter
     @Setter
@@ -55,12 +55,12 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
         return result;
     }
 
-    public static PermissionTemplate byEntity(PermissionTemplateEntity entity) {
-        PermissionTemplate result = new PermissionTemplate(entity.getCode());
-        result.setEntity(entity);
-        result.setMultiple(entity.getMultiple() != null && entity.getMultiple());
-        if (entity.getId() != null) {
-            result.setId(entity.getId().toString());
+    public static PermissionTemplate byStruct(PermissionTemplateStruct struct) {
+        PermissionTemplate result = new PermissionTemplate(struct.getCode());
+        result.setStruct(struct);
+        result.setMultiple(struct.getMultiple() != null && struct.getMultiple());
+        if (struct.getId() != null) {
+            result.setId(struct.getId().toString());
         }
         return result;
     }
@@ -107,8 +107,8 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
     }
 
     @Override
-    protected Class<PermissionTemplateEntity> getEntityClass() {
-        return PermissionTemplateEntity.class;
+    protected Class<PermissionTemplateStruct> getStructClass() {
+        return PermissionTemplateStruct.class;
     }
 
     @Override
@@ -117,16 +117,16 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
     }
 
     @Override
-    public PermissionTemplateEntity buildEntity(Function<BaseModel<PermissionTemplateEntity>, PermissionTemplateEntity> otherFieldBuilder) {
-        PermissionTemplateEntity entity = super.buildEntity(otherFieldBuilder);
-        entity.setId(this.buildIdType().getValue());
-        entity.setCode(this.getCode());
-        entity.setMultiple(this.getMultiple());
-        return entity;
+    public PermissionTemplateStruct buildStruct(Function<BaseModel<PermissionTemplateStruct>, PermissionTemplateStruct> otherFieldBuilder) {
+        PermissionTemplateStruct struct = super.buildStruct(otherFieldBuilder);
+        struct.setId(this.buildIdType().getValue());
+        struct.setCode(this.getCode());
+        struct.setMultiple(this.getMultiple());
+        return struct;
     }
 
     @Override
-    public boolean keyFieldsEquals(BaseModel<PermissionTemplateEntity> other) {
+    public boolean keyFieldsEquals(BaseModel<PermissionTemplateStruct> other) {
         if (other instanceof PermissionTemplate) {
             PermissionTemplate otherModel = (PermissionTemplate) other;
             return StrictUtils.equals(this.code, otherModel.code);
@@ -136,7 +136,7 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateEntity> impl
     }
 
     @Override
-    public void fillKeyFields(BaseModel<PermissionTemplateEntity> other) {
+    public void fillKeyFields(BaseModel<PermissionTemplateStruct> other) {
         if (other instanceof PermissionTemplate) {
             PermissionTemplate otherModel = (PermissionTemplate) other;
             this.code = otherModel.code;

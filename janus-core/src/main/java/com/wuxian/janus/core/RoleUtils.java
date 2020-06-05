@@ -5,9 +5,9 @@ import com.wuxian.janus.core.critical.AccessControlLevel;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
 import com.wuxian.janus.core.index.*;
-import com.wuxian.janus.entity.*;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.UserIdType;
+import com.wuxian.janus.struct.*;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.UserIdType;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,14 +34,14 @@ public class RoleUtils {
         ExecuteAccessRolePackage result = new ExecuteAccessRolePackage();
 
         //(STEP 1)Role-User关系查找,并经过scope过滤
-        List<RoleUserXEntity> roleUsers = roleUserSource
+        List<RoleUserXStruct> roleUsers = roleUserSource
                 .getByUserIdExecuteAccess(userId, true);
         //scope过滤
         roleUsers = filterRoleUserByScopes(scopes, roleUsers, scopeRoleUserSource.getByUserId(userId), recorder);
 
 
         //(STEP 2) Role-Other关系查找
-        List<RoleOtherXEntity> roleOthers;
+        List<RoleOtherXStruct> roleOthers;
         if (nativeRoleOnly) {
             roleOthers = new ArrayList<>();
         } else {
@@ -49,15 +49,15 @@ public class RoleUtils {
         }
 
         //(STEP 3)InnerUserGroup-User关系查找
-        List<UserGroupUserXEntity> innerUserGroupUsers = userGroupUserSource
+        List<UserGroupUserXStruct> innerUserGroupUsers = userGroupUserSource
                 .getByUserIdExecuteAccess(userId, true);
         //scope过滤
         innerUserGroupUsers = filterUserGroupUserByScopes(scopes, innerUserGroupUsers, scopeUserGroupUserXSource.getByUserId(userId), recorder);
 
         //(STEP 4) 汇总实体：InnerUserGroup
-        List<UserGroupEntity> innerUserGroupList = new ArrayList<>();
-        for (UserGroupUserXEntity innerUserGroupUser : innerUserGroupUsers) {
-            UserGroupEntity userGroup = userGroupSource.getByKey(new IdType(innerUserGroupUser.getUserGroupId()));
+        List<UserGroupStruct> innerUserGroupList = new ArrayList<>();
+        for (UserGroupUserXStruct innerUserGroupUser : innerUserGroupUsers) {
+            UserGroupStruct userGroup = userGroupSource.getByKey(new IdType(innerUserGroupUser.getUserGroupId()));
             if (userGroup != null) {
                 if (userGroup.getOuterObjectId() != null) {
                     recorder.add(ErrorDataRecorder.TableSchema.UserGroupUserX.TABLE_NAME,
@@ -78,7 +78,7 @@ public class RoleUtils {
         }
 
         //(STEP 5) 汇总实体：OuterUserGroup
-        List<UserGroupEntity> outerUserGroupList;
+        List<UserGroupStruct> outerUserGroupList;
         if (nativeRoleOnly) {
             outerUserGroupList = new ArrayList<>();
         } else {
@@ -91,7 +91,7 @@ public class RoleUtils {
         }
 
         //(STEP 7) InnerUserGroup和OuterUserGroup合并
-        List<UserGroupEntity> allUserGroupList = new ArrayList<>();
+        List<UserGroupStruct> allUserGroupList = new ArrayList<>();
         if (nativeRoleOnly) {
             allUserGroupList.addAll(UserGroupUtils.getNativeUserGroups(innerUserGroupList));
         } else {
@@ -100,19 +100,19 @@ public class RoleUtils {
         }
 
         //(STEP 8)关系查找：allUserGroup加入的role
-        List<RoleUserGroupXEntity> roleUserGroups = new ArrayList<>();
-        for (UserGroupEntity userGroup : allUserGroupList) {
-            List<RoleUserGroupXEntity> list = roleUserGroupSource
+        List<RoleUserGroupXStruct> roleUserGroups = new ArrayList<>();
+        for (UserGroupStruct userGroup : allUserGroupList) {
+            List<RoleUserGroupXStruct> list = roleUserGroupSource
                     .getByUserGroupIdExecuteAccess(new IdType(userGroup.getId()), true);
             roleUserGroups.addAll(list);
         }
 
         //(STEP 9)实体转化：来自roleUsers,roleOthers和roleUserGroups
-        Map<IdType, RoleEntity> roleMap = new HashMap<>();
+        Map<IdType, RoleStruct> roleMap = new HashMap<>();
 
         //来自roleUsers
         roleUsers.forEach(o -> {
-            RoleEntity roleEntity = getRoleEntity(new IdType(o.getRoleId()),
+            RoleStruct roleStruct = getRoleStruct(new IdType(o.getRoleId()),
                     ErrorDataRecorder.TableSchema.RoleUserX.TABLE_NAME,
                     new IdType(o.getId()),
                     ErrorDataRecorder.TableSchema.RoleUserX.ROLE_ID,
@@ -121,13 +121,13 @@ public class RoleUtils {
                     useSingleRoles,
                     recorder);
 
-            fillRole(roleMap, roleEntity, nativeRoleOnly);
+            fillRole(roleMap, roleStruct, nativeRoleOnly);
         });
 
         //来自roleOther
         if (!nativeRoleOnly) {
             roleOthers.forEach(o -> {
-                RoleEntity roleEntity = getRoleEntity(new IdType(o.getRoleId()),
+                RoleStruct roleStruct = getRoleStruct(new IdType(o.getRoleId()),
                         ErrorDataRecorder.TableSchema.RoleOtherX.TABLE_NAME,
                         new IdType(o.getId()),
                         ErrorDataRecorder.TableSchema.RoleOtherX.ROLE_ID,
@@ -135,13 +135,13 @@ public class RoleUtils {
                         multipleRoleSource,
                         useSingleRoles,
                         recorder);
-                fillRole(roleMap, roleEntity, nativeRoleOnly);
+                fillRole(roleMap, roleStruct, nativeRoleOnly);
             });
         }
 
         //来自roleUserGroups
         roleUserGroups.forEach(o -> {
-            RoleEntity roleEntity = getRoleEntity(new IdType(o.getRoleId()),
+            RoleStruct roleStruct = getRoleStruct(new IdType(o.getRoleId()),
                     ErrorDataRecorder.TableSchema.RoleUserGroupX.TABLE_NAME,
                     new IdType(o.getId()),
                     ErrorDataRecorder.TableSchema.RoleUserGroupX.ROLE_ID,
@@ -149,7 +149,7 @@ public class RoleUtils {
                     multipleRoleSource,
                     useSingleRoles,
                     recorder);
-            fillRole(roleMap, roleEntity, nativeRoleOnly);
+            fillRole(roleMap, roleStruct, nativeRoleOnly);
         });
 
         //STEP 10 补充来自Native UserGroup的Native Role
@@ -160,10 +160,10 @@ public class RoleUtils {
         if (useSingleRoles) {
             nativeRoles.forEach(role -> {
                 //multiple类型匹配的才提取
-                //转为role entity添加到roleMap
-                RoleEntity entity = getNativeRoleEntity(singleRoleSource, multipleRoleSource, role, recorder);
-                if (entity != null && !StrictUtils.containsKey(roleMap, new IdType(entity.getId()))) {
-                    roleMap.put(new IdType(entity.getId()), entity);
+                //转为role struct添加到roleMap
+                RoleStruct struct = getNativeRoleStruct(singleRoleSource, multipleRoleSource, role, recorder);
+                if (struct != null && !StrictUtils.containsKey(roleMap, new IdType(struct.getId()))) {
+                    roleMap.put(new IdType(struct.getId()), struct);
                 }
             });
         }
@@ -184,19 +184,19 @@ public class RoleUtils {
     }
 
     //scopes = null 表示全部
-    private static List<RoleUserXEntity> filterRoleUserByScopes(List<String> scopes, List<RoleUserXEntity> executeAccessRoleUsers, List<ScopeRoleUserXEntity> scopeRoleUsers, ErrorDataRecorder recorder) {
+    private static List<RoleUserXStruct> filterRoleUserByScopes(List<String> scopes, List<RoleUserXStruct> executeAccessRoleUsers, List<ScopeRoleUserXStruct> scopeRoleUsers, ErrorDataRecorder recorder) {
 
         boolean hasError = false;
 
-        List<RoleUserXEntity> filtered = new ArrayList<>();
+        List<RoleUserXStruct> filtered = new ArrayList<>();
         //数据检查 roleId在executeAccessRoleUsers中有，但是在scopeRoleUsers中没有;反向检查不用做,因为executeAccess=false的role-user关系在executeAccessRoleUsers变量里本身就不存在
-        for (RoleUserXEntity roleUserXEntity : executeAccessRoleUsers) {
-            List<String> foundScopes = scopeRoleUsers.stream().filter(o -> StrictUtils.equals(roleUserXEntity.getRoleId(), o.getRoleId())).map(ScopeRoleUserXEntity::getScope).collect(Collectors.toList());
+        for (RoleUserXStruct roleUserXStruct : executeAccessRoleUsers) {
+            List<String> foundScopes = scopeRoleUsers.stream().filter(o -> StrictUtils.equals(roleUserXStruct.getRoleId(), o.getRoleId())).map(ScopeRoleUserXStruct::getScope).collect(Collectors.toList());
             if (foundScopes.size() == 0) {
                 recorder.add(ErrorDataRecorder.TableSchema.RoleUserX.TABLE_NAME,
-                        new IdType(roleUserXEntity.getId()),
+                        new IdType(roleUserXStruct.getId()),
                         ErrorDataRecorder.TableSchema.RoleUserX.ROLE_ID,
-                        String.valueOf(roleUserXEntity.getRoleId()),
+                        String.valueOf(roleUserXStruct.getRoleId()),
                         String.format("当前列内容代表的scope-user-role关系在表%s中并不存在", ErrorDataRecorder.TableSchema.ScopeRoleUserX.TABLE_NAME));
                 hasError = true;
                 //不中断for循环是因为要收集完整所有的error到recorder
@@ -205,7 +205,7 @@ public class RoleUtils {
             if (scopes != null) {
                 long hitCount = scopes.stream().filter(foundScopes::contains).count();
                 if (hitCount > 0) {
-                    filtered.add(roleUserXEntity);
+                    filtered.add(roleUserXStruct);
                 }
             }
         }
@@ -220,22 +220,22 @@ public class RoleUtils {
     }
 
     //scope = null表示全部
-    private static List<UserGroupUserXEntity> filterUserGroupUserByScopes(List<String> scopes, List<UserGroupUserXEntity> executeAccessUserGroupUsers,
-                                                                          List<ScopeUserGroupUserXEntity> scopeUserGroupUsers, ErrorDataRecorder recorder) {
+    private static List<UserGroupUserXStruct> filterUserGroupUserByScopes(List<String> scopes, List<UserGroupUserXStruct> executeAccessUserGroupUsers,
+                                                                          List<ScopeUserGroupUserXStruct> scopeUserGroupUsers, ErrorDataRecorder recorder) {
 
         boolean hasError = false;
 
-        List<UserGroupUserXEntity> filtered = new ArrayList<>();
+        List<UserGroupUserXStruct> filtered = new ArrayList<>();
 
-        for (UserGroupUserXEntity userGroupUserXEntity : executeAccessUserGroupUsers) {
+        for (UserGroupUserXStruct userGroupUserXStruct : executeAccessUserGroupUsers) {
             List<String> foundScopes = scopeUserGroupUsers.stream().filter(o ->
-                    StrictUtils.equals(userGroupUserXEntity.getUserGroupId(), o.getUserGroupId()))
-                    .map(ScopeUserGroupUserXEntity::getScope).collect(Collectors.toList());
+                    StrictUtils.equals(userGroupUserXStruct.getUserGroupId(), o.getUserGroupId()))
+                    .map(ScopeUserGroupUserXStruct::getScope).collect(Collectors.toList());
             if (foundScopes.size() == 0) {
                 recorder.add(ErrorDataRecorder.TableSchema.UserGroupUserX.TABLE_NAME,
-                        new IdType(userGroupUserXEntity.getId()),
+                        new IdType(userGroupUserXStruct.getId()),
                         ErrorDataRecorder.TableSchema.UserGroupUserX.USER_GROUP_ID,
-                        String.valueOf(userGroupUserXEntity.getUserGroupId()),
+                        String.valueOf(userGroupUserXStruct.getUserGroupId()),
                         String.format("当前列内容代表的scope-userGroup-user关系在表%s中并不存在", ErrorDataRecorder.TableSchema.ScopeUserGroupUserX.TABLE_NAME));
                 hasError = true;
                 //不中断for循环是因为要收集完整所有的error到recorder
@@ -244,7 +244,7 @@ public class RoleUtils {
             if (scopes != null) {
                 long hitCount = scopes.stream().filter(foundScopes::contains).count();
                 if (hitCount > 0) {
-                    filtered.add(userGroupUserXEntity);
+                    filtered.add(userGroupUserXStruct);
                 }
             }
         }
@@ -258,33 +258,33 @@ public class RoleUtils {
         }
     }
 
-    private static void fillRole(Map<IdType, RoleEntity> roleMap, RoleEntity roleEntity, boolean nativeRoleOnly) {
-        if (roleEntity != null) {
-            if (!StrictUtils.containsKey(roleMap, new IdType(roleEntity.getId()))) {
+    private static void fillRole(Map<IdType, RoleStruct> roleMap, RoleStruct roleStruct, boolean nativeRoleOnly) {
+        if (roleStruct != null) {
+            if (!StrictUtils.containsKey(roleMap, new IdType(roleStruct.getId()))) {
                 if (nativeRoleOnly) {
-                    if (NativeRoleEnum.getByCode(roleEntity.getCode()) != null) {
-                        roleMap.put(new IdType(roleEntity.getId()), roleEntity);
+                    if (NativeRoleEnum.getByCode(roleStruct.getCode()) != null) {
+                        roleMap.put(new IdType(roleStruct.getId()), roleStruct);
                     }
                 } else {
-                    roleMap.put(new IdType(roleEntity.getId()), roleEntity);
+                    roleMap.put(new IdType(roleStruct.getId()), roleStruct);
                 }
             }
         }
     }
 
-    private static RoleEntity getNativeRoleEntity(RoleMap singleRoleSource,
+    private static RoleStruct getNativeRoleStruct(RoleMap singleRoleSource,
                                                   RoleMap multipleRoleSource,
                                                   NativeRoleEnum nativeRole,
                                                   ErrorDataRecorder recorder) {
 
-        return getNativeRoleEntityByRoleCode(singleRoleSource,
+        return getNativeRoleStructByRoleCode(singleRoleSource,
                 multipleRoleSource,
                 nativeRole.getCode(),
                 recorder);
     }
 
 
-    private static RoleEntity getNativeRoleEntityByRoleCode(RoleMap singleRoleSource,
+    private static RoleStruct getNativeRoleStructByRoleCode(RoleMap singleRoleSource,
                                                             RoleMap multipleRoleSource,
                                                             String roleCode,
                                                             ErrorDataRecorder recorder) {
@@ -293,9 +293,9 @@ public class RoleUtils {
         RoleMap roleSource = useSingleRoles ? singleRoleSource : multipleRoleSource;
         RoleMap backUpRoleSource = !useSingleRoles ? singleRoleSource : multipleRoleSource;
 
-        List<RoleEntity> roleEntities = roleSource.getByCode(roleCode);
+        List<RoleStruct> roleEntities = roleSource.getByCode(roleCode);
         if (roleEntities.size() == 0) {
-            List<RoleEntity> backUpRoleEntities = backUpRoleSource.getByCode(roleCode);
+            List<RoleStruct> backUpRoleEntities = backUpRoleSource.getByCode(roleCode);
             if (backUpRoleEntities.size() == 0) {
                 //找不到
                 recorder.add(ErrorDataRecorder.TableSchema.Role.TABLE_NAME, new IdType(null), ErrorDataRecorder.TableSchema.Role.CODE, String.valueOf(roleCode),
@@ -349,7 +349,7 @@ public class RoleUtils {
         return result;
     }
 
-    private static RoleEntity getRoleEntity(IdType roleId,
+    private static RoleStruct getRoleStruct(IdType roleId,
                                             String tableName,
                                             IdType id,
                                             String columnName,
@@ -361,9 +361,9 @@ public class RoleUtils {
         RoleMap roleSource = useSingleRoles ? singleRoleSource : multipleRoleSource;
         RoleMap backUpRoleSource = !useSingleRoles ? singleRoleSource : multipleRoleSource;
 
-        RoleEntity role = roleSource.getByKey(roleId);
+        RoleStruct role = roleSource.getByKey(roleId);
         if (role == null) {
-            RoleEntity backUpRole = backUpRoleSource.getByKey(roleId);
+            RoleStruct backUpRole = backUpRoleSource.getByKey(roleId);
             if (backUpRole == null) {
                 recorder.add(tableName, id, columnName, String.valueOf(roleId),
                         String.format("当前列内容代表的role在表%s中并不存在", ErrorDataRecorder.TableSchema.Role.TABLE_NAME));

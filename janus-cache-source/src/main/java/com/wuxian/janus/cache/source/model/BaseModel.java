@@ -1,6 +1,6 @@
 package com.wuxian.janus.cache.source.model;
 
-import com.wuxian.janus.entity.primary.IdType;
+import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.cache.source.ErrorFactory;
 import com.wuxian.janus.core.basis.BeanCopyUtils;
 import com.wuxian.janus.core.basis.FieldCopyHandler;
@@ -21,16 +21,16 @@ public abstract class BaseModel<E> {
 
     @Getter
     @Setter
-    protected E entity;
+    protected E struct;
 
     protected BaseModel() {
     }
 
-    protected abstract Class<E> getEntityClass();
+    protected abstract Class<E> getStructClass();
 
     protected abstract <T extends BaseModel> Class<T> getThisClass();
 
-    private FieldCopyHandler entityCopyHandler = (fieldName, copyToValue, copyFromValue, copyTo, copyToFieldSetter)
+    private FieldCopyHandler structCopyHandler = (fieldName, copyToValue, copyFromValue, copyTo, copyToFieldSetter)
             -> beforeFieldCopy(BaseModel.this.toString(), fieldName,
             copyToValue, copyFromValue, copyTo, copyToFieldSetter);
 
@@ -45,7 +45,7 @@ public abstract class BaseModel<E> {
     };
 
     private List<String> getSkipCopyFiledNames() {
-        return Collections.singletonList("entity");
+        return Collections.singletonList("struct");
     }
 
     /**
@@ -91,7 +91,7 @@ public abstract class BaseModel<E> {
                 copyToValueList.addAll((List) copyFromValue);
             } catch (Exception e) {
                 e.printStackTrace();
-                throw ErrorFactory.createListEntityFieldError(model, fieldName);
+                throw ErrorFactory.createListStructFieldError(model, fieldName);
             }
             return true;
         }
@@ -101,45 +101,45 @@ public abstract class BaseModel<E> {
 
     public void mergeFrom(BaseModel<E> other) {
         if (other != null) {
-            if (other.entity != null) {
-                if (this.entity == null) {
+            if (other.struct != null) {
+                if (this.struct == null) {
                     try {
-                        this.entity = getEntityClass().newInstance();
+                        this.struct = getStructClass().newInstance();
                     } catch (InstantiationException | IllegalAccessException e) {
                         e.printStackTrace();
-                        throw ErrorFactory.createEntityMergingFailedError(this.toString(), e.getMessage());
+                        throw ErrorFactory.createStructMergingFailedError(this.toString(), e.getMessage());
                     }
                 }
-                BeanCopyUtils.copy(this.entity, other.getEntity(), getEntityClass(), entityCopyHandler);
+                BeanCopyUtils.copy(this.struct, other.getStruct(), getStructClass(), structCopyHandler);
             }
             BeanCopyUtils.copy(this, other, getThisClass(), selfCopyHandler);
         }
     }
 
     /**
-     * 将this.getEntity()中不为null的列复制给tmpEntity的同名列。
-     * 其中tmpEntity的获取方式如下:
-     * 当otherFieldBuilder为null，tmpEntity为getEntityClass().newInstance();
+     * 将this.getStruct()中不为null的列复制给tmpStruct的同名列。
+     * 其中tmpStruct的获取方式如下:
+     * 当otherFieldBuilder为null，tmpStruct为getStructClass().newInstance();
      * 否则为otherFieldBuilder的返回值
      *
-     * @param otherFieldBuilder 用以填充entity的builder
-     * @return 一个填充好数据的entity
+     * @param otherFieldBuilder 用以填充struct的builder
+     * @return 一个填充好数据的struct
      */
-    public E buildEntity(Function<BaseModel<E>, E> otherFieldBuilder) {
-        Class<E> eClass = getEntityClass();
-        E entity;
+    public E buildStruct(Function<BaseModel<E>, E> otherFieldBuilder) {
+        Class<E> eClass = getStructClass();
+        E struct;
         if (otherFieldBuilder != null) {
-            entity = otherFieldBuilder.apply(this);
+            struct = otherFieldBuilder.apply(this);
         } else {
             try {
-                entity = eClass.newInstance();
+                struct = eClass.newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
-                throw ErrorFactory.createBuildEntityFailedError(this.toString(), e.getMessage());
+                throw ErrorFactory.createBuildStructFailedError(this.toString(), e.getMessage());
             }
         }
-        BeanCopyUtils.copy(entity, this.getEntity(), eClass, entityCopyHandler);
-        return entity;
+        BeanCopyUtils.copy(struct, this.getStruct(), eClass, structCopyHandler);
+        return struct;
     }
 
     @Override

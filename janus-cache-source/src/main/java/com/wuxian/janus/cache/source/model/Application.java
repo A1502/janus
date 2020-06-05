@@ -9,13 +9,13 @@ import com.wuxian.janus.core.critical.CoverageTypeEnum;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
-import com.wuxian.janus.entity.PermissionEntity;
-import com.wuxian.janus.entity.PermissionTemplateEntity;
-import com.wuxian.janus.entity.RoleEntity;
-import com.wuxian.janus.entity.UserGroupEntity;
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.TenantIdType;
+import com.wuxian.janus.struct.PermissionStruct;
+import com.wuxian.janus.struct.PermissionTemplateStruct;
+import com.wuxian.janus.struct.RoleStruct;
+import com.wuxian.janus.struct.UserGroupStruct;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.TenantIdType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -206,62 +206,62 @@ public class Application {
         ApplicationIdType applicationId = IdUtils.createApplicationId(this.id);
 
         //CREATE_PERMISSION_TEMPLATE
-        PermissionTemplateEntity pt0 = PermissionTemplateUtils
+        PermissionTemplateStruct pt0 = PermissionTemplateUtils
                 .getNativePermissionTemplate(NativePermissionTemplateEnum.CREATE_PERMISSION_TEMPLATE);
         pt0.setApplicationId(applicationId.getValue());
         pt0.setId(IdUtils.createId(createPermissionTemplatePair.getTemplateId()).getValue());
 
         //INIT_TENANT
-        PermissionTemplateEntity pt1 = PermissionTemplateUtils
+        PermissionTemplateStruct pt1 = PermissionTemplateUtils
                 .getNativePermissionTemplate(NativePermissionTemplateEnum.INIT_TENANT);
         pt1.setApplicationId(applicationId.getValue());
         pt1.setId(IdUtils.createId(initTenantPair.getTemplateId()).getValue());
 
         //CREATE_MULTIPLE_PERMISSION
-        PermissionTemplateEntity pt2 = PermissionTemplateUtils
+        PermissionTemplateStruct pt2 = PermissionTemplateUtils
                 .getNativePermissionTemplate(NativePermissionTemplateEnum.CREATE_MULTIPLE_PERMISSION);
         pt2.setApplicationId(applicationId.getValue());
         pt2.setId(IdUtils.createId(createMultiplePermissionTemplateId).getValue());
 
         //CREATE_OUTER_GROUP
-        PermissionTemplateEntity pt3 = PermissionTemplateUtils
+        PermissionTemplateStruct pt3 = PermissionTemplateUtils
                 .getNativePermissionTemplate(NativePermissionTemplateEnum.CREATE_OUTER_GROUP);
         pt3.setApplicationId(applicationId.getValue());
         pt3.setId(IdUtils.createId(createOuterGroupTemplateId).getValue());
 
         //CREATE_ROLE
-        PermissionTemplateEntity pt4 = PermissionTemplateUtils
+        PermissionTemplateStruct pt4 = PermissionTemplateUtils
                 .getNativePermissionTemplate(NativePermissionTemplateEnum.CREATE_ROLE);
         pt4.setApplicationId(applicationId.getValue());
         pt4.setId(IdUtils.createId(createRoleTemplateId).getValue());
 
         //CREATE_INNER_GROUP
-        PermissionTemplateEntity pt5 = PermissionTemplateUtils
+        PermissionTemplateStruct pt5 = PermissionTemplateUtils
                 .getNativePermissionTemplate(NativePermissionTemplateEnum.CREATE_INNER_GROUP);
         pt5.setApplicationId(applicationId.getValue());
         pt5.setId(IdUtils.createId(createInnerGroupTemplateId).getValue());
 
-        return Stream.of(pt0, pt1, pt2, pt3, pt4, pt5).map(PermissionTemplate::byEntity).collect(Collectors.toList());
+        return Stream.of(pt0, pt1, pt2, pt3, pt4, pt5).map(PermissionTemplate::byStruct).collect(Collectors.toList());
     }
 
     public List<Permission> buildNativeApplicationPermission(IdGenerator templateIdGenerator) {
         completeNativePermissionTemplateId(templateIdGenerator);
 
         //CREATE_PERMISSION_TEMPLATE
-        PermissionEntity p0 = new PermissionEntity();
+        PermissionStruct p0 = new PermissionStruct();
         p0.setPermissionTemplateId(IdUtils.createId(this.createPermissionTemplatePair.getTemplateId()).getValue());
         if (createPermissionTemplatePair.getPermissionId() != null) {
             p0.setId(IdUtils.createId(createPermissionTemplatePair.getPermissionId()).getValue());
         }
-        Permission model0 = Permission.byEntity(NativePermissionTemplateEnum.CREATE_PERMISSION_TEMPLATE.getCode(), p0);
+        Permission model0 = Permission.byStruct(NativePermissionTemplateEnum.CREATE_PERMISSION_TEMPLATE.getCode(), p0);
 
         //INIT_TENANT
-        PermissionEntity p1 = new PermissionEntity();
+        PermissionStruct p1 = new PermissionStruct();
         p1.setPermissionTemplateId(IdUtils.createId(this.initTenantPair.getTemplateId()).getValue());
         if (initTenantPair.getPermissionId() != null) {
             p1.setId(IdUtils.createId(initTenantPair.getPermissionId()).getValue());
         }
-        Permission model1 = Permission.byEntity(NativePermissionTemplateEnum.INIT_TENANT.getCode(), p1);
+        Permission model1 = Permission.byStruct(NativePermissionTemplateEnum.INIT_TENANT.getCode(), p1);
 
         return Arrays.asList(model0, model1);
     }
@@ -270,28 +270,28 @@ public class Application {
         completeNativePermissionTemplateId(templateIdGenerator);
 
         //CREATE_PERMISSION_TEMPLATE
-        PermissionEntity p0 = new PermissionEntity();
+        PermissionStruct p0 = new PermissionStruct();
         p0.setTenantId(tenantId.getValue());
         p0.setPermissionTemplateId(IdUtils.createId(this.createMultiplePermissionTemplateId).getValue());
-        Permission model0 = Permission.byEntity(NativePermissionTemplateEnum.CREATE_MULTIPLE_PERMISSION.getCode(), p0);
+        Permission model0 = Permission.byStruct(NativePermissionTemplateEnum.CREATE_MULTIPLE_PERMISSION.getCode(), p0);
 
         //CREATE_OUTER_GROUP
-        PermissionEntity p1 = new PermissionEntity();
+        PermissionStruct p1 = new PermissionStruct();
         p1.setTenantId(tenantId.getValue());
         p1.setPermissionTemplateId(IdUtils.createId(this.createOuterGroupTemplateId).getValue());
-        Permission model1 = Permission.byEntity(NativePermissionTemplateEnum.CREATE_OUTER_GROUP.getCode(), p1);
+        Permission model1 = Permission.byStruct(NativePermissionTemplateEnum.CREATE_OUTER_GROUP.getCode(), p1);
 
         //CREATE_ROLE
-        PermissionEntity p2 = new PermissionEntity();
+        PermissionStruct p2 = new PermissionStruct();
         p2.setTenantId(tenantId.getValue());
         p2.setPermissionTemplateId(IdUtils.createId(this.createRoleTemplateId).getValue());
-        Permission model2 = Permission.byEntity(NativePermissionTemplateEnum.CREATE_ROLE.getCode(), p2);
+        Permission model2 = Permission.byStruct(NativePermissionTemplateEnum.CREATE_ROLE.getCode(), p2);
 
         //CREATE_INNER_GROUP
-        PermissionEntity p3 = new PermissionEntity();
+        PermissionStruct p3 = new PermissionStruct();
         p3.setTenantId(tenantId.getValue());
         p3.setPermissionTemplateId(IdUtils.createId(this.createInnerGroupTemplateId).getValue());
-        Permission model3 = Permission.byEntity(NativePermissionTemplateEnum.CREATE_INNER_GROUP.getCode(), p3);
+        Permission model3 = Permission.byStruct(NativePermissionTemplateEnum.CREATE_INNER_GROUP.getCode(), p3);
 
         return Arrays.asList(model0, model1, model2, model3);
     }
@@ -300,40 +300,40 @@ public class Application {
 
         ApplicationIdType applicationId = IdUtils.createApplicationId(this.id);
 
-        RoleEntity r0 = new RoleEntity();
+        RoleStruct r0 = new RoleStruct();
         r0.setCode(NativeRoleEnum.ALL_PERMISSION.getCode());
         r0.setApplicationId(applicationId.getValue());
         if (allPermissionRoleId != null) {
             r0.setId(IdUtils.createId(allPermissionRoleId).getValue());
         }
 
-        RoleEntity r1 = new RoleEntity();
+        RoleStruct r1 = new RoleStruct();
         r1.setCode(NativeRoleEnum.APPLICATION_MAINTAINER.getCode());
         r1.setApplicationId(applicationId.getValue());
         if (applicationMaintainerRoleId != null) {
             r1.setId(IdUtils.createId(applicationMaintainerRoleId).getValue());
         }
 
-        return Stream.of(r0, r1).map(Role::byEntity).collect(Collectors.toList());
+        return Stream.of(r0, r1).map(Role::byStruct).collect(Collectors.toList());
     }
 
     public List<UserGroup> buildNativeApplicationUserGroup() {
         ApplicationIdType applicationId = IdUtils.createApplicationId(this.id);
 
-        UserGroupEntity ug0 = new UserGroupEntity();
+        UserGroupStruct ug0 = new UserGroupStruct();
         ug0.setCode(NativeUserGroupEnum.APPLICATION_ROOT.getCode());
         ug0.setApplicationId(applicationId.getValue());
         if (applicationRootUserGroupId != null) {
             ug0.setId(IdUtils.createId(applicationRootUserGroupId).getValue());
         }
 
-        UserGroupEntity ug1 = new UserGroupEntity();
+        UserGroupStruct ug1 = new UserGroupStruct();
         ug1.setCode(NativeUserGroupEnum.APPLICATION_ADMIN.getCode());
         ug1.setApplicationId(applicationId.getValue());
         if (applicationAdminUserGroupId != null) {
             ug1.setId(IdUtils.createId(applicationAdminUserGroupId).getValue());
         }
 
-        return Stream.of(ug0, ug1).map(UserGroup::byEntity).collect(Collectors.toList());
+        return Stream.of(ug0, ug1).map(UserGroup::byStruct).collect(Collectors.toList());
     }
 }

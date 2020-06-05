@@ -7,8 +7,8 @@ import com.wuxian.janus.cache.source.IdUtils;
 import com.wuxian.janus.cache.source.model.*;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
-import com.wuxian.janus.entity.OuterObjectTypeEntity;
-import com.wuxian.janus.entity.primary.IdType;
+import com.wuxian.janus.struct.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.primary.IdType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +73,7 @@ class OuterObjectTypeExtractor {
         all.addAll(from6);
 
         ExtractUtils.fixIdAndKeyFields(all, idGenerator);
-        Map<IdType, OuterObjectTypeEntity> map = ExtractUtils.groupByIdAndMergeToEntity(all, null);
+        Map<IdType, OuterObjectTypeStruct> map = ExtractUtils.groupByIdAndMergeToStruct(all, null);
         result.getOuterObjectType().putAll(map);
     }
 
@@ -89,15 +89,15 @@ class OuterObjectTypeExtractor {
      * @param context             若查找失败的相关数据
      * @return 查找的结果
      */
-    static OuterObjectTypeEntity findByOuterObjectTypeCode(DirectAccessControlSource source
+    static OuterObjectTypeStruct findByOuterObjectTypeCode(DirectAccessControlSource source
             , String outerObjectTypeCode, String context) {
 
         String targetDesc = "OuterObjectType";
-        OuterObjectTypeEntity typeEntity = ExtractUtils.findFirst(source.getOuterObjectType().values(),
+        OuterObjectTypeStruct typeStruct = ExtractUtils.findFirst(source.getOuterObjectType().values(),
                 o -> StrictUtils.equals(outerObjectTypeCode, o.getCode()));
 
-        if (typeEntity != null) {
-            return typeEntity;
+        if (typeStruct != null) {
+            return typeStruct;
         } else {
             throw ErrorFactory.createNothingFoundError(targetDesc
                     , "outerObjectTypeCode = " + outerObjectTypeCode
@@ -111,15 +111,15 @@ class OuterObjectTypeExtractor {
      * @param context           查找上下文数据
      * @return 查找的结果
      */
-    static OuterObjectTypeEntity findByOuterObjectTypeId(DirectAccessControlSource source
+    static OuterObjectTypeStruct findByOuterObjectTypeId(DirectAccessControlSource source
             , IdType outerObjectTypeId, String context) {
 
         String targetDesc = "OuterObjectType";
 
-        OuterObjectTypeEntity typeEntity = StrictUtils.get(source.getOuterObjectType(), outerObjectTypeId);
+        OuterObjectTypeStruct typeStruct = StrictUtils.get(source.getOuterObjectType(), outerObjectTypeId);
 
-        if (typeEntity != null) {
-            return typeEntity;
+        if (typeStruct != null) {
+            return typeStruct;
         } else {
             throw ErrorFactory.createNothingFoundError(targetDesc
                     , "outerObjectTypeId = " + outerObjectTypeId

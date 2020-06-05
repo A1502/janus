@@ -7,8 +7,8 @@ import com.wuxian.janus.core.cache.provider.BaseAccessControlCacheProvider;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.synchronism.ClassicChangeRecorder;
-import com.wuxian.janus.entity.RoleEntity;
-import com.wuxian.janus.entity.primary.IdType;
+import com.wuxian.janus.struct.RoleStruct;
+import com.wuxian.janus.struct.primary.IdType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -52,7 +52,7 @@ public class AccessControlCalculatorTest {
                 .sorted().collect(Collectors.toList());
     }
 
-    private List<IdType> fromRoleEntity(List<RoleEntity> list) {
+    private List<IdType> fromRoleStruct(List<RoleStruct> list) {
         return list.stream().map(o -> new IdType(o.getId()))
                 .sorted().collect(Collectors.toList());
     }
@@ -67,7 +67,7 @@ public class AccessControlCalculatorTest {
     @DisplayName("role-user关系")
     public void testRoleUserX() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider01.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider01.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 1);
         assertEquals(StrictUtils.get(roles, 0).getCode(), "role1");
         assertEquals(recorder.errorList.size(), 1);
@@ -83,7 +83,7 @@ public class AccessControlCalculatorTest {
     @DisplayName("role-other关系")
     public void testRoleOtherX() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider02.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider02.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 1);
         assertEquals(StrictUtils.get(roles, 0).getCode(), "role2");
         assertEquals(recorder.errorList.size(), 1);
@@ -95,14 +95,14 @@ public class AccessControlCalculatorTest {
      * 2. 正向获取Inner-UserGroup,execute_Access为false
      * 4. 正向获取RoleUserGroupX,execute_Access为true--返回一条role
      * 5. 正向获取RoleUserGroupX,execute_Access为false
-     * 6. 反向测试UserGroupUserXEntity关系表中，GroupId不存在--error message 1
+     * 6. 反向测试UserGroupUserXStruct关系表中，GroupId不存在--error message 1
      * 7. 反向测试Inner-UserGroup关系表中，roleId不存在--error message 2
      */
     @Test
     @DisplayName("role-Inner-UserGroup关系")
     public void testInnerUserGroup() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider03.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider03.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 1);
         assertEquals(StrictUtils.get(roles, 0).getCode(), "role1");
         assertEquals(recorder.errorList.size(), 2);
@@ -112,15 +112,15 @@ public class AccessControlCalculatorTest {
      *    【数据源AccessControlCacheProvider04】
      * 1. 正向获取RoleUserGroupX,execute_Access为true--返回一条role
      * 2. 正向获取RoleUserGroupX,execute_Access为false
-     * 3. 反向测试RoleUserGroupXEntity关系表中，GroupId不存在, 不会报错
-     * 4. 反向测试RoleUserGroupXEntity关系表中，RoleId不存在, 会报错-error message 1
+     * 3. 反向测试RoleUserGroupXStruct关系表中，GroupId不存在, 不会报错
+     * 4. 反向测试RoleUserGroupXStruct关系表中，RoleId不存在, 会报错-error message 1
      * 5. 反向测试UserOutObject中不存在outObjectId,不会报错
      */
     @Test
     @DisplayName("role-Outer-UserGroup1关系")
     public void testOuterGroup1() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider04.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider04.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 1);
         assertEquals(StrictUtils.get(roles, 0).getCode(), "role1");
         assertEquals(recorder.errorList.size(), 1);
@@ -130,8 +130,8 @@ public class AccessControlCalculatorTest {
      *    【数据源AccessControlCacheProvider05】
      * 1. 正向获取RoleUserGroupX,execute_Access为true--返回一条role
      * 2. 正向获取RoleUserGroupX,execute_Access为false
-     * 3. 反向测试RoleUserGroupXEntity关系表中，GroupId不存在, 不会报错
-     * 4. 反向测试RoleUserGroupXEntity关系表中，RoleId不存在, 会报错--error message 1
+     * 3. 反向测试RoleUserGroupXStruct关系表中，GroupId不存在, 不会报错
+     * 4. 反向测试RoleUserGroupXStruct关系表中，RoleId不存在, 会报错--error message 1
      * 5. 反向测试UserOutObject中不存在outObjectId,会报错--error message 2
      * 6. 反向测试outGroupList:"1,2,3,"尾部有,号,不会报错
      */
@@ -139,7 +139,7 @@ public class AccessControlCalculatorTest {
     @DisplayName("role-Outer-UserGroup2关系")
     public void testOuterGroup2() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider05.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider05.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 1);
         assertEquals(StrictUtils.get(roles, 0).getCode(), "role1");
         assertEquals(recorder.errorList.size(), 2);
@@ -147,13 +147,13 @@ public class AccessControlCalculatorTest {
 
     /**
      * 【数据源AccessControlCacheProvider06】
-     * 1. 反向测试outerObjectTypeId不存在,获取不到role,且根据outGroupList的size大小决定报多少个errors*OuterObjectTypeEntity--当前是2*2=4个error messages
+     * 1. 反向测试outerObjectTypeId不存在,获取不到role,且根据outGroupList的size大小决定报多少个errors*OuterObjectTypeStruct--当前是2*2=4个error messages
      */
     @Test
     @DisplayName("role-Outer-UserGroup3关系")
     public void testOuterGroup3() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider06.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider06.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 1);
         assertEquals(StrictUtils.get(roles, 0).getCode(), "role1");
         assertEquals(recorder.errorList.size(), 4);
@@ -170,7 +170,7 @@ public class AccessControlCalculatorTest {
     @DisplayName("Multiple-role-User关系")
     public void testMultipleRoleUserX() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider07.class).getUserExecuteAccessMultipleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider07.class).getUserExecuteAccessMultipleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 1);
         assertEquals(StrictUtils.get(roles, 0).getCode(), "role1");
         assertEquals(recorder.errorList.size(), 1);
@@ -186,7 +186,7 @@ public class AccessControlCalculatorTest {
     @DisplayName("Multiple-role-Other关系")
     public void testMultipleRoleOtherX() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider08.class).getUserExecuteAccessMultipleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider08.class).getUserExecuteAccessMultipleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 1);
         assertEquals(StrictUtils.get(roles, 0).getCode(), "role2");
         assertEquals(recorder.errorList.size(), 1);
@@ -198,7 +198,7 @@ public class AccessControlCalculatorTest {
      * 2. 正向获取Inner-UserGroup,execute_Access为false
      * 4. 正向获取RoleUserGroupX,execute_Access为true
      * 5. 正向获取RoleUserGroupX,execute_Access为false
-     * 6. 反向测试UserGroupUserXEntity关系表中，GroupId不存在--error message 1
+     * 6. 反向测试UserGroupUserXStruct关系表中，GroupId不存在--error message 1
      * 7. 反向测试outerObject id不存在--error message 2
      * 8. 反向测试role的outerObject id不等于null--error message 3
      * 9. 反向测试Inner-UserGroup关系表中，roleId不存在--error message 4
@@ -207,7 +207,7 @@ public class AccessControlCalculatorTest {
     @DisplayName("Multiple-role-Outer-Group关系")
     public void testMultipleInnerUserGroup() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider09.class).getUserExecuteAccessMultipleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider09.class).getUserExecuteAccessMultipleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 1);
         assertEquals(recorder.errorList.size(), 4);
     }
@@ -221,7 +221,7 @@ public class AccessControlCalculatorTest {
     @DisplayName("Single-role与User,Inner,Outer-Group,Other关系集合")
     public void testMixRole() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider17.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider17.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 4);
         assertEquals(StrictUtils.get(roles, 0).getCode(), "role1");
         assertEquals(recorder.errorList.size(), 3);
@@ -241,7 +241,7 @@ public class AccessControlCalculatorTest {
     @DisplayName("用户加入ag_root获取权限")
     public void testGetAllPermissionRoleByAGRoot() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider10.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider10.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 2);
         assertEquals(StrictUtils.get(roles, 0).getCode(), NativeRoleEnum.ALL_PERMISSION.getCode());
         assertEquals(recorder.errorList.size(), 3);
@@ -259,7 +259,7 @@ public class AccessControlCalculatorTest {
     @DisplayName("用户加入ag_admin获取权限")
     public void testGetAllPermissionRoleByApplicationMaintainer() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider11.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider11.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 2);
         assertEquals(StrictUtils.get(roles, 0).getCode(), "janus_ar:application_maintainer");
         assertEquals(recorder.errorList.size(), 3);
@@ -277,7 +277,7 @@ public class AccessControlCalculatorTest {
     @DisplayName("Multiple:用户加入ag_root获取权限")
     public void testGetMultipleAllPermissionRoleByAGRoot() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider12.class).getUserExecuteAccessMultipleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider12.class).getUserExecuteAccessMultipleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 1);
         assertEquals(StrictUtils.get(roles, 0).getCode(), "role5");
         assertEquals(recorder.errorList.size(), 3);
@@ -295,7 +295,7 @@ public class AccessControlCalculatorTest {
     @DisplayName("Multiple:用户加入ag_admin获取权限")
     public void testGetMultipleAllPermissionRoleByApplicationMaintainer() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider13.class).getUserExecuteAccessMultipleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider13.class).getUserExecuteAccessMultipleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 1);
         assertEquals(StrictUtils.get(roles, 0).getCode(), "role5");
         assertEquals(recorder.errorList.size(), 3);
@@ -315,7 +315,7 @@ public class AccessControlCalculatorTest {
     @DisplayName("用户加入ag_root,ag_admin,tg_root角色获取权限")
     public void testGetAllPermissionRoleByApplicationMaintainerAndAGRootAndTGRoot() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles = getCalculator(AccessControlCacheProvider14.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
+        List<RoleStruct> roles = getCalculator(AccessControlCacheProvider14.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 3);
         assertEquals(StrictUtils.get(roles, 0).getCode(), "janus_ar:all_permission");
         assertEquals(recorder.errorList.size(), 3);
@@ -431,21 +431,21 @@ public class AccessControlCalculatorTest {
     @Test
     public void testScopeSingle() {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
-        List<RoleEntity> roles0 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
+        List<RoleStruct> roles0 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
                 new ArrayList<>(), false, recorder).getRoles();
         assertEquals(roles0.size(), 0);
         assertEquals(recorder.errorList.size(), 0);
         recorder.errorList.clear();
 
 
-        List<RoleEntity> roles1 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
+        List<RoleStruct> roles1 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
                 null, false, recorder).getRoles();
         assertEquals(roles1.size(), 3);
         assertEquals(recorder.errorList.size(), 0);
         recorder.errorList.clear();
 
 
-        List<RoleEntity> roles2 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
+        List<RoleStruct> roles2 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
                 Arrays.asList(new String[]{null}), false, recorder).getRoles();
         assertEquals(roles2.size(), 1);
         assertEquals(StrictUtils.get(roles2, 0).getId(), IdBuilder.id(4).getValue());
@@ -453,7 +453,7 @@ public class AccessControlCalculatorTest {
         recorder.errorList.clear();
 
 
-        List<RoleEntity> roles3 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
+        List<RoleStruct> roles3 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
                 Collections.singletonList("B"), false, recorder).getRoles();
         assertEquals(roles3.size(), 1);
         assertEquals(StrictUtils.get(roles3, 0).getId(), IdBuilder.id(3).getValue());
@@ -461,7 +461,7 @@ public class AccessControlCalculatorTest {
         recorder.errorList.clear();
 
 
-        List<RoleEntity> roles4 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
+        List<RoleStruct> roles4 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
                 Collections.singletonList("A"), false, recorder).getRoles();
         assertEquals(roles4.size(), 1);
         assertEquals(StrictUtils.get(roles4, 0).getId(), IdBuilder.id(4).getValue());
@@ -469,43 +469,43 @@ public class AccessControlCalculatorTest {
         recorder.errorList.clear();
 
 
-        List<RoleEntity> roles5 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
+        List<RoleStruct> roles5 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
                 Collections.singletonList("Y"), false, recorder).getRoles();
         assertEquals(roles5.size(), 3);
         assertEquals(recorder.errorList.size(), 0);
         recorder.errorList.clear();
 
 
-        List<RoleEntity> roles6 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
+        List<RoleStruct> roles6 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
                 Collections.singletonList("X"), false, recorder).getRoles();
-        List<IdType> result6 = fromRoleEntity(roles6);
+        List<IdType> result6 = fromRoleStruct(roles6);
         assertIterableEquals(result6, IdBuilder.ids(3, 4));
         assertEquals(recorder.errorList.size(), 0);
         recorder.errorList.clear();
 
 
-        List<RoleEntity> roles7 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
+        List<RoleStruct> roles7 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
                 Arrays.asList("X", "C"), false, recorder).getRoles();
         assertEquals(roles7.size(), 3);
         assertEquals(recorder.errorList.size(), 0);
         recorder.errorList.clear();
 
 
-        List<RoleEntity> roles8 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
+        List<RoleStruct> roles8 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
                 Arrays.asList("A", "NOT_EXISTS"), false, recorder).getRoles();
         assertEquals(roles8.size(), 1);
         assertEquals(recorder.errorList.size(), 0);
         recorder.errorList.clear();
 
 
-        List<RoleEntity> roles9 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
+        List<RoleStruct> roles9 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
                 Arrays.asList("A", "B", "C", "X", "Y", null), false, recorder).getRoles();
         assertEquals(roles9.size(), 3);
         assertEquals(recorder.errorList.size(), 0);
         recorder.errorList.clear();
 
 
-        List<RoleEntity> roles10 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
+        List<RoleStruct> roles10 = getCalculator(AccessControlCacheProvider16.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10),
                 Arrays.asList("B", "C"), false, recorder).getRoles();
         List<IdType> result10 = roles10.stream().map(o -> new IdType(o.getId())).sorted().collect(Collectors.toList());
         assertIterableEquals(result10, IdBuilder.ids(3, 5));

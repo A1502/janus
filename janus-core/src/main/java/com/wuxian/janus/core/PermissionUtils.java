@@ -6,8 +6,8 @@ import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.index.PermissionMap;
 import com.wuxian.janus.core.index.PermissionTemplateMap;
 import com.wuxian.janus.core.index.RolePermissionXMap;
-import com.wuxian.janus.entity.*;
-import com.wuxian.janus.entity.primary.IdType;
+import com.wuxian.janus.struct.*;
+import com.wuxian.janus.struct.primary.IdType;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -102,9 +102,9 @@ public class PermissionUtils {
         result.setHasAllCustomPermission(rolePackage.getExecuteAccessOfTenantCustomRoles());
 
         List<PermissionInfo> permissions = new ArrayList<>();
-        rolePackage.getRoles().forEach(roleEntity -> {
+        rolePackage.getRoles().forEach(roleStruct -> {
 
-            NativeRoleEnum nativeRole = NativeRoleEnum.getByCode(roleEntity.getCode());
+            NativeRoleEnum nativeRole = NativeRoleEnum.getByCode(roleStruct.getCode());
             if (nativeRole != null) {
                 if (nativeRole.getHasAllPermission()) {
                     result.setHasAllPermission(true);
@@ -113,7 +113,7 @@ public class PermissionUtils {
             }
 
             if (!nativePermissionOnly) {
-                merge(permissions, getPermissionInfo(roleEntity,
+                merge(permissions, getPermissionInfo(roleStruct,
                         permissionTemplateSource,
                         rolePermissionSource,
                         useSinglePermissions ? singlePermissionSource : multiplePermissionSource,
@@ -136,7 +136,7 @@ public class PermissionUtils {
         Map<IdType, Boolean> result = new HashMap<>();
 
         for (IdType permissionTemplateId : permissionTemplateIds) {
-            PermissionTemplateEntity template = permissionTemplateSource.getByKey(permissionTemplateId);
+            PermissionTemplateStruct template = permissionTemplateSource.getByKey(permissionTemplateId);
             if (template != null) {
                 result.put(permissionTemplateId, NativePermissionTemplateEnum.getByCode(template.getCode()) != null);
             } else {
@@ -178,7 +178,7 @@ public class PermissionUtils {
         return input -> set.add(keyBuilder.apply(input));
     }
 
-    private static List<PermissionInfo> getPermissionInfo(RoleEntity role,
+    private static List<PermissionInfo> getPermissionInfo(RoleStruct role,
                                                           PermissionTemplateMap permissionTemplateSource,
                                                           RolePermissionXMap rolePermissionSource,
                                                           PermissionMap permissionSource,
@@ -188,31 +188,31 @@ public class PermissionUtils {
 
         List<PermissionInfo> result = new ArrayList<>();
 
-        Map<IdType, List<PermissionEntity>> templateMap = new HashMap<>();
+        Map<IdType, List<PermissionStruct>> templateMap = new HashMap<>();
 
-        List<RolePermissionXEntity> rolePermissionXEntities = rolePermissionSource.getByRoleId(new IdType(role.getId()));
+        List<RolePermissionXStruct> rolePermissionXEntities = rolePermissionSource.getByRoleId(new IdType(role.getId()));
 
-        rolePermissionXEntities.forEach(rolePermissionXEntity ->
+        rolePermissionXEntities.forEach(rolePermissionXStruct ->
         {
-            PermissionEntity permissionEntity = permissionSource.getByKey(new IdType(rolePermissionXEntity.getPermissionId()));
-            if (permissionEntity == null) {
+            PermissionStruct permissionStruct = permissionSource.getByKey(new IdType(rolePermissionXStruct.getPermissionId()));
+            if (permissionStruct == null) {
                 recorder.add(ErrorDataRecorder.TableSchema.RolePermissionX.TABLE_NAME
-                        , new IdType(rolePermissionXEntity.getId())
+                        , new IdType(rolePermissionXStruct.getId())
                         , ErrorDataRecorder.TableSchema.RolePermissionX.PERMISSION_ID
-                        , String.valueOf(rolePermissionXEntity.getPermissionId())
+                        , String.valueOf(rolePermissionXStruct.getPermissionId())
                         , String.format("当前列内容代表的permission在表%s中并不存在", ErrorDataRecorder.TableSchema.Permission.TABLE_NAME)
                 );
             } else {
-                if (!StrictUtils.containsKey(templateMap, new IdType(permissionEntity.getPermissionTemplateId()))) {
-                    templateMap.put(new IdType(permissionEntity.getPermissionTemplateId()), new ArrayList<>());
+                if (!StrictUtils.containsKey(templateMap, new IdType(permissionStruct.getPermissionTemplateId()))) {
+                    templateMap.put(new IdType(permissionStruct.getPermissionTemplateId()), new ArrayList<>());
                 }
-                StrictUtils.get(templateMap, new IdType(permissionEntity.getPermissionTemplateId())).add(permissionEntity);
+                StrictUtils.get(templateMap, new IdType(permissionStruct.getPermissionTemplateId())).add(permissionStruct);
             }
         });
 
         templateMap.forEach((templateId, permissions) -> {
-            PermissionTemplateEntity templateEntity = permissionTemplateSource.getByKey(templateId);
-            if (templateEntity == null) {
+            PermissionTemplateStruct templateStruct = permissionTemplateSource.getByKey(templateId);
+            if (templateStruct == null) {
                 String ids = String.join(",", permissions.stream().map(p -> String.valueOf(p.getId())).collect(Collectors.toList()));
                 recorder.add(ErrorDataRecorder.TableSchema.Permission.TABLE_NAME
                         , ids
@@ -222,23 +222,23 @@ public class PermissionUtils {
                 );
             } else {
                 PermissionInfo permissionInfo = new PermissionInfo();
-                permissionInfo.setTemplate(templateEntity);
+                permissionInfo.setTemplate(templateStruct);
                 permissionInfo.setPermissionDetails(new ArrayList<>());
 
-                for (PermissionEntity p : permissions) {
+                for (PermissionStruct p : permissions) {
                     PermissionDetail detail = new PermissionDetail();
                     permissionInfo.getPermissionDetails().add(detail);
                     detail.setPermission(p);
                     if (fillOuterObjectInfo) {
-                        OuterObjectEntity outerObjectEntity = outerObjectCache.getOuterObjectInstance(new IdType(p.getOuterObjectId()));
-                        if (outerObjectEntity != null) {
-                            detail.setOuterObject(outerObjectEntity);
-                            OuterObjectTypeEntity outerObjectTypeEntity = outerObjectCache.getOuterObjectTypeMap()
-                                    .getByKey(new IdType(outerObjectEntity.getOuterObjectTypeId()));
-                            //outerObjectTypeEntity来自outerObjectCache必然存在，不会为null
-                            detail.setOuterObjectType(outerObjectTypeEntity);
+                        OuterObjectStruct outerObjectStruct = outerObjectCache.getOuterObjectInstance(new IdType(p.getOuterObjectId()));
+                        if (outerObjectStruct != null) {
+                            detail.setOuterObject(outerObjectStruct);
+                            OuterObjectTypeStruct outerObjectTypeStruct = outerObjectCache.getOuterObjectTypeMap()
+                                    .getByKey(new IdType(outerObjectStruct.getOuterObjectTypeId()));
+                            //outerObjectTypeStruct来自outerObjectCache必然存在，不会为null
+                            detail.setOuterObjectType(outerObjectTypeStruct);
                         } else {
-                            //do nothing,outerObjectEntity可以为null
+                            //do nothing,outerObjectStruct可以为null
                         }
                     }
                 }
@@ -257,7 +257,7 @@ public class PermissionUtils {
         List<NativePermissionTemplateEnum> permissionTemplates = nativeRole.getPermissionTemplates();
 
         permissionTemplates.forEach(templatEnum -> {
-            List<PermissionTemplateEntity> permissionTemplateEntities = permissionTemplateSource.getByCode(templatEnum.getCode());
+            List<PermissionTemplateStruct> permissionTemplateEntities = permissionTemplateSource.getByCode(templatEnum.getCode());
 
             if (permissionTemplateEntities.size() != 1) {
                 recorder.add(ErrorDataRecorder.TableSchema.PermissionTemplate.TABLE_NAME, new IdType(null), ErrorDataRecorder.TableSchema.PermissionTemplate.CODE, String.valueOf(templatEnum.getCode()),
@@ -266,9 +266,9 @@ public class PermissionUtils {
                                 String.valueOf(permissionTemplateEntities.size())
                         ));
             } else {
-                PermissionTemplateEntity templateEntity = StrictUtils.get(permissionTemplateEntities, 0);
+                PermissionTemplateStruct templateStruct = StrictUtils.get(permissionTemplateEntities, 0);
 
-                List<PermissionEntity> permissionEntities = singlePermissionSource.getByPermissionTemplateId(new IdType(templateEntity.getId()));
+                List<PermissionStruct> permissionEntities = singlePermissionSource.getByPermissionTemplateId(new IdType(templateStruct.getId()));
 
                 PermissionDetail detail = new PermissionDetail();
                 if (permissionEntities.size() != 1) {
@@ -277,7 +277,7 @@ public class PermissionUtils {
                             null,
                             null,
                             String.format("按permissionTemplateId = %s 条件应查到一笔记录，而实际是[%d]条",
-                                    String.valueOf(templateEntity.getId()),
+                                    String.valueOf(templateStruct.getId()),
                                     permissionEntities.size())
                     );
                 } else {
@@ -287,7 +287,7 @@ public class PermissionUtils {
                 PermissionInfo item = new PermissionInfo();
                 item.setPermissionDetails(new ArrayList<>());
                 item.getPermissionDetails().add(detail);
-                item.setTemplate(templateEntity);
+                item.setTemplate(templateStruct);
                 result.add(item);
             }
         });

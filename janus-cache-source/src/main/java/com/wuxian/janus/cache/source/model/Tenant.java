@@ -8,11 +8,11 @@ import com.wuxian.janus.core.critical.CoverageTypeEnum;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
-import com.wuxian.janus.entity.PermissionEntity;
-import com.wuxian.janus.entity.RoleEntity;
-import com.wuxian.janus.entity.UserGroupEntity;
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.TenantIdType;
+import com.wuxian.janus.struct.PermissionStruct;
+import com.wuxian.janus.struct.RoleStruct;
+import com.wuxian.janus.struct.UserGroupStruct;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.TenantIdType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -132,31 +132,31 @@ public class Tenant implements ApplicationItem {
         TenantIdType tenantId = IdUtils.createTenantId(this.id);
 
         //CREATE_PERMISSION_TEMPLATE
-        PermissionEntity p0 = new PermissionEntity();
+        PermissionStruct p0 = new PermissionStruct();
         p0.setTenantId(tenantId.getValue());
         Permission model0 = new Permission(NativePermissionTemplateEnum.CREATE_MULTIPLE_PERMISSION);
-        model0.setEntity(p0);
+        model0.setStruct(p0);
         model0.setId(this.createMultiplePermissionPId);
 
         //CREATE_OUTER_GROUP
-        PermissionEntity p1 = new PermissionEntity();
+        PermissionStruct p1 = new PermissionStruct();
         p1.setTenantId(tenantId.getValue());
         Permission model1 = new Permission(NativePermissionTemplateEnum.CREATE_OUTER_GROUP);
-        model1.setEntity(p1);
+        model1.setStruct(p1);
         model1.setId(this.createOuterGroupPId);
 
         //CREATE_ROLE
-        PermissionEntity p2 = new PermissionEntity();
+        PermissionStruct p2 = new PermissionStruct();
         p2.setTenantId(tenantId.getValue());
         Permission model2 = new Permission(NativePermissionTemplateEnum.CREATE_ROLE);
-        model2.setEntity(p2);
+        model2.setStruct(p2);
         model2.setId(this.createRolePId);
 
         //CREATE_INNER_GROUP
-        PermissionEntity p3 = new PermissionEntity();
+        PermissionStruct p3 = new PermissionStruct();
         p3.setTenantId(tenantId.getValue());
         Permission model3 = new Permission(NativePermissionTemplateEnum.CREATE_INNER_GROUP);
-        model3.setEntity(p3);
+        model3.setStruct(p3);
         model3.setId(this.createInnerGroupPId);
 
         return Arrays.asList(model0, model1, model2, model3);
@@ -166,7 +166,7 @@ public class Tenant implements ApplicationItem {
     public List<Role> buildNativeTenantRole(ApplicationIdType applicationId) {
         TenantIdType tenantId = IdUtils.createTenantId(this.id);
 
-        RoleEntity r0 = new RoleEntity();
+        RoleStruct r0 = new RoleStruct();
         r0.setCode(NativeRoleEnum.TENANT_DATA_OWNER.getCode());
         r0.setApplicationId(applicationId.getValue());
         r0.setTenantId(tenantId.getValue());
@@ -174,7 +174,7 @@ public class Tenant implements ApplicationItem {
             r0.setId(IdUtils.createId(tenantDataOwnerRoleId).getValue());
         }
 
-        RoleEntity r1 = new RoleEntity();
+        RoleStruct r1 = new RoleStruct();
         r1.setCode(NativeRoleEnum.TENANT_MAINTAINER.getCode());
         r1.setApplicationId(applicationId.getValue());
         r1.setTenantId(tenantId.getValue());
@@ -182,14 +182,14 @@ public class Tenant implements ApplicationItem {
             r1.setId(IdUtils.createId(tenantMaintainerRoleId).getValue());
         }
 
-        return Stream.of(r0, r1).map(Role::byEntity).collect(Collectors.toList());
+        return Stream.of(r0, r1).map(Role::byStruct).collect(Collectors.toList());
     }
 
     public List<UserGroup> buildNativeTenantUserGroup(ApplicationIdType applicationId) {
 
         TenantIdType tenantId = IdUtils.createTenantId(this.id);
 
-        UserGroupEntity ug0 = new UserGroupEntity();
+        UserGroupStruct ug0 = new UserGroupStruct();
         ug0.setCode(NativeUserGroupEnum.TENANT_ROOT.getCode());
         ug0.setApplicationId(applicationId.getValue());
         ug0.setTenantId(tenantId.getValue());
@@ -197,6 +197,6 @@ public class Tenant implements ApplicationItem {
             ug0.setId(IdUtils.createId(tenantRootUserGroupId).getValue());
         }
 
-        return Stream.of(ug0).map(UserGroup::byEntity).collect(Collectors.toList());
+        return Stream.of(ug0).map(UserGroup::byStruct).collect(Collectors.toList());
     }
 }

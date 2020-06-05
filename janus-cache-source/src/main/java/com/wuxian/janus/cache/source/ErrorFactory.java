@@ -82,8 +82,8 @@ public final class ErrorFactory {
         return new ErrorCodeException(ID_GENERATOR_FACTORY_NOT_SUPPORT, message, null);
     }
 
-    public static ErrorCodeException createEntityMergingFailedError(String object, String detail) {
-        String message = "合并entity发生错误:" + object;
+    public static ErrorCodeException createStructMergingFailedError(String object, String detail) {
+        String message = "合并struct发生错误:" + object;
         return new ErrorCodeException(ENTITY_MERGING_FAILED, message, detail);
     }
 
@@ -107,8 +107,8 @@ public final class ErrorFactory {
         return new ErrorCodeException(DUPLICATED_PROPERTY, message, null);
     }
 
-    public static ErrorCodeException createBuildEntityFailedError(String object, String detail) {
-        String message = "生成entity发生错误:" + object;
+    public static ErrorCodeException createBuildStructFailedError(String object, String detail) {
+        String message = "生成struct发生错误:" + object;
         return new ErrorCodeException(BUILD_ENTITY_FAILED, message, detail);
     }
 
@@ -117,7 +117,7 @@ public final class ErrorFactory {
         return new ErrorCodeException(NOTHING_FOUND, message, null);
     }
 
-    public static ErrorCodeException createListEntityFieldError(String object, String fieldName) {
+    public static ErrorCodeException createListStructFieldError(String object, String fieldName) {
         String message = "List类型属性" + fieldName + "合并出错 : " + object;
         return new ErrorCodeException(LIST_ENTITY_FIELD, message, null);
     }

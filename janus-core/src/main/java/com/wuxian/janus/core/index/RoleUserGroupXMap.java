@@ -2,8 +2,8 @@ package com.wuxian.janus.core.index;
 
 import com.wuxian.janus.core.basis.AutoFillMultipleIndexesMap;
 import com.wuxian.janus.core.basis.SourceLoader;
-import com.wuxian.janus.entity.RoleUserGroupXEntity;
-import com.wuxian.janus.entity.primary.IdType;
+import com.wuxian.janus.struct.RoleUserGroupXStruct;
+import com.wuxian.janus.struct.primary.IdType;
 
 import java.util.List;
 
@@ -11,23 +11,23 @@ import java.util.List;
  * @author wuxian
  */
 
-public class RoleUserGroupXMap extends AutoFillMultipleIndexesMap<IdType, RoleUserGroupXEntity> {
+public class RoleUserGroupXMap extends AutoFillMultipleIndexesMap<IdType, RoleUserGroupXStruct> {
 
     private static final String USER_GROUP_ID = "userGroupId";
     private static final String EXECUTE_ACCESS = "executeAccess";
 
-    public RoleUserGroupXMap(SourceLoader<IdType, RoleUserGroupXEntity> sourceLoader) {
+    public RoleUserGroupXMap(SourceLoader<IdType, RoleUserGroupXStruct> sourceLoader) {
         super(sourceLoader);
-        this.createIndex(RoleUserGroupXEntity.class, (Object[] fields) ->
+        this.createIndex(RoleUserGroupXStruct.class, (Object[] fields) ->
                 new String[]{
                         safeToString(fields[0]),
                         safeToString(fields[1])
                 }, USER_GROUP_ID, EXECUTE_ACCESS);
     }
 
-    public List<RoleUserGroupXEntity> getByUserGroupIdExecuteAccess(IdType userGroupId, boolean executeAccess) {
+    public List<RoleUserGroupXStruct> getByUserGroupIdExecuteAccess(IdType userGroupId, boolean executeAccess) {
 
-        return this.getByCondition((RoleUserGroupXEntity) new RoleUserGroupXEntity()
+        return this.getByCondition((RoleUserGroupXStruct) new RoleUserGroupXStruct()
                         .setUserGroupId(userGroupId.getValue())
                         .setExecuteAccess(executeAccess),
                 USER_GROUP_ID, EXECUTE_ACCESS);

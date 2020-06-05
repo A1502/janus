@@ -2,8 +2,8 @@ package com.wuxian.janus.core.cache;
 
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.index.*;
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.TenantIdType;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.TenantIdType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -129,7 +129,7 @@ public abstract class BaseTenantCache {
 
     protected abstract RolePermissionXMap createMultipleRolePermissionXMap();
 
-    protected abstract RoleMap createMultipleRoleEntityMap();
+    protected abstract RoleMap createMultipleRoleStructMap();
 
     protected abstract RoleOtherXMap createMultipleRoleOtherXMap();
 
@@ -146,7 +146,7 @@ public abstract class BaseTenantCache {
     }
 
     public RoleMap getMultipleRole() {
-        return getMultipleInstance(RoleMap.class, this::createMultipleRoleEntityMap);
+        return getMultipleInstance(RoleMap.class, this::createMultipleRoleStructMap);
     }
 
     public RoleOtherXMap getMultipleRoleOtherX() {

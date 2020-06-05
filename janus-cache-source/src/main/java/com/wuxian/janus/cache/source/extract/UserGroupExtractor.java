@@ -10,11 +10,11 @@ import com.wuxian.janus.cache.source.model.UserGroup;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.critical.CoverageTypeEnum;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
-import com.wuxian.janus.entity.OuterObjectEntity;
-import com.wuxian.janus.entity.UserGroupEntity;
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.TenantIdType;
+import com.wuxian.janus.struct.OuterObjectStruct;
+import com.wuxian.janus.struct.UserGroupStruct;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.TenantIdType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,47 +47,47 @@ public class UserGroupExtractor {
             //tenant来源合并,并数据加工
             List<UserGroup> allTenant = new ArrayList<>(from2Tenant);
             allTenant.addAll(from3Tenant);
-            appendEntityTenantId(allTenant, tenantId);
+            appendStructTenantId(allTenant, tenantId);
 
             //来源合并
             List<UserGroup> all = new ArrayList<>(from1Application);
             all.addAll(allTenant);
 
             ExtractUtils.fixIdAndKeyFields(all, idGenerator);
-            Map<IdType, UserGroupEntity> map = ExtractUtils.groupByIdAndMergeToEntity(all,
-                    //在model上面有applicationId,所以在生成entity时补上这个属性通过merge进入到结果中
+            Map<IdType, UserGroupStruct> map = ExtractUtils.groupByIdAndMergeToStruct(all,
+                    //在model上面有applicationId,所以在生成struct时补上这个属性通过merge进入到结果中
                     (model) -> {
                         UserGroup userGroupModel = (UserGroup) model;
-                        UserGroupEntity entity = new UserGroupEntity();
-                        entity.setApplicationId(applicationId.getValue());
+                        UserGroupStruct struct = new UserGroupStruct();
+                        struct.setApplicationId(applicationId.getValue());
 
                         //OuterObjectTypeCode + OuterObjectCode  --> OuterObjectTypeId
                         //注意下面这个条件不可以用keyFieldsHasValue代替
                         if (userGroupModel.getOuterObjectCode() != null) {
-                            OuterObjectEntity outerObjectEntity =
+                            OuterObjectStruct outerObjectStruct =
                                     UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(result,
                                             userGroupModel.getOuterObjectTypeCode()
                                             , userGroupModel.getOuterObjectCode()
-                                            , userGroupModel.toHashString()).outerObjectEntity;
-                            entity.setOuterObjectId(outerObjectEntity.getId());
+                                            , userGroupModel.toHashString()).outerObjectStruct;
+                            struct.setOuterObjectId(outerObjectStruct.getId());
                         }
-                        return entity;
+                        return struct;
                     });
 
             result.getUserGroup().add(applicationId, tenantId, map);
         }
     }
 
-    private static void appendEntityTenantId(List<UserGroup> list, TenantIdType tenantId) {
+    private static void appendStructTenantId(List<UserGroup> list, TenantIdType tenantId) {
         for (UserGroup userGroup : list) {
-            if (userGroup.getEntity() == null) {
-                userGroup.setEntity(new UserGroupEntity());
+            if (userGroup.getStruct() == null) {
+                userGroup.setStruct(new UserGroupStruct());
             }
             NativeUserGroupEnum nativeUserGroup = NativeUserGroupEnum.getByCode(userGroup.getCode());
             if (nativeUserGroup != null && nativeUserGroup.getCoverageType().equals(CoverageTypeEnum.APPLICATION)) {
                 continue;
             }
-            userGroup.getEntity().setTenantId(tenantId.getValue());
+            userGroup.getStruct().setTenantId(tenantId.getValue());
         }
     }
 }

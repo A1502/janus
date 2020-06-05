@@ -1,12 +1,12 @@
 package com.wuxian.janus.core;
 
 import lombok.Data;
-import com.wuxian.janus.entity.PermissionTemplateEntity;
+import com.wuxian.janus.struct.PermissionTemplateStruct;
 
 import java.util.List;
 
 @Data
 public class PermissionInfo {
-    private PermissionTemplateEntity template;
+    private PermissionTemplateStruct template;
     private List<PermissionDetail> permissionDetails;
 }

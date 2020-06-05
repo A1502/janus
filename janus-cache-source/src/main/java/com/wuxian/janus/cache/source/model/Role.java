@@ -6,7 +6,7 @@ import com.wuxian.janus.cache.source.model.item.TenantItem;
 import com.wuxian.janus.cache.source.model.item.UserGroupItem;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
-import com.wuxian.janus.entity.RoleEntity;
+import com.wuxian.janus.struct.RoleStruct;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroupItem {
+public class Role extends CodeModel<RoleStruct> implements TenantItem, UserGroupItem {
 
     @Getter
     @Setter
@@ -72,21 +72,21 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
         return result;
     }
 
-    public static Role byEntity(RoleEntity entity) {
-        return byEntity(entity, null, null);
+    public static Role byStruct(RoleStruct struct) {
+        return byStruct(struct, null, null);
     }
 
-    public static Role byEntity(RoleEntity entity, String outerObjectTypeCode, String outerObjectCode) {
+    public static Role byStruct(RoleStruct struct, String outerObjectTypeCode, String outerObjectCode) {
         boolean multiple = (outerObjectTypeCode != null);
-        Role result = new Role(entity.getCode(), multiple);
-        result.setEntity(entity);
+        Role result = new Role(struct.getCode(), multiple);
+        result.setStruct(struct);
 
         validateMultipleAndNull(multiple, outerObjectTypeCode, outerObjectCode);
         result.outerObjectTypeCode = outerObjectTypeCode;
         result.outerObjectCode = outerObjectCode;
 
-        if (entity.getId() != null) {
-            result.setId(entity.getId().toString());
+        if (struct.getId() != null) {
+            result.setId(struct.getId().toString());
         }
         return result;
     }
@@ -144,8 +144,8 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
     }
 
     @Override
-    protected Class<RoleEntity> getEntityClass() {
-        return RoleEntity.class;
+    protected Class<RoleStruct> getStructClass() {
+        return RoleStruct.class;
     }
 
     @Override
@@ -154,16 +154,16 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
     }
 
     @Override
-    public RoleEntity buildEntity(Function<BaseModel<RoleEntity>, RoleEntity> otherFieldBuilder) {
-        RoleEntity entity = super.buildEntity(otherFieldBuilder);
-        entity.setId(this.buildIdType().getValue());
-        entity.setCode(this.getCode());
-        entity.setMultiple(this.getMultiple());
-        return entity;
+    public RoleStruct buildStruct(Function<BaseModel<RoleStruct>, RoleStruct> otherFieldBuilder) {
+        RoleStruct struct = super.buildStruct(otherFieldBuilder);
+        struct.setId(this.buildIdType().getValue());
+        struct.setCode(this.getCode());
+        struct.setMultiple(this.getMultiple());
+        return struct;
     }
 
     @Override
-    public boolean keyFieldsEquals(BaseModel<RoleEntity> other) {
+    public boolean keyFieldsEquals(BaseModel<RoleStruct> other) {
         if (other instanceof Role) {
             Role otherModel = (Role) other;
             return StrictUtils.equals(this.code, otherModel.code);
@@ -173,7 +173,7 @@ public class Role extends CodeModel<RoleEntity> implements TenantItem, UserGroup
     }
 
     @Override
-    public void fillKeyFields(BaseModel<RoleEntity> other) {
+    public void fillKeyFields(BaseModel<RoleStruct> other) {
         if (other instanceof Role) {
             Role otherModel = (Role) other;
             this.code = otherModel.code;

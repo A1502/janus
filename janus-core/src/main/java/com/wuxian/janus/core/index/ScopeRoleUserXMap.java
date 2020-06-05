@@ -1,8 +1,8 @@
 package com.wuxian.janus.core.index;
 
-import com.wuxian.janus.entity.ScopeRoleUserXEntity;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.UserIdType;
+import com.wuxian.janus.struct.ScopeRoleUserXStruct;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.UserIdType;
 import com.wuxian.janus.core.basis.AutoFillMultipleIndexesMap;
 import com.wuxian.janus.core.basis.SourceLoader;
 
@@ -12,20 +12,20 @@ import java.util.List;
  * @author wuxian
  */
 
-public class ScopeRoleUserXMap extends AutoFillMultipleIndexesMap<IdType, ScopeRoleUserXEntity> {
+public class ScopeRoleUserXMap extends AutoFillMultipleIndexesMap<IdType, ScopeRoleUserXStruct> {
 
     private static final String USER_ID = "userId";
 
-    public ScopeRoleUserXMap(SourceLoader<IdType, ScopeRoleUserXEntity> sourceLoader) {
+    public ScopeRoleUserXMap(SourceLoader<IdType, ScopeRoleUserXStruct> sourceLoader) {
         super(sourceLoader);
-        this.createIndex(ScopeRoleUserXEntity.class, (Object[] fields) ->
+        this.createIndex(ScopeRoleUserXStruct.class, (Object[] fields) ->
                 new String[]{
                         safeToString(fields[0])
                 }, USER_ID);
     }
 
-    public List<ScopeRoleUserXEntity> getByUserId(UserIdType userId) {
-        return this.getByCondition((ScopeRoleUserXEntity) new ScopeRoleUserXEntity()
+    public List<ScopeRoleUserXStruct> getByUserId(UserIdType userId) {
+        return this.getByCondition((ScopeRoleUserXStruct) new ScopeRoleUserXStruct()
                         .setUserId(userId.getValue()),
                 USER_ID);
     }

@@ -5,7 +5,7 @@ import com.wuxian.janus.cache.source.model.item.TenantItem;
 import com.wuxian.janus.cache.source.model.item.UserGroupItem;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
-import com.wuxian.janus.entity.UserGroupEntity;
+import com.wuxian.janus.struct.UserGroupStruct;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem {
+public class UserGroup extends CodeModel<UserGroupStruct> implements TenantItem {
 
     @Getter
     @Setter
@@ -61,20 +61,20 @@ public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem 
         return result;
     }
 
-    public static UserGroup byEntity(UserGroupEntity entity) {
-        return byEntity(entity, null, null);
+    public static UserGroup byStruct(UserGroupStruct struct) {
+        return byStruct(struct, null, null);
     }
 
-    public static UserGroup byEntity(UserGroupEntity entity, String outerObjectTypeCode, String outerObjectCode) {
-        UserGroup result = new UserGroup(entity.getCode());
-        result.setEntity(entity);
+    public static UserGroup byStruct(UserGroupStruct struct, String outerObjectTypeCode, String outerObjectCode) {
+        UserGroup result = new UserGroup(struct.getCode());
+        result.setStruct(struct);
 
         OuterObject.validateNull(outerObjectTypeCode, outerObjectCode);
         result.outerObjectTypeCode = outerObjectTypeCode;
         result.outerObjectCode = outerObjectCode;
 
-        if (entity.getId() != null) {
-            result.setId(entity.getId().toString());
+        if (struct.getId() != null) {
+            result.setId(struct.getId().toString());
         }
         return result;
     }
@@ -127,8 +127,8 @@ public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem 
     }
 
     @Override
-    protected Class<UserGroupEntity> getEntityClass() {
-        return UserGroupEntity.class;
+    protected Class<UserGroupStruct> getStructClass() {
+        return UserGroupStruct.class;
     }
 
     @Override
@@ -137,15 +137,15 @@ public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem 
     }
 
     @Override
-    public UserGroupEntity buildEntity(Function<BaseModel<UserGroupEntity>, UserGroupEntity> otherFieldBuilder) {
-        UserGroupEntity entity = super.buildEntity(otherFieldBuilder);
-        entity.setId(this.buildIdType().getValue());
-        entity.setCode(this.getCode());
-        return entity;
+    public UserGroupStruct buildStruct(Function<BaseModel<UserGroupStruct>, UserGroupStruct> otherFieldBuilder) {
+        UserGroupStruct struct = super.buildStruct(otherFieldBuilder);
+        struct.setId(this.buildIdType().getValue());
+        struct.setCode(this.getCode());
+        return struct;
     }
 
     @Override
-    public boolean keyFieldsEquals(BaseModel<UserGroupEntity> other) {
+    public boolean keyFieldsEquals(BaseModel<UserGroupStruct> other) {
         if (other instanceof UserGroup) {
             UserGroup otherModel = (UserGroup) other;
             return StrictUtils.equals(this.code, otherModel.code);
@@ -155,7 +155,7 @@ public class UserGroup extends CodeModel<UserGroupEntity> implements TenantItem 
     }
 
     @Override
-    public void fillKeyFields(BaseModel<UserGroupEntity> other) {
+    public void fillKeyFields(BaseModel<UserGroupStruct> other) {
         if (other instanceof UserGroup) {
             UserGroup otherModel = (UserGroup) other;
             this.code = otherModel.code;

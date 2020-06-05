@@ -1,7 +1,7 @@
 package com.wuxian.janus.core.synchronism;
 
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.IdType;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.IdBuilder;
 import org.junit.jupiter.api.DisplayName;

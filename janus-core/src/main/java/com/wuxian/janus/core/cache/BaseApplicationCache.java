@@ -1,7 +1,7 @@
 package com.wuxian.janus.core.cache;
 
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.TenantIdType;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.TenantIdType;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.index.PermissionTemplateMap;
 

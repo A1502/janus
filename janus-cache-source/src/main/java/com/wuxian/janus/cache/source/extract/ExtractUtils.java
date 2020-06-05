@@ -1,10 +1,9 @@
 package com.wuxian.janus.cache.source.extract;
 
-import com.wuxian.janus.entity.primary.IdType;
+import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.cache.source.ErrorFactory;
 import com.wuxian.janus.cache.source.IdGenerator;
 import com.wuxian.janus.cache.source.IdUtils;
-import com.wuxian.janus.cache.source.model.CodeModel;
 import com.wuxian.janus.cache.source.model.BaseModel;
 import com.wuxian.janus.core.StrictUtils;
 
@@ -128,13 +127,13 @@ class ExtractUtils {
     }
 
     /**
-     * group和merge后，再把每个model转entity返回
+     * group和merge后，再把每个model转struct返回
      */
-    static <E, T extends BaseModel<E>> Map<IdType, E> groupByIdAndMergeToEntity(List<T> list, Function<BaseModel<E>, E> otherFieldsBuilder) {
+    static <E, T extends BaseModel<E>> Map<IdType, E> groupByIdAndMergeToStruct(List<T> list, Function<BaseModel<E>, E> otherFieldsBuilder) {
         Map<IdType, T> map = groupByIdAndMerge(list);
         Map<IdType, E> result =
                 map.entrySet().stream()
-                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().buildEntity(otherFieldsBuilder)));
+                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().buildStruct(otherFieldsBuilder)));
         return result;
     }
 

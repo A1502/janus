@@ -1,6 +1,6 @@
 package com.wuxian.janus.core.cache;
 
-import com.wuxian.janus.entity.primary.IdType;
+import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.index.OuterObjectMap;
 import com.wuxian.janus.core.index.UserOuterObjectXMap;

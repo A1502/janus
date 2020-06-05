@@ -1,9 +1,9 @@
 package com.wuxian.janus.core;
 
 import lombok.Data;
-import com.wuxian.janus.entity.OuterObjectEntity;
-import com.wuxian.janus.entity.OuterObjectTypeEntity;
-import com.wuxian.janus.entity.PermissionEntity;
+import com.wuxian.janus.struct.OuterObjectStruct;
+import com.wuxian.janus.struct.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.PermissionStruct;
 
 /**
  * @author wuxian
@@ -11,7 +11,7 @@ import com.wuxian.janus.entity.PermissionEntity;
 
 @Data
 public class PermissionDetail {
-    PermissionEntity permission;
-    OuterObjectEntity outerObject;
-    OuterObjectTypeEntity outerObjectType;
+    PermissionStruct permission;
+    OuterObjectStruct outerObject;
+    OuterObjectTypeStruct outerObjectType;
 }

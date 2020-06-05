@@ -7,13 +7,13 @@ import com.wuxian.janus.cache.source.IdUtils;
 import com.wuxian.janus.cache.source.model.*;
 import com.wuxian.janus.core.PermissionTemplateUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
-import com.wuxian.janus.entity.OuterObjectEntity;
-import com.wuxian.janus.entity.OuterObjectTypeEntity;
-import com.wuxian.janus.entity.PermissionEntity;
-import com.wuxian.janus.entity.PermissionTemplateEntity;
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.TenantIdType;
+import com.wuxian.janus.struct.OuterObjectStruct;
+import com.wuxian.janus.struct.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.PermissionStruct;
+import com.wuxian.janus.struct.PermissionTemplateStruct;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.TenantIdType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,46 +66,46 @@ class PermissionExtractor {
             allTenant.addAll(from4Tenant);
             allTenant.addAll(from5Tenant);
             //只需要补全tenantId
-            appendEntityTenantId(allTenant, tenantId);
+            appendStructTenantId(allTenant, tenantId);
 
             //来源合并
             List<Permission> all = new ArrayList<>(from1Application);
             all.addAll(allTenant);
 
             ExtractUtils.fixIdAndKeyFields(all, permissionIdGenerator);
-            Map<IdType, PermissionEntity> map = ExtractUtils.groupByIdAndMergeToEntity(all,
-                    //在model上面有applicationId,所以在生成entity时补上这个属性通过merge进入到结果中
+            Map<IdType, PermissionStruct> map = ExtractUtils.groupByIdAndMergeToStruct(all,
+                    //在model上面有applicationId,所以在生成struct时补上这个属性通过merge进入到结果中
                     (model) -> {
                         Permission permissionModel = (Permission) model;
-                        PermissionEntity entity = new PermissionEntity();
+                        PermissionStruct struct = new PermissionStruct();
 
                         //PermissionTemplateCode  -->  PermissionTemplateId
-                        PermissionTemplateEntity permissionTemplateEntity
+                        PermissionTemplateStruct permissionTemplateStruct
                                 = PermissionTemplateExtractor.findByPermissionTemplateCode(result
                                 , application, permissionModel.getPermissionTemplateCode()
                                 , permissionModel.toHashString());
-                        entity.setPermissionTemplateId(permissionTemplateEntity.getId());
+                        struct.setPermissionTemplateId(permissionTemplateStruct.getId());
 
                         //验证权限模板和权限是否是同类的outerObjectType
-                        checkOuterObjectTypeMatch(result, permissionTemplateEntity, permissionModel);
+                        checkOuterObjectTypeMatch(result, permissionTemplateStruct, permissionModel);
 
                         //OuterObjectTypeCode + OuterObjectCode  --> OuterObjectTypeId
                         //注意下面这个条件不可以用keyFieldsHasValue代替
                         if (permissionModel.getOuterObjectCode() != null) {
-                            OuterObjectEntity outerObjectEntity =
+                            OuterObjectStruct outerObjectStruct =
                                     UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(result,
                                             permissionModel.getOuterObjectTypeCode()
                                             , permissionModel.getOuterObjectCode()
-                                            , permissionModel.toHashString()).outerObjectEntity;
-                            entity.setOuterObjectId(outerObjectEntity.getId());
+                                            , permissionModel.toHashString()).outerObjectStruct;
+                            struct.setOuterObjectId(outerObjectStruct.getId());
                         }
-                        return entity;
+                        return struct;
                     });
 
             //按single,multiple收录到结果中
-            Map<IdType, PermissionEntity> singles = new HashMap<>();
-            Map<IdType, PermissionEntity> multiples = new HashMap<>();
-            for (Map.Entry<IdType, PermissionEntity> entry : map.entrySet()) {
+            Map<IdType, PermissionStruct> singles = new HashMap<>();
+            Map<IdType, PermissionStruct> multiples = new HashMap<>();
+            for (Map.Entry<IdType, PermissionStruct> entry : map.entrySet()) {
                 if (entry.getValue().getOuterObjectId() == null) {
                     singles.put(entry.getKey(), entry.getValue());
                 } else {
@@ -121,15 +121,15 @@ class PermissionExtractor {
      * 验证permissionTemplate和permission的outerObjectType要一致
      */
     private static void checkOuterObjectTypeMatch(DirectAccessControlSource source
-            , PermissionTemplateEntity permissionTemplateEntity
+            , PermissionTemplateStruct permissionTemplateStruct
             , Permission permissionModel) {
 
         String outerObjectTypeCodeOfPermissionTemplate = null;
-        if (permissionTemplateEntity.getOuterObjectTypeId() != null) {
-            OuterObjectTypeEntity outerObjectTypeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeId(source
-                    , IdUtils.createId(permissionTemplateEntity.getOuterObjectTypeId().toString())
+        if (permissionTemplateStruct.getOuterObjectTypeId() != null) {
+            OuterObjectTypeStruct outerObjectTypeStruct = OuterObjectTypeExtractor.findByOuterObjectTypeId(source
+                    , IdUtils.createId(permissionTemplateStruct.getOuterObjectTypeId().toString())
                     , permissionModel.toHashString());
-            outerObjectTypeCodeOfPermissionTemplate = outerObjectTypeEntity.getCode();
+            outerObjectTypeCodeOfPermissionTemplate = outerObjectTypeStruct.getCode();
         }
 
         boolean allowed = PermissionTemplateUtils.relationAllowed(outerObjectTypeCodeOfPermissionTemplate
@@ -137,19 +137,19 @@ class PermissionExtractor {
 
         if (!allowed) {
             throw ErrorFactory.createOuterObjectTypeNotMatchError(
-                    PermissionTemplate.byId(permissionTemplateEntity.getId().toString()
-                            , permissionTemplateEntity.getCode()).toHashString()
+                    PermissionTemplate.byId(permissionTemplateStruct.getId().toString()
+                            , permissionTemplateStruct.getCode()).toHashString()
                     , permissionModel.toHashString()
             );
         }
     }
 
-    private static void appendEntityTenantId(List<Permission> list, TenantIdType tenantId) {
+    private static void appendStructTenantId(List<Permission> list, TenantIdType tenantId) {
         for (Permission permission : list) {
-            if (permission.getEntity() == null) {
-                permission.setEntity(new PermissionEntity());
+            if (permission.getStruct() == null) {
+                permission.setStruct(new PermissionStruct());
             }
-            permission.getEntity().setTenantId(tenantId.getValue());
+            permission.getStruct().setTenantId(tenantId.getValue());
         }
     }
 }

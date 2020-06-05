@@ -3,10 +3,10 @@ package com.wuxian.janus.core.synchronism;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.basis.AutoFillMultipleIndexesMap;
 import com.wuxian.janus.core.cache.*;
-import com.wuxian.janus.entity.OuterObjectTypeEntity;
-import com.wuxian.janus.entity.primary.ApplicationIdType;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.TenantIdType;
+import com.wuxian.janus.struct.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.TenantIdType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,8 +63,8 @@ public abstract class BaseStatusSynchronizer {
             outerObjectTypeCachePool.shrink();
         }
 
-        for (OuterObjectTypeEntity typeEntity : outerObjectTypeCachePool.getOuterObjectTypeMap().getAll()) {
-            IdType outerObjectTypeId = new IdType(typeEntity.getId());
+        for (OuterObjectTypeStruct typeStruct : outerObjectTypeCachePool.getOuterObjectTypeMap().getAll()) {
+            IdType outerObjectTypeId = new IdType(typeStruct.getId());
             BaseOuterObjectTypeCache typeCache = outerObjectTypeCachePool.getOuterObjectTypeCache(outerObjectTypeId);
 
             if (StrictUtils.containsKey(statusMap, outerObjectTypeId)) {

@@ -7,11 +7,11 @@ import com.wuxian.janus.cache.source.IdUtils;
 import com.wuxian.janus.cache.source.model.*;
 import com.wuxian.janus.core.StrictUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
-import com.wuxian.janus.entity.OuterObjectEntity;
-import com.wuxian.janus.entity.OuterObjectTypeEntity;
-import com.wuxian.janus.entity.UserOuterObjectXEntity;
-import com.wuxian.janus.entity.primary.IdType;
-import com.wuxian.janus.entity.primary.UserIdType;
+import com.wuxian.janus.struct.OuterObjectStruct;
+import com.wuxian.janus.struct.OuterObjectTypeStruct;
+import com.wuxian.janus.struct.UserOuterObjectXStruct;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.UserIdType;
 
 import java.util.*;
 import java.util.function.Function;
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 class UserAndOuterObjectExtractor {
 
     static class OuterObjectPair {
-        OuterObjectTypeEntity outerObjectTypeEntity;
-        OuterObjectEntity outerObjectEntity;
+        OuterObjectTypeStruct outerObjectTypeStruct;
+        OuterObjectStruct outerObjectStruct;
     }
 
     static final String DELIMITER = ",";
@@ -85,22 +85,22 @@ class UserAndOuterObjectExtractor {
         //modelMap最后计算UserOuterObjectX时要用
         Map<IdType, OuterObject> modelMap = ExtractUtils.groupByIdAndMerge(all);
 
-        Map<IdType, OuterObjectEntity> entityMap = modelMap.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().buildEntity(
-                        //下面的拉曼达完成outerObjectCode到Id的转换，结果存入returnEntity
+        Map<IdType, OuterObjectStruct> structMap = modelMap.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().buildStruct(
+                        //下面的拉曼达完成outerObjectCode到Id的转换，结果存入returnStruct
                         (model) -> {
                             OuterObject outerObject = (OuterObject) model;
-                            OuterObjectEntity returnEntity = new OuterObjectEntity();
-                            OuterObjectTypeEntity typeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeCode(
+                            OuterObjectStruct returnStruct = new OuterObjectStruct();
+                            OuterObjectTypeStruct typeStruct = OuterObjectTypeExtractor.findByOuterObjectTypeCode(
                                     result, outerObject.getOuterObjectTypeCode(), outerObject.toHashString());
-                            returnEntity.setOuterObjectTypeId(typeEntity.getId());
-                            returnEntity.setReferenceCode(outerObject.getCode());
-                            return returnEntity;
+                            returnStruct.setOuterObjectTypeId(typeStruct.getId());
+                            returnStruct.setReferenceCode(outerObject.getCode());
+                            return returnStruct;
                         }
                 )));
 
         //以OuterObjectTypeId分组
-        Map<IdType, List<OuterObjectEntity>> collect = entityMap.values()
+        Map<IdType, List<OuterObjectStruct>> collect = structMap.values()
                 .stream()
                 .collect(Collectors.groupingBy(o -> new IdType(o.getOuterObjectTypeId())));
 
@@ -126,12 +126,12 @@ class UserAndOuterObjectExtractor {
                 outerObjects.stream().collect(Collectors.groupingBy(OuterObject::getOuterObjectTypeCode));
 
         for (List<OuterObject> list : group.values()) {
-            //model转entity
-            OuterObjectTypeEntity typeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeCode(result,
+            //model转struct
+            OuterObjectTypeStruct typeStruct = OuterObjectTypeExtractor.findByOuterObjectTypeCode(result,
                     list.get(0).getOuterObjectTypeCode(), list.get(0).toHashString());
-            IdType outerObjectTypeId = new IdType(typeEntity.getId());
+            IdType outerObjectTypeId = new IdType(typeStruct.getId());
 
-            Map<IdType, UserOuterObjectXEntity> data = extractUserOuterObjectX(outerObjectTypeId, list, idGenerator)
+            Map<IdType, UserOuterObjectXStruct> data = extractUserOuterObjectX(outerObjectTypeId, list, idGenerator)
                     .stream().collect(Collectors.toMap(o -> new IdType(o.getId()), Function.identity()));
             //转map后存储到result中
             if (data.size() > 0) {
@@ -144,7 +144,7 @@ class UserAndOuterObjectExtractor {
      * STEP2-2子方法: 按outerObjectTypeId分组处理
      * 要求outerObjects的outerObjectTypeId全部是一致的，且和参数outerObjectTypeId值相等
      */
-    private static List<UserOuterObjectXEntity> extractUserOuterObjectX(IdType outerObjectTypeId, Collection<OuterObject> outerObjects, IdGenerator idGenerator) {
+    private static List<UserOuterObjectXStruct> extractUserOuterObjectX(IdType outerObjectTypeId, Collection<OuterObject> outerObjects, IdGenerator idGenerator) {
         //首先按scope作为key；然后是UserIdType作为key,以其对应的OuterObject.IdType作为value
         Map<String, Map<UserIdType, Set<IdType>>> pool = new HashMap<>();
 
@@ -173,7 +173,7 @@ class UserAndOuterObjectExtractor {
                 }
         );
 
-        List<UserOuterObjectXEntity> result = new ArrayList<>();
+        List<UserOuterObjectXStruct> result = new ArrayList<>();
         //再打包收集到result
         for (String scope : pool.keySet()) {
 
@@ -188,13 +188,13 @@ class UserAndOuterObjectExtractor {
                         .collect(Collectors.toList());
                 String oIdLink = String.join(DELIMITER, outerObjectIdStrings.toArray(new String[outerObjectIdStrings.size()]));
 
-                UserOuterObjectXEntity xEntity = new UserOuterObjectXEntity();
-                xEntity.setId(idGenerator.generate().getValue());
-                xEntity.setScope(scope);
-                xEntity.setUserId(uId.getValue());
-                xEntity.setOuterObjectIdList(oIdLink);
-                xEntity.setOuterObjectTypeId(outerObjectTypeId.getValue());
-                result.add(xEntity);
+                UserOuterObjectXStruct xStruct = new UserOuterObjectXStruct();
+                xStruct.setId(idGenerator.generate().getValue());
+                xStruct.setScope(scope);
+                xStruct.setUserId(uId.getValue());
+                xStruct.setOuterObjectIdList(oIdLink);
+                xStruct.setOuterObjectTypeId(outerObjectTypeId.getValue());
+                result.add(xStruct);
             }
         }
         return result;
@@ -203,25 +203,25 @@ class UserAndOuterObjectExtractor {
     static OuterObjectPair findByOuterObjectTypeCodeAndOuterObjectCode(DirectAccessControlSource source
             , String outerObjectTypeCode, String outerObjectCode, String context) {
 
-        OuterObjectTypeEntity outerObjectTypeEntity = OuterObjectTypeExtractor.findByOuterObjectTypeCode(
+        OuterObjectTypeStruct outerObjectTypeStruct = OuterObjectTypeExtractor.findByOuterObjectTypeCode(
                 source, outerObjectTypeCode, new OuterObject(outerObjectCode, outerObjectTypeCode).toHashString());
 
-        Map<IdType, OuterObjectEntity> map = source.getOuterObject().get(IdUtils.createId(outerObjectTypeEntity.getId().toString()));
+        Map<IdType, OuterObjectStruct> map = source.getOuterObject().get(IdUtils.createId(outerObjectTypeStruct.getId().toString()));
 
-        String targetDesc = "Map<IdType, OuterObjectEntity>";
+        String targetDesc = "Map<IdType, OuterObjectStruct>";
         if (map == null) {
             throw ErrorFactory.createNothingFoundError(targetDesc
-                    , "outerObjectTypeId = " + outerObjectTypeEntity.getId()
+                    , "outerObjectTypeId = " + outerObjectTypeStruct.getId()
                     , context);
         }
 
         targetDesc = "OuterObject";
-        OuterObjectEntity entity = ExtractUtils.findFirst(map.values(),
+        OuterObjectStruct struct = ExtractUtils.findFirst(map.values(),
                 o -> StrictUtils.equals(outerObjectCode, o.getReferenceCode()));
-        if (entity != null) {
+        if (struct != null) {
             OuterObjectPair result = new OuterObjectPair();
-            result.outerObjectTypeEntity = outerObjectTypeEntity;
-            result.outerObjectEntity = entity;
+            result.outerObjectTypeStruct = outerObjectTypeStruct;
+            result.outerObjectStruct = struct;
             return result;
         } else {
             throw ErrorFactory.createNothingFoundError(targetDesc
