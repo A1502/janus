@@ -88,6 +88,8 @@ this.createIndex(OuterObjectTypeEntity.class, (Object[] fields) ->
                         safeToString(fields[0])
                 }, USED_BY_USER_GROUP);  TODO 3
 
-11.extractor还没完 TODO 1
+11.extractor还没完，包括基本测试 TODO 1
 
 12.role,userGroup支持禁用启用 TODO
+
+11.extractor后续深入测试 TODO
