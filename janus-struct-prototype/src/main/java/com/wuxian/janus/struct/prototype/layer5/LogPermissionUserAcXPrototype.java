@@ -1,7 +1,7 @@
 package com.wuxian.janus.struct.prototype.layer5;
 
 import com.wuxian.janus.struct.prototype.ControlPrototype;
-import io.swagger.annotations.ApiModelProperty;
+import com.wuxian.janus.struct.annotation.PropertyRemark;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,10 +22,10 @@ public class LogPermissionUserAcXPrototype<ID, UID> extends ControlPrototype<ID,
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "权限id", example = "1")
+    @PropertyRemark(value = "权限id", example = "1")
     private ID permissionId;
 
-    @ApiModelProperty(value = "用户id", example = "1")
+    @PropertyRemark(value = "用户id", example = "1")
     private UID userId;
 
 }

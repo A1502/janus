@@ -1,7 +1,7 @@
 package com.wuxian.janus.struct.prototype.layer2;
 
 import com.wuxian.janus.struct.prototype.JanusPrototype;
-import io.swagger.annotations.ApiModelProperty;
+import com.wuxian.janus.struct.annotation.PropertyRemark;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,18 +43,18 @@ public class PermissionPrototype<ID, UID, TID> extends JanusPrototype<ID, UID> {
         setVersion(version);
     }
 
-    @ApiModelProperty(value = "权限模板id", example = "1")
+    @PropertyRemark(value = "权限模板id", example = "1")
     private ID permissionTemplateId;
 
-    @ApiModelProperty(value = "租户id", example = "1")
+    @PropertyRemark(value = "租户id", example = "1")
     private TID tenantId;
 
-    @ApiModelProperty(value = "外部对象id", example = "1")
+    @PropertyRemark(value = "外部对象id", example = "1")
     private ID outerObjectId;
 
-    @ApiModelProperty(value = "外部对象备注", example = "这是备注文本...")
+    @PropertyRemark(value = "外部对象备注", example = "这是备注文本...")
     private String outerObjectRemark;
 
-    @ApiModelProperty(value = "乐观锁", example = "998")
+    @PropertyRemark(value = "乐观锁", example = "998")
     private Integer version;
 }

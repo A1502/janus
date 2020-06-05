@@ -1,7 +1,7 @@
 package com.wuxian.janus.struct.prototype.layer2;
 
 import com.wuxian.janus.struct.prototype.JanusPrototype;
-import io.swagger.annotations.ApiModelProperty;
+import com.wuxian.janus.struct.annotation.PropertyRemark;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,33 +43,33 @@ public class PermissionTemplatePrototype<ID, UID, AID> extends JanusPrototype<ID
         setLastModifiedDate(lastModifiedDate);
     }
 
-    @ApiModelProperty(value = "应用id", example = "1")
+    @PropertyRemark(value = "应用id", example = "1")
     private AID applicationId;
 
-    @ApiModelProperty(value = "编码", example = "Student.Edit")
+    @PropertyRemark(value = "编码", example = "Student.Edit")
     private String code;
 
     /**
     操作级权限 = false，数据级权限 = true，数据级权限可以通过permission表的outerObjectId来指定一条数据
      */
-    @ApiModelProperty(value = "操作级权限 = false，数据级权限 = true", example = "false")
+    @PropertyRemark(value = "操作级权限 = false，数据级权限 = true", example = "false")
     private Boolean multiple;
 
-    @ApiModelProperty(value = "名称", example = "编辑学生")
+    @PropertyRemark(value = "名称", example = "编辑学生")
     private String name;
 
-    @ApiModelProperty(value = "描述", example = "这是权限模板的描述...")
+    @PropertyRemark(value = "描述", example = "这是权限模板的描述...")
     private String description;
 
-    @ApiModelProperty(value = "权限敏感等级枚举,", example = "read|edit|delete|add|read_write|advanced_read|advanced_edit|advanced_delete|advanced_add|advanced_read_write")
+    @PropertyRemark(value = "权限敏感等级枚举,", example = "read|edit|delete|add|read_write|advanced_read|advanced_edit|advanced_delete|advanced_add|advanced_read_write")
     private String permissionLevel;
 
-    @ApiModelProperty(value = "自定义的权限分类", example = "navigation")
+    @PropertyRemark(value = "自定义的权限分类", example = "navigation")
     private String permissionType;
 
-    @ApiModelProperty(value = "绑定的外部对象类型id", example = "1")
+    @PropertyRemark(value = "绑定的外部对象类型id", example = "1")
     private ID outerObjectTypeId;
 
-    @ApiModelProperty(value = "乐观锁", example = "998")
+    @PropertyRemark(value = "乐观锁", example = "998")
     private Integer version;
 }

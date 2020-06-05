@@ -1,7 +1,7 @@
 package com.wuxian.janus.struct.prototype.layer2;
 
 import com.wuxian.janus.struct.prototype.JanusPrototype;
-import io.swagger.annotations.ApiModelProperty;
+import com.wuxian.janus.struct.annotation.PropertyRemark;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,12 +40,12 @@ public class RolePermissionXPrototype<ID, UID> extends JanusPrototype<ID, UID> {
         setLastModifiedDate(lastModifiedDate);
     }
 
-    @ApiModelProperty(value = "角色id", example = "1")
+    @PropertyRemark(value = "角色id", example = "1")
     private ID roleId;
 
-    @ApiModelProperty(value = "权限id", example = "1")
+    @PropertyRemark(value = "权限id", example = "1")
     private ID permissionId;
 
-    @ApiModelProperty(value = "乐观锁", example = "998")
+    @PropertyRemark(value = "乐观锁", example = "998")
     private Integer version;
 }

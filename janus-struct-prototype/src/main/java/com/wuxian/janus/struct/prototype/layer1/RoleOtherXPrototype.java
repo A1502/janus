@@ -1,7 +1,8 @@
 package com.wuxian.janus.struct.prototype.layer1;
 
 import com.wuxian.janus.struct.prototype.AccessPrototype;
-import io.swagger.annotations.ApiModelProperty;
+import com.wuxian.janus.struct.annotation.PropertyRemark;
+import com.wuxian.janus.struct.util.PrototypeUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,29 +29,20 @@ public class RoleOtherXPrototype<ID, UID> extends AccessPrototype<ID, UID> {
         setId(id);
         setRoleId(roleId);
 
-        setViewAccess(viewAccess);
-        setExecuteAccess(executeAccess);
-        setEditAccess(editAccess);
-        setDeleteAccess(deleteAccess);
-        setEnableAccess(enableAccess);
+        PrototypeUtils.fillAccess(this, viewAccess, executeAccess, editAccess, deleteAccess, enableAccess);
 
-        setCreationProposer(createdBy);
-        setModificationProposer(lastModifiedBy);
-        setCreatedBy(createdBy);
-        setCreatedDate(createdDate);
-        setLastModifiedBy(lastModifiedBy);
-        setLastModifiedDate(lastModifiedDate);
+        PrototypeUtils.fill(this,createdBy,createdDate,lastModifiedBy,lastModifiedDate);
         setVersion(version);
     }
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "角色id", example = "1")
+    @PropertyRemark(value = "角色id", example = "1")
     private ID roleId;
 
-    @ApiModelProperty(value = "加入访问权:能否加入", example = "true")
+    @PropertyRemark(value = "加入访问权:能否加入", example = "true")
     private boolean executeAccess;
 
-    @ApiModelProperty(value = "乐观锁", example = "998")
+    @PropertyRemark(value = "乐观锁", example = "998")
     private Integer version;
 }

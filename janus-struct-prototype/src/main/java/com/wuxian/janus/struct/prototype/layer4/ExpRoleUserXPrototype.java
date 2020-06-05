@@ -1,7 +1,7 @@
 package com.wuxian.janus.struct.prototype.layer4;
 
 import com.wuxian.janus.struct.prototype.ExpiryPrototype;
-import io.swagger.annotations.ApiModelProperty;
+import com.wuxian.janus.struct.annotation.PropertyRemark;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,10 +22,10 @@ public class ExpRoleUserXPrototype<ID, UID> extends ExpiryPrototype<ID, UID> {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "角色id", example = "1")
+    @PropertyRemark(value = "角色id", example = "1")
     private Integer roleId;
 
-    @ApiModelProperty(value = "用户id", example = "1")
+    @PropertyRemark(value = "用户id", example = "1")
     private Integer userId;
 
 }

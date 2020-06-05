@@ -1,7 +1,8 @@
 package com.wuxian.janus.struct.prototype.layer1;
 
 import com.wuxian.janus.struct.prototype.JanusPrototype;
-import io.swagger.annotations.ApiModelProperty;
+import com.wuxian.janus.struct.annotation.PropertyRemark;
+import com.wuxian.janus.struct.util.PrototypeUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,36 +37,31 @@ public class UserGroupPrototype<ID, UID, AID, TID> extends JanusPrototype<ID, UI
         setDescription(description);
         setOuterObjectId(outerObjectId);
 
-        setCreationProposer(createdBy);
-        setModificationProposer(lastModifiedBy);
-        setCreatedBy(createdBy);
-        setCreatedDate(createdDate);
-        setLastModifiedBy(lastModifiedBy);
-        setLastModifiedDate(lastModifiedDate);
+        PrototypeUtils.fill(this,createdBy,createdDate,lastModifiedBy,lastModifiedDate);
         setVersion(version);
     }
 
-    @ApiModelProperty(value = "应用id", example = "1")
+    @PropertyRemark(value = "应用id", example = "1")
     private AID applicationId;
 
-    @ApiModelProperty(value = "租户", example = "1")
+    @PropertyRemark(value = "租户", example = "1")
     private TID tenantId;
 
-    @ApiModelProperty(value = "编码", example = "boss")
+    @PropertyRemark(value = "编码", example = "boss")
     private String code;
 
-    @ApiModelProperty(value = "名称", example = "基础配置平台")
+    @PropertyRemark(value = "名称", example = "基础配置平台")
     private String name;
 
-    @ApiModelProperty(value = "状态", example = "true")
+    @PropertyRemark(value = "状态", example = "true")
     private Boolean enable;
 
-    @ApiModelProperty(value = "描述", example = "这是用户组的描述...")
+    @PropertyRemark(value = "描述", example = "这是用户组的描述...")
     private String description;
 
-    @ApiModelProperty(value = "外部对象id", example = "1")
+    @PropertyRemark(value = "外部对象id", example = "1")
     private ID outerObjectId;
 
-    @ApiModelProperty(value = "乐观锁", example = "998")
+    @PropertyRemark(value = "乐观锁", example = "998")
     private Integer version;
 }

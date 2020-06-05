@@ -1,7 +1,8 @@
 package com.wuxian.janus.struct.prototype.layer1;
 
 import com.wuxian.janus.struct.prototype.JanusPrototype;
-import io.swagger.annotations.ApiModelProperty;
+import com.wuxian.janus.struct.annotation.PropertyRemark;
+import com.wuxian.janus.struct.util.PrototypeUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,30 +36,25 @@ public class OuterObjectTypePrototype<ID, UID> extends JanusPrototype<ID, UID> {
         setUsedByUserGroup(usedByUserGroup);
         setUsedByPermission(usedByPermission);
 
-        setCreationProposer(createdBy);
-        setModificationProposer(lastModifiedBy);
-        setCreatedBy(createdBy);
-        setCreatedDate(createdDate);
-        setLastModifiedBy(lastModifiedBy);
-        setLastModifiedDate(lastModifiedDate);
+        PrototypeUtils.fill(this,createdBy,createdDate,lastModifiedBy,lastModifiedDate);
     }
 
-    @ApiModelProperty(value = "编码", example = "BOSS_ORG")
+    @PropertyRemark(value = "编码", example = "BOSS_ORG")
     private String code;
 
-    @ApiModelProperty(value = "名称", example = "组织")
+    @PropertyRemark(value = "名称", example = "组织")
     private String name;
 
-    @ApiModelProperty(value = "reference_id的组成类型", example = "application_id;tenant_id")
+    @PropertyRemark(value = "reference_id的组成类型", example = "application_id;tenant_id")
     private String referenceIdRemark;
 
-    @ApiModelProperty(value = "是否作为用户组的关联对象", example = "false")
+    @PropertyRemark(value = "是否作为用户组的关联对象", example = "false")
     private boolean usedByUserGroup;
 
-    @ApiModelProperty(value = "是否作为数据级权限的关联对象", example = "false")
+    @PropertyRemark(value = "是否作为数据级权限的关联对象", example = "false")
     private boolean usedByPermission;
 
-    @ApiModelProperty(value = "乐观锁", example = "998")
+    @PropertyRemark(value = "乐观锁", example = "998")
     private Integer version;
 
 }

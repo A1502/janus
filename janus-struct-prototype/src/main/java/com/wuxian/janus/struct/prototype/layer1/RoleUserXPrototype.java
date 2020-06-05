@@ -1,7 +1,8 @@
 package com.wuxian.janus.struct.prototype.layer1;
 
+import com.wuxian.janus.struct.annotation.PropertyRemark;
 import com.wuxian.janus.struct.prototype.ControlPrototype;
-import io.swagger.annotations.ApiModelProperty;
+import com.wuxian.janus.struct.util.PrototypeUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,39 +33,25 @@ public class RoleUserXPrototype<ID, UID> extends ControlPrototype<ID, UID> {
         setRoleId(roleId);
         setUserId(userId);
 
-        setViewAccess(viewAccess);
-        setExecuteAccess(executeAccess);
-        setEditAccess(editAccess);
-        setDeleteAccess(deleteAccess);
-        setEnableAccess(enableAccess);
+        PrototypeUtils.fillAccess(this, viewAccess, executeAccess, editAccess, deleteAccess, enableAccess);
+        PrototypeUtils.fillControl(this, viewControl, executeControl, editControl, deleteControl, enableControl);
 
-        setViewControl(viewControl);
-        setExecuteControl(executeControl);
-        setEditControl(editControl);
-        setDeleteControl(deleteControl);
-        setEnableControl(enableControl);
-
-        setCreationProposer(createdBy);
-        setModificationProposer(lastModifiedBy);
-        setCreatedBy(createdBy);
-        setCreatedDate(createdDate);
-        setLastModifiedBy(lastModifiedBy);
-        setLastModifiedDate(lastModifiedDate);
+        PrototypeUtils.fill(this, createdBy, createdDate, lastModifiedBy, lastModifiedDate);
         setVersion(version);
     }
 
-    @ApiModelProperty(value = "角色id", example = "1")
+    @PropertyRemark(value = "角色id", example = "1")
     private ID roleId;
 
-    @ApiModelProperty(value = "用户id", example = "1")
+    @PropertyRemark(value = "用户id", example = "1")
     private UID userId;
 
-    @ApiModelProperty(value = "加入访问权:能否加入", example = "true")
+    @PropertyRemark(value = "加入访问权:能否加入", example = "true")
     private boolean executeAccess;
 
-    @ApiModelProperty(value = "加入控制权:能否管理他人加入", example = "true")
+    @PropertyRemark(value = "加入控制权:能否管理他人加入", example = "true")
     private boolean executeControl;
 
-    @ApiModelProperty(value = "乐观锁", example = "998")
+    @PropertyRemark(value = "乐观锁", example = "998")
     private Integer version;
 }

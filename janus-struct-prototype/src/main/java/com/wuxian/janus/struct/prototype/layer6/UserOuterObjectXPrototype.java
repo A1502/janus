@@ -1,7 +1,7 @@
 package com.wuxian.janus.struct.prototype.layer6;
 
 import com.wuxian.janus.struct.prototype.JanusPrototype;
-import io.swagger.annotations.ApiModelProperty;
+import com.wuxian.janus.struct.annotation.PropertyRemark;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,19 +40,19 @@ public class UserOuterObjectXPrototype<ID, UID> extends JanusPrototype<ID, UID> 
         setLastModifiedDate(lastModifiedDate);
     }
 
-    @ApiModelProperty(value = "外部对象类型id", example = "1")
+    @PropertyRemark(value = "外部对象类型id", example = "1")
     private ID outerObjectTypeId;
 
     /**
     和角色以及用户组的scope概念相同
      */
-    @ApiModelProperty(value = "范围", example = "null")
+    @PropertyRemark(value = "范围", example = "null")
     private String scope;
 
-    @ApiModelProperty(value = "用户id", example = "1")
+    @PropertyRemark(value = "用户id", example = "1")
     private UID userId;
 
-    @ApiModelProperty(value = "外部对象id的集合，逗号连接多个", example = "1,2,3,4")
+    @PropertyRemark(value = "外部对象id的集合，逗号连接多个", example = "1,2,3,4")
     private String outerObjectIdList;
 
     //无需version

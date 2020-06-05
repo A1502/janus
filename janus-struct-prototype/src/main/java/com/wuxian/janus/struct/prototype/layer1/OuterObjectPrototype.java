@@ -1,7 +1,8 @@
 package com.wuxian.janus.struct.prototype.layer1;
 
 import com.wuxian.janus.struct.prototype.JanusPrototype;
-import io.swagger.annotations.ApiModelProperty;
+import com.wuxian.janus.struct.annotation.PropertyRemark;
+import com.wuxian.janus.struct.util.PrototypeUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,27 +36,22 @@ public class OuterObjectPrototype<ID, UID> extends JanusPrototype<ID, UID> {
         setReferenceName(referenceName);
         setReferenceDescription(referenceDescription);
 
-        setCreationProposer(createdBy);
-        setModificationProposer(lastModifiedBy);
-        setCreatedBy(createdBy);
-        setCreatedDate(createdDate);
-        setLastModifiedBy(lastModifiedBy);
-        setLastModifiedDate(lastModifiedDate);
+        PrototypeUtils.fill(this,createdBy,createdDate,lastModifiedBy,lastModifiedDate);
     }
 
-    @ApiModelProperty(value = "外部对象类型id", example = "1")
+    @PropertyRemark(value = "外部对象类型id", example = "1")
     private ID outerObjectTypeId;
 
-    @ApiModelProperty(value = "外部引用id", example = "CN88800")
+    @PropertyRemark(value = "外部引用id", example = "CN88800")
     private String referenceId;
 
-    @ApiModelProperty(value = "外部引用code", example = "China_Shanghai")
+    @PropertyRemark(value = "外部引用code", example = "China_Shanghai")
     private String referenceCode;
 
-    @ApiModelProperty(value = "外部引用名称", example = "中国上海市")
+    @PropertyRemark(value = "外部引用名称", example = "中国上海市")
     private String referenceName;
 
-    @ApiModelProperty(value = "外部引用描述", example = "这是唯一识别外部数据的描述...")
+    @PropertyRemark(value = "外部引用描述", example = "这是唯一识别外部数据的描述...")
     private String referenceDescription;
 
     //无需version

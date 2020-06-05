@@ -1,7 +1,7 @@
 package com.wuxian.janus.struct.prototype.layer5;
 
 import com.wuxian.janus.struct.prototype.ControlPrototype;
-import io.swagger.annotations.ApiModelProperty;
+import com.wuxian.janus.struct.annotation.PropertyRemark;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,21 +22,21 @@ public class PermissionUserAcXPrototype<ID, UID, TID> extends ControlPrototype<I
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "用户id", example = "1")
+    @PropertyRemark(value = "用户id", example = "1")
     private UID userId;
 
-    @ApiModelProperty(value = "权限id", example = "1")
+    @PropertyRemark(value = "权限id", example = "1")
     private ID permissionId;
 
-    @ApiModelProperty(value = "租户id", example = "1")
+    @PropertyRemark(value = "租户id", example = "1")
     private TID tenantId;
 
-    @ApiModelProperty(value = "打包访问权:能否把该权限添加到角色中", example = "true")
+    @PropertyRemark(value = "打包访问权:能否把该权限添加到角色中", example = "true")
     private boolean executeAccess;
 
-    @ApiModelProperty(value = "打包控制权:能否管理他人把该权限添加到角色中", example = "true")
+    @PropertyRemark(value = "打包控制权:能否管理他人把该权限添加到角色中", example = "true")
     private boolean executeControl;
 
-    @ApiModelProperty(value = "乐观锁", example = "998")
+    @PropertyRemark(value = "乐观锁", example = "998")
     private Integer version;
 }
