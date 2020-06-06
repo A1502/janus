@@ -63,7 +63,9 @@ public class Tenant implements ApplicationItem {
 
     @Getter
     private List<Permission> permissions = new ArrayList<>();
+
     //---------------------------------------------------------------------------------------------------------------------------------
+
     protected Tenant() {
     }
 
@@ -75,7 +77,9 @@ public class Tenant implements ApplicationItem {
         result.id = id;
         return result;
     }
+
     //---------------------------------------------------------------------------------------------------------------------------------
+
     public Tenant addItem(TenantItem... items) {
 
         for (TenantItem item : items) {
