@@ -79,6 +79,11 @@ public class AccessControlCacheProvider07 extends BaseAccessControlCacheProvider
     }
 
     @Override
+    protected SourceLoader<IdType, UserGroupOtherXStruct> createUserGroupOtherXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return null;
+    }
+
+    @Override
     protected SourceLoader<IdType, PermissionStruct> createSinglePermissionLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
         return null;
     }

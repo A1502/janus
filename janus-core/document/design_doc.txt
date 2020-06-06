@@ -65,7 +65,7 @@ Permission
 4.对于role和userGroup的page页面，打算也用缓存实现。因为这个逻辑很绕，最好别再sql写一遍。也写不出来。【DONE】
 
  1:33:58
-5.权限过期方案，是把过期表要加一个列，表示过期已经执行了。执行的效果是直接删rolePermissionX和userGroupUserX。
+5.权限过期方案，是把过期表要加列，表示过期已经执行了。执行的效果是直接删rolePermissionX和userGroupUserX。
 TODO 5
 
  1:34:49
@@ -86,7 +86,7 @@ TODO
 this.createIndex(OuterObjectTypeStruct.class, (Object[] fields) ->
                 new String[]{
                         safeToString(fields[0])
-                }, USED_BY_USER_GROUP);  TODO 3
+                }, USED_BY_USER_GROUP);  DONE 3
 
 11.extractor还没完，包括基本测试 TODO 1
 

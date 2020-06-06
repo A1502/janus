@@ -48,66 +48,70 @@ public class DirectAccessControlSource {
             = new TenantMap<>();
 
     @Getter //6
-    private TenantMap<IdType, PermissionStruct> singlePermission
+    private TenantMap<IdType, UserGroupOtherXStruct> userGroupOtherX
             = new TenantMap<>();
 
     @Getter //7
-    private TenantMap<IdType, RolePermissionXStruct> singleRolePermissionX
+    private TenantMap<IdType, PermissionStruct> singlePermission
             = new TenantMap<>();
 
     @Getter //8
-    private TenantMap<IdType, RoleStruct> singleRole
+    private TenantMap<IdType, RolePermissionXStruct> singleRolePermissionX
             = new TenantMap<>();
 
     @Getter //9
-    private TenantMap<IdType, RoleOtherXStruct> singleRoleOtherX
+    private TenantMap<IdType, RoleStruct> singleRole
             = new TenantMap<>();
 
     @Getter //10
-    private TenantMap<IdType, RoleUserGroupXStruct> singleRoleUserGroupX
+    private TenantMap<IdType, RoleOtherXStruct> singleRoleOtherX
             = new TenantMap<>();
 
     @Getter //11
-    private TenantMap<IdType, RoleUserXStruct> singleRoleUserX
+    private TenantMap<IdType, RoleUserGroupXStruct> singleRoleUserGroupX
             = new TenantMap<>();
 
     @Getter //12
-    private TenantMap<IdType, PermissionStruct> multiplePermission
+    private TenantMap<IdType, RoleUserXStruct> singleRoleUserX
             = new TenantMap<>();
 
     @Getter //13
-    private TenantMap<IdType, RolePermissionXStruct> multipleRolePermissionX
+    private TenantMap<IdType, PermissionStruct> multiplePermission
             = new TenantMap<>();
 
     @Getter //14
-    private TenantMap<IdType, RoleStruct> multipleRole
+    private TenantMap<IdType, RolePermissionXStruct> multipleRolePermissionX
             = new TenantMap<>();
 
     @Getter //15
-    private TenantMap<IdType, RoleOtherXStruct> multipleRoleOtherX
+    private TenantMap<IdType, RoleStruct> multipleRole
             = new TenantMap<>();
 
     @Getter //16
-    private TenantMap<IdType, RoleUserGroupXStruct> multipleRoleUserGroupX
+    private TenantMap<IdType, RoleOtherXStruct> multipleRoleOtherX
             = new TenantMap<>();
 
     @Getter //17
-    private TenantMap<IdType, RoleUserXStruct> multipleRoleUserX
+    private TenantMap<IdType, RoleUserGroupXStruct> multipleRoleUserGroupX
             = new TenantMap<>();
 
     @Getter //18
+    private TenantMap<IdType, RoleUserXStruct> multipleRoleUserX
+            = new TenantMap<>();
+
+    @Getter //19
     private ApplicationMap<IdType, PermissionTemplateStruct> permissionTemplate
             = new ApplicationMap<>();
 
-    @Getter //19
+    @Getter //20
     private Map<IdType, OuterObjectTypeStruct> outerObjectType
             = new HashMap<>();
 
-    @Getter //20
+    @Getter //21
     private JanusMap<IdType, OuterObjectStruct> outerObject
             = new JanusMap<>();
 
-    @Getter //21
+    @Getter //22
     private JanusMap<IdType, UserOuterObjectXStruct> userOuterObjectX
             = new JanusMap<>();
 
@@ -135,45 +139,47 @@ public class DirectAccessControlSource {
             //5
             fullPrintTenantMap("[ UserGroupUserX ]", stream, BLANK, userGroupUserX, o -> print(stream, UserGroupUserXStruct.class, o));
             //6
-            fullPrintTenantMap("[ SinglePermission ]", stream, BLANK, singlePermission, o -> print(stream, PermissionStruct.class, o));
+            fullPrintTenantMap("[ UserGroupOtherX ]", stream, BLANK, userGroupOtherX, o -> print(stream, UserGroupOtherXStruct.class, o));
             //7
-            fullPrintTenantMap("[ SingleRolePermissionX ]", stream, BLANK, singleRolePermissionX, o -> print(stream, RolePermissionXStruct.class, o));
+            fullPrintTenantMap("[ SinglePermission ]", stream, BLANK, singlePermission, o -> print(stream, PermissionStruct.class, o));
             //8
-            fullPrintTenantMap("[ SingleRole ]", stream, BLANK, singleRole, o -> print(stream, RoleStruct.class, o));
+            fullPrintTenantMap("[ SingleRolePermissionX ]", stream, BLANK, singleRolePermissionX, o -> print(stream, RolePermissionXStruct.class, o));
             //9
-            fullPrintTenantMap("[ SingleRoleOtherX ]", stream, BLANK, singleRoleOtherX, o -> print(stream, RoleOtherXStruct.class, o));
+            fullPrintTenantMap("[ SingleRole ]", stream, BLANK, singleRole, o -> print(stream, RoleStruct.class, o));
             //10
-            fullPrintTenantMap("[ SingleRoleUserGroupX ]", stream, BLANK, singleRoleUserGroupX, o -> print(stream, RoleUserGroupXStruct.class, o));
+            fullPrintTenantMap("[ SingleRoleOtherX ]", stream, BLANK, singleRoleOtherX, o -> print(stream, RoleOtherXStruct.class, o));
             //11
-            fullPrintTenantMap("[ SingleRoleUserX ]", stream, BLANK, singleRoleUserX, o -> print(stream, RoleUserXStruct.class, o));
+            fullPrintTenantMap("[ SingleRoleUserGroupX ]", stream, BLANK, singleRoleUserGroupX, o -> print(stream, RoleUserGroupXStruct.class, o));
             //12
-            fullPrintTenantMap("[ MultiplePermission ]", stream, BLANK, multiplePermission, o -> print(stream, PermissionStruct.class, o));
+            fullPrintTenantMap("[ SingleRoleUserX ]", stream, BLANK, singleRoleUserX, o -> print(stream, RoleUserXStruct.class, o));
             //13
-            fullPrintTenantMap("[ MultipleRolePermissionX ]", stream, BLANK, multipleRolePermissionX, o -> print(stream, RolePermissionXStruct.class, o));
+            fullPrintTenantMap("[ MultiplePermission ]", stream, BLANK, multiplePermission, o -> print(stream, PermissionStruct.class, o));
             //14
-            fullPrintTenantMap("[ MultipleRole ]", stream, BLANK, multipleRole, o -> print(stream, RoleStruct.class, o));
+            fullPrintTenantMap("[ MultipleRolePermissionX ]", stream, BLANK, multipleRolePermissionX, o -> print(stream, RolePermissionXStruct.class, o));
             //15
-            fullPrintTenantMap("[ MultipleRoleOtherX ]", stream, BLANK, multipleRoleOtherX, o -> print(stream, RoleOtherXStruct.class, o));
+            fullPrintTenantMap("[ MultipleRole ]", stream, BLANK, multipleRole, o -> print(stream, RoleStruct.class, o));
             //16
-            fullPrintTenantMap("[ multipleRoleUserGroupX ]", stream, BLANK, multipleRoleUserGroupX, o -> print(stream, RoleUserGroupXStruct.class, o));
+            fullPrintTenantMap("[ MultipleRoleOtherX ]", stream, BLANK, multipleRoleOtherX, o -> print(stream, RoleOtherXStruct.class, o));
             //17
-            fullPrintTenantMap("[ MultipleRoleUserX ]", stream, BLANK, multipleRoleUserX, o -> print(stream, RoleUserXStruct.class, o));
+            fullPrintTenantMap("[ multipleRoleUserGroupX ]", stream, BLANK, multipleRoleUserGroupX, o -> print(stream, RoleUserGroupXStruct.class, o));
             //18
+            fullPrintTenantMap("[ MultipleRoleUserX ]", stream, BLANK, multipleRoleUserX, o -> print(stream, RoleUserXStruct.class, o));
+            //19
             stream.print("[ PermissionTemplate ]");
             stream.println();
             printApplicationMap(stream, BLANK, permissionTemplate, o -> print(stream, PermissionTemplateStruct.class, o));
             stream.println();
-            //19
+            //20
             stream.print("[ OuterObjectType ]");
             stream.println();
             printMap(stream, BLANK, outerObjectType, o -> print(stream, OuterObjectTypeStruct.class, o));
             stream.println();
-            //20
+            //21
             stream.print("[ OuterObject ]");
             stream.println();
             printJanusMap(stream, BLANK, "outerObjectTypeId", outerObject, o -> print(stream, OuterObjectStruct.class, o));
             stream.println();
-            //21
+            //22
             stream.print("[ UserOuterObjectX ]");
             stream.println();
             printJanusMap(stream, BLANK, "outerObjectTypeId", userOuterObjectX, o -> print(stream, UserOuterObjectXStruct.class, o));
@@ -436,65 +442,69 @@ public class DirectAccessControlSource {
                     , result.getUserGroupUserX());
 
             //6
+            fillTenantMap(applicationIdTenantIdRange, cacheProvider::createUserGroupOtherXLoader
+                    , result.getUserGroupOtherX());
+
+            //7
             fillTenantMap(applicationIdTenantIdRange, cacheProvider::createSinglePermissionLoader
                     , result.getSinglePermission());
 
-            //7
+            //8
             fillTenantMap(applicationIdTenantIdRange, cacheProvider::createSingleRolePermissionXLoader
                     , result.getSingleRolePermissionX());
 
-            //8
+            //9
             fillTenantMap(applicationIdTenantIdRange, cacheProvider::createSingleRoleLoader
                     , result.getSingleRole());
 
-            //9
+            //10
             fillTenantMap(applicationIdTenantIdRange, cacheProvider::createSingleRoleOtherXLoader
                     , result.getSingleRoleOtherX());
 
-            //10
+            //11
             fillTenantMap(applicationIdTenantIdRange, cacheProvider::createSingleRoleUserGroupXLoader
                     , result.getSingleRoleUserGroupX());
 
-            //11
+            //12
             fillTenantMap(applicationIdTenantIdRange, cacheProvider::createSingleRoleUserXLoader
                     , result.getSingleRoleUserX());
 
-            //12
+            //13
             fillTenantMap(applicationIdTenantIdRange, cacheProvider::createMultiplePermissionLoader
                     , result.getMultiplePermission());
 
-            //13
+            //14
             fillTenantMap(applicationIdTenantIdRange, cacheProvider::createMultipleRolePermissionXLoader
                     , result.getMultipleRolePermissionX());
 
-            //14
+            //15
             fillTenantMap(applicationIdTenantIdRange, cacheProvider::createMultipleRoleLoader
                     , result.getMultipleRole());
 
-            //15
+            //16
             fillTenantMap(applicationIdTenantIdRange, cacheProvider::createMultipleRoleOtherXLoader
                     , result.getMultipleRoleOtherX());
 
-            //16
+            //17
             fillTenantMap(applicationIdTenantIdRange, cacheProvider::createMultipleRoleUserGroupXLoader
                     , result.getMultipleRoleUserGroupX());
 
-            //17
+            //18
             fillTenantMap(applicationIdTenantIdRange, cacheProvider::createMultipleRoleUserXLoader
                     , result.getMultipleRoleUserX());
 
-            //18
+            //19
             fillClusterMap(applicationIdTenantIdRange.keySet(), cacheProvider::createPermissionTemplateLoader
                     , result.getPermissionTemplate());
 
-            //19
+            //20
             result.getOuterObjectType().putAll(cacheProvider.createOuterObjectTypeLoader().load());
 
-            //20
+            //21
             fillClusterMap(result.getOuterObjectType().keySet(), cacheProvider::createOuterObjectLoader
                     , result.getOuterObject());
 
-            //21
+            //22
             fillClusterMap(result.getOuterObjectType().keySet(), cacheProvider::createUserOuterObjectXLoader
                     , result.getUserOuterObjectX());
 

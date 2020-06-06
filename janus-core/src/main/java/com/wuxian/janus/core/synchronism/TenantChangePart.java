@@ -4,6 +4,7 @@ public enum TenantChangePart {
     SCOPE_USER_GROUP_USER,
     USER_GROUP,
     USER_GROUP_USER,
+    USER_GROUP_OTHER,
 
     SCOPE_SINGLE_ROLE_USER,
     SINGLE_PERMISSION,

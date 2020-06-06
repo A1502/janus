@@ -85,6 +85,7 @@ public abstract class BaseStatusSynchronizer {
 
         fill(cache.getUserGroup(), list.contains(TenantChangePart.USER_GROUP));
         fill(cache.getUserGroupUserX(), list.contains(TenantChangePart.USER_GROUP_USER));
+        fill(cache.getUserGroupOtherX(), list.contains(TenantChangePart.USER_GROUP_OTHER));
 
         fill(cache.getSinglePermission(), list.contains(TenantChangePart.SINGLE_PERMISSION));
         fill(cache.getSingleRole(), list.contains(TenantChangePart.SINGLE_ROLE));

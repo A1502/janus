@@ -29,6 +29,7 @@ public class DirectAccessControlCacheProvider extends BaseAccessControlCacheProv
 
     /**
      * 记录且合并使用过的ApplicationId和TenantId
+     *
      * @param input
      */
     private void fillIdRange(Map<ApplicationIdType, Set<TenantIdType>> input) {
@@ -132,51 +133,54 @@ public class DirectAccessControlCacheProvider extends BaseAccessControlCacheProv
         provider.fillSourceLoaderMap(source.getUserGroupUserX(), UserGroupUserXStruct.class, null);
 
         //6
-        provider.fillSourceLoaderMap(source.getSinglePermission(), PermissionStruct.class, true);
+        provider.fillSourceLoaderMap(source.getUserGroupOtherX(), UserGroupOtherXStruct.class, null);
 
         //7
-        provider.fillSourceLoaderMap(source.getSingleRolePermissionX(), RolePermissionXStruct.class, true);
+        provider.fillSourceLoaderMap(source.getSinglePermission(), PermissionStruct.class, true);
 
         //8
-        provider.fillSourceLoaderMap(source.getSingleRole(), RoleStruct.class, true);
+        provider.fillSourceLoaderMap(source.getSingleRolePermissionX(), RolePermissionXStruct.class, true);
 
         //9
-        provider.fillSourceLoaderMap(source.getSingleRoleOtherX(), RoleOtherXStruct.class, true);
+        provider.fillSourceLoaderMap(source.getSingleRole(), RoleStruct.class, true);
 
         //10
-        provider.fillSourceLoaderMap(source.getSingleRoleUserGroupX(), RoleUserGroupXStruct.class, true);
+        provider.fillSourceLoaderMap(source.getSingleRoleOtherX(), RoleOtherXStruct.class, true);
 
         //11
-        provider.fillSourceLoaderMap(source.getSingleRoleUserX(), RoleUserXStruct.class, true);
+        provider.fillSourceLoaderMap(source.getSingleRoleUserGroupX(), RoleUserGroupXStruct.class, true);
 
         //12
-        provider.fillSourceLoaderMap(source.getMultiplePermission(), PermissionStruct.class, false);
+        provider.fillSourceLoaderMap(source.getSingleRoleUserX(), RoleUserXStruct.class, true);
 
         //13
-        provider.fillSourceLoaderMap(source.getMultipleRolePermissionX(), RolePermissionXStruct.class, false);
+        provider.fillSourceLoaderMap(source.getMultiplePermission(), PermissionStruct.class, false);
 
         //14
-        provider.fillSourceLoaderMap(source.getMultipleRole(), RoleStruct.class, false);
+        provider.fillSourceLoaderMap(source.getMultipleRolePermissionX(), RolePermissionXStruct.class, false);
 
         //15
-        provider.fillSourceLoaderMap(source.getMultipleRoleOtherX(), RoleOtherXStruct.class, false);
+        provider.fillSourceLoaderMap(source.getMultipleRole(), RoleStruct.class, false);
 
         //16
-        provider.fillSourceLoaderMap(source.getMultipleRoleUserGroupX(), RoleUserGroupXStruct.class, false);
+        provider.fillSourceLoaderMap(source.getMultipleRoleOtherX(), RoleOtherXStruct.class, false);
 
         //17
-        provider.fillSourceLoaderMap(source.getMultipleRoleUserX(), RoleUserXStruct.class, false);
+        provider.fillSourceLoaderMap(source.getMultipleRoleUserGroupX(), RoleUserGroupXStruct.class, false);
 
         //18
-        provider.fillSourceLoaderMap(source.getPermissionTemplate(), PermissionTemplateStruct.class);
+        provider.fillSourceLoaderMap(source.getMultipleRoleUserX(), RoleUserXStruct.class, false);
 
         //19
-        provider.fillSourceLoaderMap(source.getOuterObjectType(), OuterObjectTypeStruct.class);
+        provider.fillSourceLoaderMap(source.getPermissionTemplate(), PermissionTemplateStruct.class);
 
         //20
-        provider.fillSourceLoaderMap(source.getOuterObject(), OuterObjectStruct.class);
+        provider.fillSourceLoaderMap(source.getOuterObjectType(), OuterObjectTypeStruct.class);
 
         //21
+        provider.fillSourceLoaderMap(source.getOuterObject(), OuterObjectStruct.class);
+
+        //22
         provider.fillSourceLoaderMap(source.getUserOuterObjectX(), UserOuterObjectXStruct.class);
 
         return provider;
@@ -212,6 +216,11 @@ public class DirectAccessControlCacheProvider extends BaseAccessControlCacheProv
     @Override
     protected SourceLoader<IdType, UserGroupUserXStruct> createUserGroupUserXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
         return getFromSourceLoaderMap(UserGroupUserXStruct.class, null, applicationId, tenantId);
+    }
+
+    @Override
+    protected SourceLoader<IdType, UserGroupOtherXStruct> createUserGroupOtherXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        return getFromSourceLoaderMap(UserGroupOtherXStruct.class, null, applicationId, tenantId);
     }
 
     @Override

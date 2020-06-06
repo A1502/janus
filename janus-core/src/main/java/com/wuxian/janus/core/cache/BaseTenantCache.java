@@ -75,12 +75,18 @@ public abstract class BaseTenantCache {
 
     protected abstract UserGroupUserXMap createUserGroupUserXMap();
 
+    protected abstract UserGroupOtherXMap createUserGroupOtherXMap();
+
     public UserGroupMap getUserGroup() {
         return getSingleInstance(UserGroupMap.class, this::createUserGroupMap);
     }
 
     public UserGroupUserXMap getUserGroupUserX() {
         return getSingleInstance(UserGroupUserXMap.class, this::createUserGroupUserXMap);
+    }
+
+    public UserGroupOtherXMap getUserGroupOtherX() {
+        return getSingleInstance(UserGroupOtherXMap.class, this::createUserGroupOtherXMap);
     }
     //</editor-fold>
 

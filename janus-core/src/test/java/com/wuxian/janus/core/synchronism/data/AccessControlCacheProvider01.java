@@ -120,6 +120,14 @@ public class AccessControlCacheProvider01 extends BaseAccessControlCacheProvider
     }
 
     @Override
+    protected SourceLoader<IdType, UserGroupOtherXStruct> createUserGroupOtherXLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
+        if (StrictUtils.equals(applicationId, IdBuilder.aId(defaultAId)) && StrictUtils.equals(tenantId, IdBuilder.tId(defaultTId))) {
+            return getSourceLoader(UserGroupOtherXStruct.class);
+        }
+        return null;
+    }
+
+    @Override
     protected SourceLoader<IdType, PermissionStruct> createSinglePermissionLoader(ApplicationIdType applicationId, TenantIdType tenantId) {
         if (StrictUtils.equals(applicationId, IdBuilder.aId(defaultAId)) && StrictUtils.equals(tenantId, IdBuilder.tId(defaultTId))) {
             return getSourceLoader(PermissionStruct.class);
