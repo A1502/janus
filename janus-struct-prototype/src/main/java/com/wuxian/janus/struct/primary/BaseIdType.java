@@ -47,7 +47,7 @@ public abstract class BaseIdType<T extends Comparable> implements Comparable {
     @Override
     public int hashCode() {
         if (value == null) {
-            return Integer.MIN_VALUE;
+            return Void.class.hashCode();
         }
         return value.hashCode();
     }
