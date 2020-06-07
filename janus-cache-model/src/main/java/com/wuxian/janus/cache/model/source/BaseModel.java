@@ -8,9 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 
 public abstract class BaseModel<E> {
@@ -49,14 +47,18 @@ public abstract class BaseModel<E> {
     }
 
     /**
-     * 以下情况提前处理，返回true表示skip后续复制行为
-     * 1）copyFromValue是List类型，按merge元素方式处理
-     * 2）copyFromValue没有值
-     * 3）copyFromValue和copyToValue相等
+     * 以下情况提前处理，返回true表示跳过后续复制行为
+     * 1）copyFromValue是List类型，按合并元素方式处理
+     * 2）copyFromValue是Map类型，按合并Map方式处理
+     * 3）copyFromValue没有值
+     * 4）copyFromValue和copyToValue相等
      */
     private boolean beforeFieldCopy(String model, String fieldName, Object copyToValue, Object copyFromValue, Object copyTo, Method copyToFieldSetter) {
         if (copyFromValue != null) {
             if (mergeListField(model, fieldName, copyToValue, copyFromValue, copyTo, copyToFieldSetter)) {
+                return true;
+            }
+            if (mergeMapField(model, fieldName, copyToValue, copyFromValue, copyTo, copyToFieldSetter)) {
                 return true;
             }
             if (copyToValue == null) {
@@ -98,6 +100,29 @@ public abstract class BaseModel<E> {
         return false;
     }
 
+    /**
+     * Map类型，采用合并两个Map的方式处理
+     * 是Map返回true
+     */
+    private boolean mergeMapField(String model, String fieldName, Object copyToValue, Object copyFromValue, Object copyTo, Method copyToFieldSetter) {
+        if (copyFromValue instanceof Map) {
+            try {
+                Map copyToValueMap;
+                if (copyToValue == null) {
+                    copyToValueMap = new HashMap();
+                    copyToFieldSetter.invoke(copyTo, copyToValueMap);
+                } else {
+                    copyToValueMap = (Map) copyToValue;
+                }
+                copyToValueMap.putAll((Map) copyFromValue);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw ErrorFactory.createMapStructFieldError(model, fieldName);
+            }
+            return true;
+        }
+        return false;
+    }
 
     public void mergeFrom(BaseModel<E> other) {
         if (other != null) {
