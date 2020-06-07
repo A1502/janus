@@ -103,6 +103,19 @@ public enum LevelEnum {
         this.enableControl = enableControl;
     }
 
+    public AccessControl toAccessControl() {
+        AccessControl result = new AccessControl(this.viewAccess
+                , this.executeAccess
+                , this.editAccess
+                , this.deleteAccess
+                , this.enableAccess
+                , this.viewControl
+                , this.executeControl
+                , this.editControl
+                , this.deleteControl
+                , this.enableControl);
+        return result;
+    }
 
     /**
      * 判定是否兼容：
