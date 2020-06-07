@@ -5,13 +5,18 @@ import com.wuxian.janus.cache.model.source.item.RoleItem;
 import com.wuxian.janus.cache.model.source.item.TenantItem;
 import com.wuxian.janus.cache.model.source.item.UserGroupItem;
 import com.wuxian.janus.core.basis.StrictUtils;
+import com.wuxian.janus.core.critical.Access;
+import com.wuxian.janus.core.critical.AccessControl;
+import com.wuxian.janus.core.critical.LevelEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.struct.layer1.RoleStruct;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class Role extends CodeModel<RoleStruct> implements TenantItem, UserGroupItem {
@@ -33,10 +38,13 @@ public class Role extends CodeModel<RoleStruct> implements TenantItem, UserGroup
     private Boolean multiple;
 
     @Getter
+    private Access access;
+
+    @Getter
     private List<Permission> permissions = new ArrayList<>();
 
     @Getter
-    private List<User> users = new ArrayList<>();
+    private Map<User, AccessControl> users = new HashMap<>();
 
     //---------------------------------------------------------------------------------------------------------------------------------
 
@@ -130,16 +138,38 @@ public class Role extends CodeModel<RoleStruct> implements TenantItem, UserGroup
         }
     }
 
+    //---------------------------------------------------------------------------------------------------------------------------------
+
     public Role addItem(RoleItem... items) {
         for (RoleItem item : items) {
             if (item instanceof Permission) {
                 permissions.add((Permission) item);
             } else if (item instanceof User) {
-                users.add((User) item);
+                addItem((User) item);
             } else {
                 throw ErrorFactory.createIllegalItemTypeError(item.getClass().toString());
             }
         }
+        return this;
+    }
+
+    public Role addItem(User user, AccessControl accessControl) {
+        this.users.put(user, accessControl);
+        return this;
+    }
+
+    public Role addItem(User user, LevelEnum level) {
+        return addItem(user, level.toAccessControl());
+    }
+
+    public Role addItem(User user) {
+        return addItem(user, LevelEnum.THREE.toAccessControl());
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------------------
+
+    public Role setAccess(Access access) {
+        this.access = access;
         return this;
     }
 
@@ -180,5 +210,15 @@ public class Role extends CodeModel<RoleStruct> implements TenantItem, UserGroup
         } else {
             throw ErrorFactory.createInvalidModelClassError(other, this);
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }

@@ -56,7 +56,7 @@ public class RoleExtractor {
             //来源4
             List<Role> from4Tenant = new ArrayList<>();
             for (UserGroup userGroup : tenant.getUserGroups()) {
-                from4Tenant.addAll(userGroup.getRoles());
+                from4Tenant.addAll(userGroup.getRoles().keySet());
             }
 
             //tenant来源合并,并数据加工

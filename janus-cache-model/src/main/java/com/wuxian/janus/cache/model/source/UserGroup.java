@@ -4,13 +4,18 @@ import com.wuxian.janus.cache.model.ErrorFactory;
 import com.wuxian.janus.cache.model.source.item.UserGroupItem;
 import com.wuxian.janus.cache.model.source.item.TenantItem;
 import com.wuxian.janus.core.basis.StrictUtils;
+import com.wuxian.janus.core.critical.Access;
+import com.wuxian.janus.core.critical.AccessControl;
+import com.wuxian.janus.core.critical.LevelEnum;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
 import com.wuxian.janus.struct.layer1.UserGroupStruct;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class UserGroup extends CodeModel<UserGroupStruct> implements TenantItem {
@@ -24,10 +29,13 @@ public class UserGroup extends CodeModel<UserGroupStruct> implements TenantItem 
     private String outerObjectTypeCode;
 
     @Getter
-    private List<User> users = new ArrayList<>();
+    private Access access;
 
     @Getter
-    private List<Role> roles = new ArrayList<>();
+    private Map<User, AccessControl> users = new HashMap<>();
+
+    @Getter
+    private Map<Role, AccessControl> roles = new HashMap<>();
 
     //---------------------------------------------------------------------------------------------------------------------------------
 
@@ -116,13 +124,50 @@ public class UserGroup extends CodeModel<UserGroupStruct> implements TenantItem 
 
         for (UserGroupItem item : items) {
             if (item instanceof User) {
-                users.add((User) item);
+                addItem((User) item);
             } else if (item instanceof Role) {
-                roles.add((Role) item);
+                addItem((Role) item);
             } else {
                 throw ErrorFactory.createIllegalItemTypeError(item.getClass().toString());
             }
         }
+        return this;
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------------------
+
+    public UserGroup addItem(User user, AccessControl accessControl) {
+        this.users.put(user, accessControl);
+        return this;
+    }
+
+    public UserGroup addItem(User user, LevelEnum level) {
+        return addItem(user, level.toAccessControl());
+    }
+
+    public UserGroup addItem(User user) {
+        return addItem(user, LevelEnum.THREE.toAccessControl());
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------------------
+
+    public UserGroup addItem(Role user, AccessControl accessControl) {
+        this.roles.put(user, accessControl);
+        return this;
+    }
+
+    public UserGroup addItem(Role role, LevelEnum level) {
+        return addItem(role, level.toAccessControl());
+    }
+
+    public UserGroup addItem(Role role) {
+        return addItem(role, LevelEnum.THREE.toAccessControl());
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------------------
+
+    public UserGroup setAccess(Access access) {
+        this.access = access;
         return this;
     }
 

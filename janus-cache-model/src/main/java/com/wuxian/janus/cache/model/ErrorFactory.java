@@ -22,7 +22,7 @@ public final class ErrorFactory {
 
     public final static String ID_GENERATOR_FACTORY_NOT_SUPPORT = PRE + "ID_GENERATOR_FACTORY_NOT_SUPPORT";
 
-    public final static String ENTITY_MERGING_FAILED = PRE + "ENTITY_MERGING_FAILED";
+    public final static String STRUCT_MERGING_FAILED = PRE + "STRUCT_MERGING_FAILED";
 
     public final static String ID_CONFLICT = PRE + "ID_CONFLICT";
 
@@ -30,11 +30,13 @@ public final class ErrorFactory {
 
     public final static String DUPLICATED_PROPERTY = PRE + "DUPLICATED_PROPERTY";
 
-    public final static String BUILD_ENTITY_FAILED = PRE + "BUILD_ENTITY_FAILED";
+    public final static String BUILD_STRUCT_FAILED = PRE + "BUILD_STRUCT_FAILED";
 
     public final static String NOTHING_FOUND = PRE + "NOTHING_FOUND";
 
-    public final static String LIST_ENTITY_FIELD = PRE + "LIST_ENTITY_FIELD";
+    public final static String LIST_STRUCT_FIELD = PRE + "LIST_STRUCT_FIELD";
+
+    public final static String MAP_STRUCT_FIELD = PRE + "MAP_STRUCT_FIELD";
 
     public final static String OUTER_OBJECT_TYPE_CODE_CANNOT_BE_NULL = PRE + "OUTER_OBJECT_TYPE_CODE_CANNOT_BE_NULL";
 
@@ -84,7 +86,7 @@ public final class ErrorFactory {
 
     public static ErrorCodeException createStructMergingFailedError(String object, String detail) {
         String message = "合并struct发生错误:" + object;
-        return new ErrorCodeException(ENTITY_MERGING_FAILED, message, detail);
+        return new ErrorCodeException(STRUCT_MERGING_FAILED, message, detail);
     }
 
     public static ErrorCodeException createIdConflictError(String object) {
@@ -109,7 +111,7 @@ public final class ErrorFactory {
 
     public static ErrorCodeException createBuildStructFailedError(String object, String detail) {
         String message = "生成struct发生错误:" + object;
-        return new ErrorCodeException(BUILD_ENTITY_FAILED, message, detail);
+        return new ErrorCodeException(BUILD_STRUCT_FAILED, message, detail);
     }
 
     public static ErrorCodeException createNothingFoundError(String targetDesc, String findByDesc, String context) {
@@ -119,8 +121,14 @@ public final class ErrorFactory {
 
     public static ErrorCodeException createListStructFieldError(String object, String fieldName) {
         String message = "List类型属性" + fieldName + "合并出错 : " + object;
-        return new ErrorCodeException(LIST_ENTITY_FIELD, message, null);
+        return new ErrorCodeException(LIST_STRUCT_FIELD, message, null);
     }
+
+    public static ErrorCodeException createMapStructFieldError(String object, String fieldName) {
+        String message = "Map类型属性" + fieldName + "合并出错 : " + object;
+        return new ErrorCodeException(MAP_STRUCT_FIELD, message, null);
+    }
+
 
     public static ErrorCodeException createOuterObjectTypeCodeCannotBeNullError() {
         String message = "outerObjectTypeCode不能为null";
