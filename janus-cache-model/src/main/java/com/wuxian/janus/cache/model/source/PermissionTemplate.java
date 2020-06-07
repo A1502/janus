@@ -3,7 +3,7 @@ package com.wuxian.janus.cache.model.source;
 import com.wuxian.janus.cache.model.ErrorFactory;
 import com.wuxian.janus.cache.model.source.item.ApplicationItem;
 import com.wuxian.janus.core.basis.StrictUtils;
-import com.wuxian.janus.core.critical.CoverageTypeEnum;
+import com.wuxian.janus.core.critical.DimensionEnum;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
 import com.wuxian.janus.struct.layer2.PermissionTemplateStruct;
 import lombok.Getter;
@@ -69,13 +69,13 @@ public class PermissionTemplate extends CodeModel<PermissionTemplateStruct> impl
 
     public PermissionTemplate(NativePermissionTemplateEnum code) {
         this(code == null ? null : code.getCode());
-        this.multiple = (code != null && code.getCoverageType() == CoverageTypeEnum.TENANT);
+        this.multiple = (code != null && code.getDimension() == DimensionEnum.TENANT);
     }
 
     public static PermissionTemplate byId(String id, NativePermissionTemplateEnum code) {
         PermissionTemplate result = byId(id);
         result.code = code == null ? null : code.getCode();
-        result.multiple = (code != null && code.getCoverageType() == CoverageTypeEnum.TENANT);
+        result.multiple = (code != null && code.getDimension() == DimensionEnum.TENANT);
         return result;
     }
 

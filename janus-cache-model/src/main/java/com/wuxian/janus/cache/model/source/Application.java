@@ -5,7 +5,7 @@ import com.wuxian.janus.cache.model.extract.id.IdGenerator;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
 import com.wuxian.janus.cache.model.source.item.ApplicationItem;
 import com.wuxian.janus.core.calculate.PermissionTemplateUtils;
-import com.wuxian.janus.core.critical.CoverageTypeEnum;
+import com.wuxian.janus.core.critical.DimensionEnum;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
@@ -106,7 +106,7 @@ public class Application {
         } else if (role == NativeRoleEnum.APPLICATION_MAINTAINER) {
             this.applicationMaintainerRoleId = id;
         } else {
-            throw ErrorFactory.createIllegalNativeCoverageError(CoverageTypeEnum.APPLICATION, role.toString());
+            throw ErrorFactory.createIllegalNativeDimensionError(DimensionEnum.APPLICATION, role.toString());
         }
         return this;
     }
@@ -117,7 +117,7 @@ public class Application {
         } else if (userGroup == NativeUserGroupEnum.APPLICATION_ADMIN) {
             this.applicationAdminUserGroupId = id;
         } else {
-            throw ErrorFactory.createIllegalNativeCoverageError(CoverageTypeEnum.APPLICATION,
+            throw ErrorFactory.createIllegalNativeDimensionError(DimensionEnum.APPLICATION,
                     userGroup.getCode());
         }
         return this;
@@ -129,7 +129,7 @@ public class Application {
         } else if (template == NativePermissionTemplateEnum.INIT_TENANT) {
             this.initTenantPair = new PairId(permissionId, templateId);
         } else {
-            throw ErrorFactory.createIllegalNativeCoverageError(CoverageTypeEnum.APPLICATION,
+            throw ErrorFactory.createIllegalNativeDimensionError(DimensionEnum.APPLICATION,
                     template.getCode());
         }
         return this;
@@ -145,7 +145,7 @@ public class Application {
         } else if (template == NativePermissionTemplateEnum.CREATE_INNER_GROUP) {
             this.createInnerGroupTemplateId = templateId;
         } else {
-            throw ErrorFactory.createIllegalNativeCoverageError(CoverageTypeEnum.APPLICATION, template.getCode());
+            throw ErrorFactory.createIllegalNativeDimensionError(DimensionEnum.APPLICATION, template.getCode());
         }
         return this;
     }

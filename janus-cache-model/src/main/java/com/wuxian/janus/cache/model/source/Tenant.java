@@ -4,7 +4,7 @@ import com.wuxian.janus.cache.model.extract.id.IdUtils;
 import com.wuxian.janus.cache.model.source.item.ApplicationItem;
 import com.wuxian.janus.cache.model.source.item.TenantItem;
 import com.wuxian.janus.cache.model.ErrorFactory;
-import com.wuxian.janus.core.critical.CoverageTypeEnum;
+import com.wuxian.janus.core.critical.DimensionEnum;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
@@ -102,7 +102,7 @@ public class Tenant implements ApplicationItem {
         } else if (role == NativeRoleEnum.TENANT_MAINTAINER) {
             this.tenantMaintainerRoleId = id;
         } else {
-            throw ErrorFactory.createIllegalNativeCoverageError(CoverageTypeEnum.TENANT, role.toString());
+            throw ErrorFactory.createIllegalNativeDimensionError(DimensionEnum.TENANT, role.toString());
         }
         return this;
     }
@@ -111,7 +111,7 @@ public class Tenant implements ApplicationItem {
         if (userGroup == NativeUserGroupEnum.TENANT_ROOT) {
             this.tenantRootUserGroupId = id;
         } else {
-            throw ErrorFactory.createIllegalNativeCoverageError(CoverageTypeEnum.TENANT, userGroup.toString());
+            throw ErrorFactory.createIllegalNativeDimensionError(DimensionEnum.TENANT, userGroup.toString());
         }
         return this;
     }
@@ -126,7 +126,7 @@ public class Tenant implements ApplicationItem {
         } else if (template == NativePermissionTemplateEnum.CREATE_INNER_GROUP) {
             this.createInnerGroupPId = permissionId;
         } else {
-            throw ErrorFactory.createIllegalNativeCoverageError(CoverageTypeEnum.TENANT, template.toString());
+            throw ErrorFactory.createIllegalNativeDimensionError(DimensionEnum.TENANT, template.toString());
         }
         return this;
     }
