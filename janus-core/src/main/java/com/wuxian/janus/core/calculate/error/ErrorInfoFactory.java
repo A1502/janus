@@ -46,7 +46,7 @@ public class ErrorInfoFactory {
                     new IdType(userGroupUser.getId()),
                     USER_GROUP_ID,
                     String.valueOf(userGroupUser.getUserGroupId()),
-                    String.format("当前列内容代表的userGroup在表%s中并不存在", UserGroupUserX.TABLE_NAME));
+                    String.format("当前列内容代表的userGroup在表%s中并不存在", UserGroup.TABLE_NAME));
         }
 
         public static void scopeUserGroupNotMatch(ErrorDataRecorder recorder
