@@ -4,7 +4,7 @@ package com.wuxian.janus.core.critical;
 import lombok.Data;
 
 @Data
-public class AccessControlMode extends Access {
+public class AccessControlMode {
 
     private Boolean viewAccess;
     private Boolean executeAccess;

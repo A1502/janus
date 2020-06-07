@@ -1,4 +1,4 @@
-package com.wuxian.janus.core.critical;
+package com.wuxian.janus.cache.model.source;
 
 
 import lombok.Data;
