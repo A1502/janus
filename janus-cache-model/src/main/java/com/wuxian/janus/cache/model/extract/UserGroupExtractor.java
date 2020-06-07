@@ -8,7 +8,7 @@ import com.wuxian.janus.cache.model.extract.id.IdUtils;
 import com.wuxian.janus.cache.model.source.Application;
 import com.wuxian.janus.cache.model.source.UserGroup;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
-import com.wuxian.janus.core.critical.CoverageTypeEnum;
+import com.wuxian.janus.core.critical.DimensionEnum;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
 import com.wuxian.janus.struct.layer1.OuterObjectStruct;
 import com.wuxian.janus.struct.layer1.UserGroupStruct;
@@ -84,7 +84,7 @@ public class UserGroupExtractor {
                 userGroup.setStruct(new UserGroupStruct());
             }
             NativeUserGroupEnum nativeUserGroup = NativeUserGroupEnum.getByCode(userGroup.getCode());
-            if (nativeUserGroup != null && nativeUserGroup.getCoverageType().equals(CoverageTypeEnum.APPLICATION)) {
+            if (nativeUserGroup != null && nativeUserGroup.getDimensionTypeEnum().equals(DimensionEnum.APPLICATION)) {
                 continue;
             }
             userGroup.getStruct().setTenantId(tenantId.getValue());

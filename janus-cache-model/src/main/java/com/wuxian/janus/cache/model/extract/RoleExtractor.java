@@ -7,7 +7,7 @@ import com.wuxian.janus.cache.model.extract.id.IdGeneratorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
 import com.wuxian.janus.core.calculate.RolePermissionUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
-import com.wuxian.janus.core.critical.CoverageTypeEnum;
+import com.wuxian.janus.core.critical.DimensionEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.struct.layer1.OuterObjectStruct;
 import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
@@ -203,7 +203,7 @@ public class RoleExtractor {
                 role.setStruct(new RoleStruct());
             }
             NativeRoleEnum nativeRole = NativeRoleEnum.getByCode(role.getCode());
-            if (nativeRole != null && nativeRole.getCoverageType().equals(CoverageTypeEnum.APPLICATION)) {
+            if (nativeRole != null && nativeRole.getDimension().equals(DimensionEnum.APPLICATION)) {
                 continue;
             }
             role.getStruct().setTenantId(tenantId.getValue());

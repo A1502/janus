@@ -2,7 +2,7 @@ package com.wuxian.janus.cache.model;
 
 import com.wuxian.janus.cache.model.source.BaseModel;
 import com.wuxian.janus.core.basis.ErrorCodeException;
-import com.wuxian.janus.core.critical.CoverageTypeEnum;
+import com.wuxian.janus.core.critical.DimensionEnum;
 
 import java.lang.reflect.Type;
 
@@ -18,7 +18,7 @@ public final class ErrorFactory {
 
     public final static String ILLEGAL_ITEM_TYPE = PRE + "ILLEGAL_ITEM_TYPE";
 
-    public final static String ILLEGAL_NATIVE_COVERAGE = PRE + "ILLEGAL_NATIVE_COVERAGE";
+    public final static String ILLEGAL_NATIVE_DIMENSION = PRE + "ILLEGAL_NATIVE_DIMENSION";
 
     public final static String ID_GENERATOR_FACTORY_NOT_SUPPORT = PRE + "ID_GENERATOR_FACTORY_NOT_SUPPORT";
 
@@ -72,9 +72,9 @@ public final class ErrorFactory {
         return new ErrorCodeException(ILLEGAL_ITEM_TYPE, message, null);
     }
 
-    public static ErrorCodeException createIllegalNativeCoverageError(CoverageTypeEnum coverage, String nativeCode) {
-        String message = "在设定coverage = " + coverage + "时，不能使用" + nativeCode;
-        return new ErrorCodeException(ILLEGAL_NATIVE_COVERAGE, message, null);
+    public static ErrorCodeException createIllegalNativeDimensionError(DimensionEnum dimension, String nativeCode) {
+        String message = "在设定dimension = " + dimension + "时，不能使用" + nativeCode;
+        return new ErrorCodeException(ILLEGAL_NATIVE_DIMENSION, message, null);
     }
 
     public static ErrorCodeException createIdGeneratorFactoryNotSupportError(Class<?> factoryClass, Type type) {
