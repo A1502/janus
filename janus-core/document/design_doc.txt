@@ -56,17 +56,18 @@ Permission
 1.100×200=20000行权限的问题，已经想好扩展方案【DONE】
 
  1:31:44
-2.UserGroupOtherX ,打算加上 ，会影响extractor要想想 DONE
+2.UserGroupOtherX ,打算加上 ，会影响extractor要想想 【DONE】
+2.UserGroupOtherX ,加上后影响权限计算逻辑 TODO
 
  1:31:59
-3.实时缓存，评估与实现 TODO 2
+3.实时缓存，评估与实现 TODO *
 
  1:32:58
 4.对于role和userGroup的page页面，打算也用缓存实现。因为这个逻辑很绕，最好别再sql写一遍。也写不出来。【DONE】
 
  1:33:58
 5.权限过期方案，是把过期表要加列，表示过期已经执行了。执行的效果是直接删rolePermissionX和userGroupUserX。
-DONE
+【DONE】
 
  1:34:49
 6.临时权限不纳入缓存。要显示是否临时，自己拿到缓存运算结果再去sql查一遍db，把结果融合后返回给前端
@@ -74,13 +75,13 @@ DONE
 
  1:37:50
 7.UserOuterObjectXPrototype的outerObjectIdList违反范式，准备干掉这个逻辑。一并干掉virud_tp:create_outer_group这个内置权限
-TODO 4
+TODO 5
 
  1:39:02
-8.role和userGroup的10AC全部纳入缓存索引中 TODO
+8.role和userGroup的10AC全部纳入缓存索引中 TODO *
 
  1:39:34
-9.缓存索引更新的方法需要设计 TODO 40
+9.缓存索引更新的方法需要设计 TODO 4
 
 10.“(Object[] fields) ->”丑陋部分要解决
 this.createIndex(OuterObjectTypeStruct.class, (Object[] fields) ->
@@ -88,8 +89,10 @@ this.createIndex(OuterObjectTypeStruct.class, (Object[] fields) ->
                         safeToString(fields[0])
                 }, USED_BY_USER_GROUP);  DONE 3
 
-11.extractor还没完，包括基本测试 TODO 10
+11.extractor还没完，包括基本测试 TODO 1
 
-12.role,userGroup支持禁用启用 TODO 30
+12.role,userGroup支持禁用启用 TODO 3
 
-13.extractor后续深入测试 TODO 20
+13.extractor后续深入测试 TODO 2
+
+14.AccessControlCalculator的报错信息重构 【DONE】
