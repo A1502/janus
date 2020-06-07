@@ -4,6 +4,7 @@ import com.wuxian.janus.cache.model.source.*;
 import com.wuxian.janus.core.critical.Access;
 import com.wuxian.janus.core.critical.AccessControl;
 import com.wuxian.janus.core.critical.LevelEnum;
+import com.wuxian.janus.core.critical.NativeRoleEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +42,13 @@ public class RoleTest {
                                         new Permission("def")
                                 ).addItem(
                                         //user 100关联到roleB,scope是null
-                                        User.byId("100"), LevelEnum.FOUR)
+                                        User.byId("100"), LevelEnum.FOUR),
+                                new Role(NativeRoleEnum.ALL_PERMISSION).addItem(
+                                        //这个故意测试user 100能完全控制这个native role
+                                        //经过考虑觉得超过ag:root级别的能力也是可以的,没什么不妥
+                                        //由于完全控制，可能会执行删除ALL_PERMISSION,
+                                        //删除后会无法正常运行
+                                        User.byId("100", "d_scope"), LevelEnum.FULL)
                         )
                 )
         );
