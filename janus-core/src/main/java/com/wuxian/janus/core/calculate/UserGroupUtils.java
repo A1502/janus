@@ -1,6 +1,8 @@
 package com.wuxian.janus.core.calculate;
 
 import com.wuxian.janus.core.basis.StrictUtils;
+import com.wuxian.janus.core.calculate.error.ErrorDataRecorder;
+import com.wuxian.janus.core.calculate.error.ErrorInfoFactory;
 import com.wuxian.janus.struct.layer1.OuterObjectStruct;
 import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
 import com.wuxian.janus.struct.layer1.UserGroupStruct;
@@ -73,21 +75,10 @@ public class UserGroupUtils {
 
         for (String scope : countMap.keySet()) {
             if (StrictUtils.get(countMap, scope) > 1) {
-                recorder.add(ErrorDataRecorder.TableSchema.OuterObjectType.TABLE_NAME,
-                        new IdType(null),
-                        null,
-                        null,
-                        String.format("按 outerObjectTypeId = [%s] AND scope = [%s] AND userId = [%s] " +
-                                        "条件应最多查到一笔记录，而实际是[%d]条",
-                                outerObjectTypeCache.getOuterObjectTypeId(),
-                                scope,
-                                userId,
-                                list.size()
-                        )
-                );
+                ErrorInfoFactory.OuterObjectType.outerObjectTypeIdScopeUserIdNotUnique(recorder
+                        , outerObjectTypeCache, scope, userId, list);
             }
         }
-
 
         //提取scope匹配的数据
         Set<IdType> groupIdList = new HashSet<>();
@@ -109,44 +100,23 @@ public class UserGroupUtils {
                     groupId = new IdType(null);
                     groupId.setStringValue(groupIdString);
                 } catch (Exception e) {
-                    recorder.add(ErrorDataRecorder.TableSchema.UserOuterObjectX.TABLE_NAME,
-                            new IdType(userOuterObjectX.getId()),
-                            ErrorDataRecorder.TableSchema.UserOuterObjectX.OUTER_GROUP_ID_LIST,
-                            groupIdStringList,
-                            String.format("当前列内容按逗号split之后的结果中[%s]无法转换为整数", groupIdString)
-                    );
+                    ErrorInfoFactory.UserOuterObjectX.outerGroupIdListInvalid(recorder
+                            , userOuterObjectX, groupIdStringList, groupIdString);
                     continue;
                 }
 
                 //通过groupId找OuterObject
                 OuterObjectStruct outerObjectStruct = outerObjectTypeCache.getOuterObject().getByKey(groupId);
                 if (outerObjectStruct == null) {
-                    recorder.add(ErrorDataRecorder.TableSchema.UserOuterObjectX.TABLE_NAME,
-                            new IdType(userOuterObjectX.getId()),
-                            ErrorDataRecorder.TableSchema.UserOuterObjectX.OUTER_GROUP_ID_LIST,
-                            groupIdStringList,
-                            String.format("当前列内容按逗号split之后的结果中[%s]" +
-                                            "在表" + ErrorDataRecorder.TableSchema.OuterObject.TABLE_NAME + "中找不到对应一行数据",
-                                    groupId
-                            )
-                    );
+                    ErrorInfoFactory.UserOuterObjectX.outerGroupIdListNotMatch(recorder
+                            , userOuterObjectX, groupIdStringList, groupId);
                     continue;
                 }
                 //校验下找到的OuterObjectTypeId和输入的type.getId是否匹配
                 if (!StrictUtils.equals(outerObjectStruct.getOuterObjectTypeId(), userOuterObjectX.getOuterObjectTypeId())) {
-                    recorder.add(ErrorDataRecorder.TableSchema.UserOuterObjectX.TABLE_NAME,
-                            new IdType(userOuterObjectX.getId()),
-                            ErrorDataRecorder.TableSchema.UserOuterObjectX.OUTER_GROUP_ID_LIST,
-                            groupIdStringList,
-                            String.format("当前列内容按逗号split之后的结果中[%s]" +
-                                            "在表" + ErrorDataRecorder.TableSchema.OuterObject.TABLE_NAME +
-                                            "中找到对应一行数据的列" + ErrorDataRecorder.TableSchema.OuterObject.OUTER_OBJECT_TYPE_ID + "的值[%s]" +
-                                            "与当前数据的同名列的值[%s]不一致",
-                                    groupId,
-                                    outerObjectStruct.getOuterObjectTypeId(),
-                                    userOuterObjectX.getOuterObjectTypeId()
-                            )
-                    );
+
+                    ErrorInfoFactory.UserOuterObjectX.outerObjectTypeIdNotMatch(recorder
+                            , userOuterObjectX, outerObjectStruct, groupIdStringList, groupId);
                     continue;
                 }
 

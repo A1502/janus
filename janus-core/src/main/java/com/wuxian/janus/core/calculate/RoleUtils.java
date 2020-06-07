@@ -2,7 +2,9 @@ package com.wuxian.janus.core.calculate;
 
 import com.wuxian.janus.core.basis.StrictUtils;
 import com.wuxian.janus.core.cache.BaseOuterObjectTypeCachePool;
-import com.wuxian.janus.core.critical.AccessControlLevel;
+import com.wuxian.janus.core.calculate.error.ErrorDataRecorder;
+import com.wuxian.janus.core.calculate.error.ErrorInfoFactory;
+import com.wuxian.janus.core.critical.AccessControlMode;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
 import com.wuxian.janus.core.index.*;
@@ -61,20 +63,12 @@ public class RoleUtils {
             UserGroupStruct userGroup = userGroupSource.getByKey(new IdType(innerUserGroupUser.getUserGroupId()));
             if (userGroup != null) {
                 if (userGroup.getOuterObjectId() != null) {
-                    recorder.add(ErrorDataRecorder.TableSchema.UserGroupUserX.TABLE_NAME,
-                            new IdType(innerUserGroupUser.getId()),
-                            ErrorDataRecorder.TableSchema.UserGroupUserX.USER_GROUP_ID,
-                            String.valueOf(innerUserGroupUser.getUserGroupId()),
-                            String.format("当前列内容代表的userGroup是内部用户组，而在表%s中是外部用户组，类型不符", ErrorDataRecorder.TableSchema.UserGroup.TABLE_NAME));
+                    ErrorInfoFactory.UserGroupUserX.innerUserGroupConflict(recorder, innerUserGroupUser);
                 } else {
                     innerUserGroupList.add(userGroup);
                 }
             } else {
-                recorder.add(ErrorDataRecorder.TableSchema.UserGroupUserX.TABLE_NAME,
-                        new IdType(innerUserGroupUser.getId()),
-                        ErrorDataRecorder.TableSchema.UserGroupUserX.USER_GROUP_ID,
-                        String.valueOf(innerUserGroupUser.getUserGroupId()),
-                        String.format("当前列内容代表的userGroup在表%s中并不存在", ErrorDataRecorder.TableSchema.UserGroup.TABLE_NAME));
+                ErrorInfoFactory.UserGroupUserX.userGroupNotMatch(recorder, innerUserGroupUser);
             }
         }
 
@@ -111,12 +105,11 @@ public class RoleUtils {
         //(STEP 9)实体转化：来自roleUsers,roleOthers和roleUserGroups
         Map<IdType, RoleStruct> roleMap = new HashMap<>();
 
-        //来自roleUsers
+        //来自roleUser
         roleUsers.forEach(o -> {
             RoleStruct roleStruct = getRoleStruct(new IdType(o.getRoleId()),
-                    ErrorDataRecorder.TableSchema.RoleUserX.TABLE_NAME,
+                    ErrorInfoFactory.RoleUserGroupUserOtherX.TableNameEnum.ROLE_USER,
                     new IdType(o.getId()),
-                    ErrorDataRecorder.TableSchema.RoleUserX.ROLE_ID,
                     singleRoleSource,
                     multipleRoleSource,
                     useSingleRoles,
@@ -129,9 +122,8 @@ public class RoleUtils {
         if (!nativeRoleOnly) {
             roleOthers.forEach(o -> {
                 RoleStruct roleStruct = getRoleStruct(new IdType(o.getRoleId()),
-                        ErrorDataRecorder.TableSchema.RoleOtherX.TABLE_NAME,
+                        ErrorInfoFactory.RoleUserGroupUserOtherX.TableNameEnum.ROLE_OTHER,
                         new IdType(o.getId()),
-                        ErrorDataRecorder.TableSchema.RoleOtherX.ROLE_ID,
                         singleRoleSource,
                         multipleRoleSource,
                         useSingleRoles,
@@ -143,9 +135,8 @@ public class RoleUtils {
         //来自roleUserGroups
         roleUserGroups.forEach(o -> {
             RoleStruct roleStruct = getRoleStruct(new IdType(o.getRoleId()),
-                    ErrorDataRecorder.TableSchema.RoleUserGroupX.TABLE_NAME,
+                    ErrorInfoFactory.RoleUserGroupUserOtherX.TableNameEnum.ROLE_USER_GROUP,
                     new IdType(o.getId()),
-                    ErrorDataRecorder.TableSchema.RoleUserGroupX.ROLE_ID,
                     singleRoleSource,
                     multipleRoleSource,
                     useSingleRoles,
@@ -174,7 +165,7 @@ public class RoleUtils {
 
         //STEP 11 计算hasAllTenantCustomExecuteAccessRoles
         for (NativeUserGroupEnum userGroup : nativeUserGroups) {
-            if (userGroup.getAccessControlAbility().getTenantCustomRoleAbility().getExecuteAccess()) {
+            if (userGroup.getNativeRuleTable().getTenantCustomRoleRule().isExecuteAccess()) {
                 //目前2019-9-18，这个条件不会成立。没有设计任何内置用户组能exec所有自定义角色
                 //但是这个逻辑应保留
                 result.setExecuteAccessOfTenantCustomRoles(true);
@@ -184,7 +175,9 @@ public class RoleUtils {
         return result;
     }
 
-    //scopes = null 表示全部
+    /**
+     * scopes = null 表示全部
+     */
     private static List<RoleUserXStruct> filterRoleUserByScopes(List<String> scopes, List<RoleUserXStruct> executeAccessRoleUsers, List<ScopeRoleUserXStruct> scopeRoleUsers, ErrorDataRecorder recorder) {
 
         boolean hasError = false;
@@ -194,11 +187,7 @@ public class RoleUtils {
         for (RoleUserXStruct roleUserXStruct : executeAccessRoleUsers) {
             List<String> foundScopes = scopeRoleUsers.stream().filter(o -> StrictUtils.equals(roleUserXStruct.getRoleId(), o.getRoleId())).map(ScopeRoleUserXStruct::getScope).collect(Collectors.toList());
             if (foundScopes.size() == 0) {
-                recorder.add(ErrorDataRecorder.TableSchema.RoleUserX.TABLE_NAME,
-                        new IdType(roleUserXStruct.getId()),
-                        ErrorDataRecorder.TableSchema.RoleUserX.ROLE_ID,
-                        String.valueOf(roleUserXStruct.getRoleId()),
-                        String.format("当前列内容代表的scope-user-role关系在表%s中并不存在", ErrorDataRecorder.TableSchema.ScopeRoleUserX.TABLE_NAME));
+                ErrorInfoFactory.RoleUserX.scopeRoleUserNotMatch(recorder, roleUserXStruct);
                 hasError = true;
                 //不中断for循环是因为要收集完整所有的error到recorder
             }
@@ -220,7 +209,9 @@ public class RoleUtils {
         }
     }
 
-    //scope = null表示全部
+    /**
+     * scopes = null 表示全部
+     */
     private static List<UserGroupUserXStruct> filterUserGroupUserByScopes(List<String> scopes, List<UserGroupUserXStruct> executeAccessUserGroupUsers,
                                                                           List<ScopeUserGroupUserXStruct> scopeUserGroupUsers, ErrorDataRecorder recorder) {
 
@@ -233,11 +224,7 @@ public class RoleUtils {
                     StrictUtils.equals(userGroupUserXStruct.getUserGroupId(), o.getUserGroupId()))
                     .map(ScopeUserGroupUserXStruct::getScope).collect(Collectors.toList());
             if (foundScopes.size() == 0) {
-                recorder.add(ErrorDataRecorder.TableSchema.UserGroupUserX.TABLE_NAME,
-                        new IdType(userGroupUserXStruct.getId()),
-                        ErrorDataRecorder.TableSchema.UserGroupUserX.USER_GROUP_ID,
-                        String.valueOf(userGroupUserXStruct.getUserGroupId()),
-                        String.format("当前列内容代表的scope-userGroup-user关系在表%s中并不存在", ErrorDataRecorder.TableSchema.ScopeUserGroupUserX.TABLE_NAME));
+                ErrorInfoFactory.UserGroupUserX.scopeUserGroupNotMatch(recorder, userGroupUserXStruct);
                 hasError = true;
                 //不中断for循环是因为要收集完整所有的error到recorder
             }
@@ -294,53 +281,40 @@ public class RoleUtils {
         RoleMap roleSource = useSingleRoles ? singleRoleSource : multipleRoleSource;
         RoleMap backUpRoleSource = !useSingleRoles ? singleRoleSource : multipleRoleSource;
 
-        List<RoleStruct> roleEntities = roleSource.getByCode(roleCode);
-        if (roleEntities.size() == 0) {
-            List<RoleStruct> backUpRoleEntities = backUpRoleSource.getByCode(roleCode);
-            if (backUpRoleEntities.size() == 0) {
+        List<RoleStruct> roleStructs = roleSource.getByCode(roleCode);
+        if (roleStructs.size() == 0) {
+            List<RoleStruct> backUpRoleStructs = backUpRoleSource.getByCode(roleCode);
+            if (backUpRoleStructs.size() == 0) {
                 //找不到
-                recorder.add(ErrorDataRecorder.TableSchema.Role.TABLE_NAME, new IdType(null), ErrorDataRecorder.TableSchema.Role.CODE, String.valueOf(roleCode),
-                        String.format("当前列内容代表的role在表%s中并不存在", ErrorDataRecorder.TableSchema.Role.TABLE_NAME));
+                ErrorInfoFactory.Role.roleCodeNotMatch(recorder, roleCode);
                 return null;
-            } else if (backUpRoleEntities.size() > 1) {
+            } else if (backUpRoleStructs.size() > 1) {
                 //不唯一
-                recorder.add(ErrorDataRecorder.TableSchema.Role.TABLE_NAME, new IdType(null), ErrorDataRecorder.TableSchema.Role.CODE, String.valueOf(roleCode),
-                        String.format("当前列内容代表的role在表%s中应该唯一，但是实际存在%s条;" +
-                                        "且应该multiple=%s,而实际不符",
-                                ErrorDataRecorder.TableSchema.Role.TABLE_NAME,
-                                String.valueOf(backUpRoleEntities.size()),
-                                String.valueOf(!useSingleRoles)
-                        ));
+                ErrorInfoFactory.Role.roleCodeNotUnique(recorder, roleCode, backUpRoleStructs, !useSingleRoles);
                 return null;
             } else {
                 //multiple错误
-                recorder.add(ErrorDataRecorder.TableSchema.Role.TABLE_NAME, new IdType(null), ErrorDataRecorder.TableSchema.Role.CODE, String.valueOf(roleCode),
-                        String.format("当前列内容代表的role在表%s中应该multiple=%s,而实际不符",
-                                ErrorDataRecorder.TableSchema.Role.TABLE_NAME,
-                                String.valueOf(!useSingleRoles)));
+                ErrorInfoFactory.Role.multipleNotMatch(recorder, roleCode, !useSingleRoles);
                 return null;
             }
-        } else if (roleEntities.size() > 1) {
+        } else if (roleStructs.size() > 1) {
             //不唯一
-            recorder.add(ErrorDataRecorder.TableSchema.Role.TABLE_NAME, new IdType(null), ErrorDataRecorder.TableSchema.Role.CODE, String.valueOf(roleCode),
-                    String.format("当前列内容代表的role在表%s中应该唯一，但是实际存在%s条",
-                            ErrorDataRecorder.TableSchema.Role.TABLE_NAME,
-                            String.valueOf(roleEntities.size())));
+            ErrorInfoFactory.Role.roleCodeNotUnique(recorder, roleCode, roleStructs);
             return null;
         } else {
-            return StrictUtils.get(roleEntities, 0);
+            return StrictUtils.get(roleStructs, 0);
         }
     }
 
     private static List<NativeRoleEnum> getExecuteAccessNativeRole(Set<NativeUserGroupEnum> nativeUserGroups) {
 
         List<NativeRoleEnum> result = new ArrayList<>();
-        AccessControlLevel level = new AccessControlLevel(
+        AccessControlMode level = new AccessControlMode(
                 null, true, null, null, null,
                 null, null, null, null, null);
 
         for (NativeUserGroupEnum nativeUserGroupEnum : nativeUserGroups) {
-            List<NativeRoleEnum> tmpList = nativeUserGroupEnum.getMatchedNativeRoleEnum(level);
+            List<NativeRoleEnum> tmpList = nativeUserGroupEnum.getCompatibleNativeRoleEnum(level);
             for (NativeRoleEnum item : tmpList) {
                 if (!result.contains(item)) {
                     result.add(item);
@@ -351,9 +325,8 @@ public class RoleUtils {
     }
 
     private static RoleStruct getRoleStruct(IdType roleId,
-                                            String tableName,
+                                            ErrorInfoFactory.RoleUserGroupUserOtherX.TableNameEnum tableName,
                                             IdType id,
-                                            String columnName,
                                             RoleMap singleRoleSource,
                                             RoleMap multipleRoleSource,
                                             boolean useSingleRoles,
@@ -366,21 +339,17 @@ public class RoleUtils {
         if (role == null) {
             RoleStruct backUpRole = backUpRoleSource.getByKey(roleId);
             if (backUpRole == null) {
-                recorder.add(tableName, id, columnName, String.valueOf(roleId),
-                        String.format("当前列内容代表的role在表%s中并不存在", ErrorDataRecorder.TableSchema.Role.TABLE_NAME));
+                ErrorInfoFactory.RoleUserGroupUserOtherX.roleIdNotMatch(recorder, tableName, id, roleId);
             } else {
-                recorder.add(tableName, id, columnName, String.valueOf(roleId),
-                        String.format("当前列内容代表的role的(操作型权限or数据型权限)权限类型和在表%s中对应的权限类型不一致", ErrorDataRecorder.TableSchema.Role.TABLE_NAME));
+                ErrorInfoFactory.RoleUserGroupUserOtherX.roleMultipleNotMatch(recorder, tableName, id, roleId);
             }
             return null;
         } else {
-            if (useSingleRoles && role.getOuterObjectId() != null) {
-                recorder.add(tableName, id, columnName, String.valueOf(roleId),
-                        String.format("当前列内容代表的role在表%s中期望是操作型角色(outer_object_id == null)，但实际为数据型角色", ErrorDataRecorder.TableSchema.Role.TABLE_NAME));
+            if (useSingleRoles && role.getMultiple()) {
+                ErrorInfoFactory.RoleUserGroupUserOtherX.roleMultipleNotFalse(recorder, tableName, id, roleId);
                 return null;
-            } else if (!useSingleRoles && role.getOuterObjectId() == null) {
-                recorder.add(tableName, id, columnName, String.valueOf(roleId),
-                        String.format("当前列内容代表的role在表%s中期望是数据型角色(outer_object_id!= null)，但实际为操作型角色\"", ErrorDataRecorder.TableSchema.Role.TABLE_NAME));
+            } else if (!useSingleRoles && !role.getMultiple()) {
+                ErrorInfoFactory.RoleUserGroupUserOtherX.roleMultipleNotTrue(recorder, tableName, id, roleId);
                 return null;
             } else {
                 return role;

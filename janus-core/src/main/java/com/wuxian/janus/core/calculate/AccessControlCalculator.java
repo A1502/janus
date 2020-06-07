@@ -1,5 +1,6 @@
 package com.wuxian.janus.core.calculate;
 
+import com.wuxian.janus.core.calculate.error.ErrorDataRecorder;
 import com.wuxian.janus.struct.primary.ApplicationIdType;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.TenantIdType;

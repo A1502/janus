@@ -2,6 +2,8 @@ package com.wuxian.janus.core.calculate;
 
 import com.wuxian.janus.core.basis.StrictUtils;
 import com.wuxian.janus.core.cache.BaseOuterObjectTypeCachePool;
+import com.wuxian.janus.core.calculate.error.ErrorDataRecorder;
+import com.wuxian.janus.core.calculate.error.ErrorInfoFactory;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.index.PermissionMap;
@@ -196,18 +198,13 @@ public class PermissionUtils {
 
         Map<IdType, List<PermissionStruct>> templateMap = new HashMap<>();
 
-        List<RolePermissionXStruct> rolePermissionXEntities = rolePermissionSource.getByRoleId(new IdType(role.getId()));
+        List<RolePermissionXStruct> rolePermissionXStructs = rolePermissionSource.getByRoleId(new IdType(role.getId()));
 
-        rolePermissionXEntities.forEach(rolePermissionXStruct ->
+        rolePermissionXStructs.forEach(rolePermissionXStruct ->
         {
             PermissionStruct permissionStruct = permissionSource.getByKey(new IdType(rolePermissionXStruct.getPermissionId()));
             if (permissionStruct == null) {
-                recorder.add(ErrorDataRecorder.TableSchema.RolePermissionX.TABLE_NAME
-                        , new IdType(rolePermissionXStruct.getId())
-                        , ErrorDataRecorder.TableSchema.RolePermissionX.PERMISSION_ID
-                        , String.valueOf(rolePermissionXStruct.getPermissionId())
-                        , String.format("当前列内容代表的permission在表%s中并不存在", ErrorDataRecorder.TableSchema.Permission.TABLE_NAME)
-                );
+                ErrorInfoFactory.RolePermissionX.permissionIdNotMatch(recorder, rolePermissionXStruct);
             } else {
                 if (!StrictUtils.containsKey(templateMap, new IdType(permissionStruct.getPermissionTemplateId()))) {
                     templateMap.put(new IdType(permissionStruct.getPermissionTemplateId()), new ArrayList<>());
@@ -219,13 +216,7 @@ public class PermissionUtils {
         templateMap.forEach((templateId, permissions) -> {
             PermissionTemplateStruct templateStruct = permissionTemplateSource.getByKey(templateId);
             if (templateStruct == null) {
-                String ids = String.join(",", permissions.stream().map(p -> String.valueOf(p.getId())).collect(Collectors.toList()));
-                recorder.add(ErrorDataRecorder.TableSchema.Permission.TABLE_NAME
-                        , ids
-                        , ErrorDataRecorder.TableSchema.RolePermissionX.PERMISSION_ID
-                        , String.valueOf(templateId)
-                        , String.format("当前列内容代表的PermissionTemplate在表%s中并不存在", ErrorDataRecorder.TableSchema.PermissionTemplate.TABLE_NAME)
-                );
+                ErrorInfoFactory.Permission.permissionIdNotMatch(recorder, templateId, permissions);
             } else {
                 PermissionInfo permissionInfo = new PermissionInfo();
                 permissionInfo.setTemplate(templateStruct);
@@ -263,31 +254,21 @@ public class PermissionUtils {
         List<NativePermissionTemplateEnum> permissionTemplates = nativeRole.getPermissionTemplates();
 
         permissionTemplates.forEach(templatEnum -> {
-            List<PermissionTemplateStruct> permissionTemplateEntities = permissionTemplateSource.getByCode(templatEnum.getCode());
+            List<PermissionTemplateStruct> permissionTemplateStructs = permissionTemplateSource.getByCode(templatEnum.getCode());
 
-            if (permissionTemplateEntities.size() != 1) {
-                recorder.add(ErrorDataRecorder.TableSchema.PermissionTemplate.TABLE_NAME, new IdType(null), ErrorDataRecorder.TableSchema.PermissionTemplate.CODE, String.valueOf(templatEnum.getCode()),
-                        String.format("当前列内容代表的permissionTemplate在表%s中应该存在一笔，但是实际是%s条;",
-                                ErrorDataRecorder.TableSchema.PermissionTemplate.TABLE_NAME,
-                                String.valueOf(permissionTemplateEntities.size())
-                        ));
+            if (permissionTemplateStructs.size() != 1) {
+                ErrorInfoFactory.PermissionTemplate.nativePermissionTemplateNotUnique(recorder
+                        , templatEnum, permissionTemplateStructs);
             } else {
-                PermissionTemplateStruct templateStruct = StrictUtils.get(permissionTemplateEntities, 0);
+                PermissionTemplateStruct templateStruct = StrictUtils.get(permissionTemplateStructs, 0);
 
-                List<PermissionStruct> permissionEntities = singlePermissionSource.getByPermissionTemplateId(new IdType(templateStruct.getId()));
+                List<PermissionStruct> permissionStructs = singlePermissionSource.getByPermissionTemplateId(new IdType(templateStruct.getId()));
 
                 PermissionDetail detail = new PermissionDetail();
-                if (permissionEntities.size() != 1) {
-                    recorder.add(ErrorDataRecorder.TableSchema.Permission.TABLE_NAME,
-                            new IdType(null),
-                            null,
-                            null,
-                            String.format("按permissionTemplateId = %s 条件应查到一笔记录，而实际是[%d]条",
-                                    String.valueOf(templateStruct.getId()),
-                                    permissionEntities.size())
-                    );
+                if (permissionStructs.size() != 1) {
+                    ErrorInfoFactory.Permission.permissionTemplateIdNotUnique(recorder, templateStruct, permissionStructs);
                 } else {
-                    detail.setPermission(StrictUtils.get(permissionEntities, 0));
+                    detail.setPermission(StrictUtils.get(permissionStructs, 0));
                 }
 
                 PermissionInfo item = new PermissionInfo();
