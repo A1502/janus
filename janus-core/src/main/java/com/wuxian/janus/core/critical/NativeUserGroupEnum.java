@@ -13,58 +13,58 @@ public enum NativeUserGroupEnum {
     /**
      * 应用级root组
      */
-    APPLICATION_ROOT(Code.APPLICATION_ROOT, CoverageTypeEnum.APPLICATION, new AccessControlAbility(
-            AccessControlLevelEnum.TWO,// visitAllPermissionRole,
-            AccessControlLevelEnum.TWO_POINT_FIVE,// visitApplicationMaintainerRole,
-            AccessControlLevelEnum.TWO_POINT_FIVE,// visitTenantDataOwnerRole,
-            AccessControlLevelEnum.TWO_POINT_FIVE,// visitTenantMaintainerRole,
-            AccessControlLevelEnum.HYPO_FULL,// visitTenantCustomRole,
+    APPLICATION_ROOT(Code.APPLICATION_ROOT, DimensionEnum.APPLICATION, new NativeRuleTable(
+            ClassicLevelEnum.TWO,// visitAllPermissionRole,
+            ClassicLevelEnum.TWO_POINT_FIVE,// visitApplicationMaintainerRole,
+            ClassicLevelEnum.TWO_POINT_FIVE,// visitTenantDataOwnerRole,
+            ClassicLevelEnum.TWO_POINT_FIVE,// visitTenantMaintainerRole,
+            ClassicLevelEnum.HYPO_FULL,// visitTenantCustomRole,
 
-            AccessControlLevelEnum.TWO, // visitAGRootUserGroup,
-            AccessControlLevelEnum.TWO_POINT_FIVE, // visitApplicationMaintainerUserGroup,
-            AccessControlLevelEnum.TWO_POINT_FIVE, // visitTGRootUserGroup,
-            AccessControlLevelEnum.HYPO_FULL,// visitTenantCustomUserGroup,
+            ClassicLevelEnum.TWO, // visitAGRootUserGroup,
+            ClassicLevelEnum.TWO_POINT_FIVE, // visitApplicationMaintainerUserGroup,
+            ClassicLevelEnum.TWO_POINT_FIVE, // visitTGRootUserGroup,
+            ClassicLevelEnum.HYPO_FULL,// visitTenantCustomUserGroup,
 
-            AccessControlLevelEnum.FOUR,// visitNativePermissionPackage,
-            AccessControlLevelEnum.FULL// visitCustomPermissionPackage
+            ClassicLevelEnum.FOUR,// visitNativePermissionPackage,
+            ClassicLevelEnum.FULL// visitCustomPermissionPackage
     )),
 
     /**
      * 应用级admin组
      */
-    APPLICATION_ADMIN(Code.APPLICATION_MAINTAINER, CoverageTypeEnum.APPLICATION, new AccessControlAbility(
-            AccessControlLevelEnum.TWO_POINT_FIVE,// visitAllPermissionRole,
-            AccessControlLevelEnum.THREE,// visitApplicationMaintainerRole,
-            AccessControlLevelEnum.TWO_POINT_FIVE,// visitTenantDataOwnerRole,
-            AccessControlLevelEnum.TWO_POINT_FIVE,// visitTenantMaintainerRole,
-            AccessControlLevelEnum.HYPO_FULL,// visitTenantCustomRole,
+    APPLICATION_ADMIN(Code.APPLICATION_MAINTAINER, DimensionEnum.APPLICATION, new NativeRuleTable(
+            ClassicLevelEnum.TWO_POINT_FIVE,// visitAllPermissionRole,
+            ClassicLevelEnum.THREE,// visitApplicationMaintainerRole,
+            ClassicLevelEnum.TWO_POINT_FIVE,// visitTenantDataOwnerRole,
+            ClassicLevelEnum.TWO_POINT_FIVE,// visitTenantMaintainerRole,
+            ClassicLevelEnum.HYPO_FULL,// visitTenantCustomRole,
 
-            AccessControlLevelEnum.NONE, // visitAGRootUserGroup,
-            AccessControlLevelEnum.TWO, // visitApplicationMaintainerUserGroup,
-            AccessControlLevelEnum.TWO_POINT_FIVE, // visitTGRootUserGroup,
-            AccessControlLevelEnum.HYPO_FULL,// visitTenantCustomUserGroup,
+            ClassicLevelEnum.NONE, // visitAGRootUserGroup,
+            ClassicLevelEnum.TWO, // visitApplicationMaintainerUserGroup,
+            ClassicLevelEnum.TWO_POINT_FIVE, // visitTGRootUserGroup,
+            ClassicLevelEnum.HYPO_FULL,// visitTenantCustomUserGroup,
 
-            AccessControlLevelEnum.FOUR,// visitNativePermissionPackage,
-            AccessControlLevelEnum.FULL// visitCustomPermissionPackage,
+            ClassicLevelEnum.FOUR,// visitNativePermissionPackage,
+            ClassicLevelEnum.FULL// visitCustomPermissionPackage,
     )),
 
     /**
      * tenant级root组
      */
-    TENANT_ROOT(Code.TENANT_ROOT, CoverageTypeEnum.TENANT, new AccessControlAbility(
-            AccessControlLevelEnum.NONE,// visitAllPermissionRole,
-            AccessControlLevelEnum.NONE,// visitApplicationMaintainerRole,
-            AccessControlLevelEnum.NONE,// visitTenantDataOwnerRole,
-            AccessControlLevelEnum.TWO_POINT_FIVE,// visitTenantMaintainerRole,
-            AccessControlLevelEnum.TWO_POINT_FIVE,// visitTenantCustomRole,
+    TENANT_ROOT(Code.TENANT_ROOT, DimensionEnum.TENANT, new NativeRuleTable(
+            ClassicLevelEnum.NONE,// visitAllPermissionRole,
+            ClassicLevelEnum.NONE,// visitApplicationMaintainerRole,
+            ClassicLevelEnum.NONE,// visitTenantDataOwnerRole,
+            ClassicLevelEnum.TWO_POINT_FIVE,// visitTenantMaintainerRole,
+            ClassicLevelEnum.TWO_POINT_FIVE,// visitTenantCustomRole,
 
-            AccessControlLevelEnum.NONE, // visitAGRootUserGroup,
-            AccessControlLevelEnum.NONE, // visitApplicationMaintainerUserGroup,
-            AccessControlLevelEnum.THREE, // visitTGRootUserGroup,
-            AccessControlLevelEnum.HYPO_FULL,// visitTenantCustomUserGroup,
+            ClassicLevelEnum.NONE, // visitAGRootUserGroup,
+            ClassicLevelEnum.NONE, // visitApplicationMaintainerUserGroup,
+            ClassicLevelEnum.THREE, // visitTGRootUserGroup,
+            ClassicLevelEnum.HYPO_FULL,// visitTenantCustomUserGroup,
 
-            AccessControlLevelEnum.NONE,// visitNativePermissionPackage,
-            AccessControlLevelEnum.NONE// visitCustomPermissionPackage,
+            ClassicLevelEnum.NONE,// visitNativePermissionPackage,
+            ClassicLevelEnum.NONE// visitCustomPermissionPackage,
     ));
 
     public static class Code {
@@ -81,28 +81,28 @@ public enum NativeUserGroupEnum {
     private String code;
 
     @Getter
-    CoverageTypeEnum coverageType;
+    DimensionEnum dimensionTypeEnum;
 
-    private AccessControlAbility accessControlAbility;
+    private NativeRuleTable nativeRuleTable;
 
-    NativeUserGroupEnum(String code, CoverageTypeEnum coverageType, AccessControlAbility accessControlAbility) {
+    NativeUserGroupEnum(String code, DimensionEnum dimensionTypeEnum, NativeRuleTable accessControlRule) {
         this.code = code;
-        this.coverageType = coverageType;
-        this.accessControlAbility = accessControlAbility;
+        this.dimensionTypeEnum = dimensionTypeEnum;
+        this.nativeRuleTable = accessControlRule;
     }
 
-    public List<NativeRoleEnum> getMatchedNativeRoleEnum(AccessControlLevel level) {
+    public List<NativeRoleEnum> getCompatibleNativeRoleEnum(AccessControlMode mode) {
         List<NativeRoleEnum> result = new ArrayList<>();
-        if (this.accessControlAbility.getAllPermissionRoleAbility().match(level)) {
+        if (this.nativeRuleTable.getAllPermissionRoleRule().compatibleWith(mode)) {
             result.add(NativeRoleEnum.ALL_PERMISSION);
         }
-        if (this.accessControlAbility.getApplicationMaintainerRoleAbility().match(level)) {
+        if (this.nativeRuleTable.getApplicationMaintainerRoleRule().compatibleWith(mode)) {
             result.add(NativeRoleEnum.APPLICATION_MAINTAINER);
         }
-        if (this.accessControlAbility.getTenantDataOwnerRoleAbility().match(level)) {
+        if (this.nativeRuleTable.getTenantDataOwnerRoleRule().compatibleWith(mode)) {
             result.add(NativeRoleEnum.TENANT_DATA_OWNER);
         }
-        if (this.accessControlAbility.getTenantMaintainerRoleAbility().match(level)) {
+        if (this.nativeRuleTable.getTenantMaintainerRoleRule().compatibleWith(mode)) {
             result.add(NativeRoleEnum.TENANT_MAINTAINER);
         }
         return result;

@@ -12,12 +12,12 @@ public enum NativeRoleEnum {
     /**
      * 全部权限
      */
-    ALL_PERMISSION(Code.ALL_PERMISSION, CoverageTypeEnum.APPLICATION, true),
+    ALL_PERMISSION(Code.ALL_PERMISSION, DimensionEnum.APPLICATION, true),
 
     /**
      * 应用维护者
      */
-    APPLICATION_MAINTAINER(Code.APPLICATION_MAINTAINER, CoverageTypeEnum.APPLICATION, false,
+    APPLICATION_MAINTAINER(Code.APPLICATION_MAINTAINER, DimensionEnum.APPLICATION, false,
             NativePermissionTemplateEnum.CREATE_PERMISSION_TEMPLATE,
             NativePermissionTemplateEnum.INIT_TENANT,
             NativePermissionTemplateEnum.CREATE_MULTIPLE_PERMISSION,
@@ -29,14 +29,14 @@ public enum NativeRoleEnum {
     /**
      * tenant数据所有者
      */
-    TENANT_DATA_OWNER(Code.TENANT_DATA_OWNER, CoverageTypeEnum.TENANT, false,
+    TENANT_DATA_OWNER(Code.TENANT_DATA_OWNER, DimensionEnum.TENANT, false,
             NativePermissionTemplateEnum.CREATE_MULTIPLE_PERMISSION,
             NativePermissionTemplateEnum.CREATE_OUTER_GROUP),
 
     /**
      * tenant维护者
      */
-    TENANT_MAINTAINER(Code.TENANT_MAINTAINER, CoverageTypeEnum.TENANT, false,
+    TENANT_MAINTAINER(Code.TENANT_MAINTAINER, DimensionEnum.TENANT, false,
             NativePermissionTemplateEnum.CREATE_ROLE,
             NativePermissionTemplateEnum.CREATE_INNER_GROUP);
 
@@ -54,16 +54,16 @@ public enum NativeRoleEnum {
     private String code;
 
     @Getter
-    CoverageTypeEnum coverageType;
+    DimensionEnum dimension;
 
     @Getter
     private Boolean hasAllPermission;
 
     private List<NativePermissionTemplateEnum> permissionTemplates;
 
-    NativeRoleEnum(String code, CoverageTypeEnum coverageType, boolean hasAllPermission, NativePermissionTemplateEnum... templates) {
+    NativeRoleEnum(String code, DimensionEnum dimension, boolean hasAllPermission, NativePermissionTemplateEnum... templates) {
         this.code = code;
-        this.coverageType = coverageType;
+        this.dimension = dimension;
         this.hasAllPermission = hasAllPermission;
         this.permissionTemplates = Arrays.asList(templates);
     }

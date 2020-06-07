@@ -12,37 +12,37 @@ public enum NativePermissionTemplateEnum {
      * 创建权限模板
      */
     CREATE_PERMISSION_TEMPLATE(Code.CREATE_PERMISSION_TEMPLATE
-            , CoverageTypeEnum.APPLICATION, PermissionLevelEnum.ADVANCED_READ_WRITE),
+            , DimensionEnum.APPLICATION, PermissionLevelEnum.ADVANCED_READ_WRITE),
 
     /**
      * 初始化Tenant
      */
     INIT_TENANT(Code.INIT_TENANT
-            , CoverageTypeEnum.APPLICATION, PermissionLevelEnum.ADVANCED_READ_WRITE),
+            , DimensionEnum.APPLICATION, PermissionLevelEnum.ADVANCED_READ_WRITE),
 
     /**
      * 创建数据级权限
      */
     CREATE_MULTIPLE_PERMISSION(Code.CREATE_MULTIPLE_PERMISSION
-            , CoverageTypeEnum.TENANT, PermissionLevelEnum.ADVANCED_ADD),
+            , DimensionEnum.TENANT, PermissionLevelEnum.ADVANCED_ADD),
 
     /**
      * 创建外部用户组
      */
     CREATE_OUTER_GROUP(Code.CREATE_OUTER_GROUP
-            , CoverageTypeEnum.TENANT, PermissionLevelEnum.ADVANCED_ADD),
+            , DimensionEnum.TENANT, PermissionLevelEnum.ADVANCED_ADD),
 
     /**
      * 创建角色
      */
     CREATE_ROLE(Code.CREATE_ROLE
-            , CoverageTypeEnum.TENANT, PermissionLevelEnum.ADVANCED_ADD),
+            , DimensionEnum.TENANT, PermissionLevelEnum.ADVANCED_ADD),
 
     /**
      * 创建内部用户组
      */
     CREATE_INNER_GROUP(Code.CREATE_INNER_GROUP
-            , CoverageTypeEnum.TENANT, PermissionLevelEnum.ADVANCED_ADD);
+            , DimensionEnum.TENANT, PermissionLevelEnum.ADVANCED_ADD);
 
     public static class Code {
 
@@ -63,21 +63,21 @@ public enum NativePermissionTemplateEnum {
     private String code;
 
     @Getter
-    CoverageTypeEnum coverageType;
+    DimensionEnum dimension;
 
     @Getter
     private PermissionLevelEnum level;
 
-    NativePermissionTemplateEnum(String code, CoverageTypeEnum coverageType, PermissionLevelEnum level) {
+    NativePermissionTemplateEnum(String code, DimensionEnum dimension, PermissionLevelEnum level) {
         this.code = code;
-        this.coverageType = coverageType;
+        this.dimension = dimension;
         this.level = level;
     }
 
     public String getPermissionType() {
-        if (this.coverageType.equals(CoverageTypeEnum.APPLICATION)) {
+        if (this.dimension.equals(DimensionEnum.APPLICATION)) {
             return Code.APPLICATION_PERMISSION_PREFIX;
-        } else if (this.coverageType.equals(CoverageTypeEnum.TENANT)) {
+        } else if (this.dimension.equals(DimensionEnum.TENANT)) {
             return Code.TENANT_PERMISSION_PREFIX;
         }
         return null;

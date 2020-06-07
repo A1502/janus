@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("all")
-public enum AccessControlLevelEnum {
+public enum ClassicLevelEnum {
 
     /**
      * 完全
@@ -70,27 +70,27 @@ public enum AccessControlLevelEnum {
             //ctrl
             false, false, false, false, false);
 
-    private Boolean viewAccess;
-    private Boolean executeAccess;
-    private Boolean editAccess;
-    private Boolean deleteAccess;
-    private Boolean enableAccess;
-    private Boolean viewControl;
-    private Boolean executeControl;
-    private Boolean editControl;
-    private Boolean deleteControl;
-    private Boolean enableControl;
+    private boolean viewAccess;
+    private boolean executeAccess;
+    private boolean editAccess;
+    private boolean deleteAccess;
+    private boolean enableAccess;
+    private boolean viewControl;
+    private boolean executeControl;
+    private boolean editControl;
+    private boolean deleteControl;
+    private boolean enableControl;
 
-    AccessControlLevelEnum(boolean viewAccess,
-                           boolean executeAccess,
-                           boolean editAccess,
-                           boolean deleteAccess,
-                           boolean enableAccess,
-                           boolean viewControl,
-                           boolean executeControl,
-                           boolean editControl,
-                           boolean deleteControl,
-                           boolean enableControl) {
+    ClassicLevelEnum(boolean viewAccess,
+                     boolean executeAccess,
+                     boolean editAccess,
+                     boolean deleteAccess,
+                     boolean enableAccess,
+                     boolean viewControl,
+                     boolean executeControl,
+                     boolean editControl,
+                     boolean deleteControl,
+                     boolean enableControl) {
         this.viewAccess = viewAccess;
         this.executeAccess = executeAccess;
         this.editAccess = editAccess;
@@ -103,37 +103,42 @@ public enum AccessControlLevelEnum {
         this.enableControl = enableControl;
     }
 
-    public boolean match(AccessControlLevel level) {
-        if (level.getViewAccess() != null && !StrictUtils.equals(level.getViewAccess(), this.getViewAccess())) {
+
+    /**
+     * 判定是否兼容：
+     * levle为null的属性忽略比较,即level任何一个不为null属性不相等视作没有compatible
+     */
+    public boolean compatibleWith(AccessControlMode mode) {
+        if (mode.getViewAccess() != null && !StrictUtils.equals(mode.getViewAccess(), this.isViewAccess())) {
             return false;
         }
-        if (level.getExecuteAccess() != null && !StrictUtils.equals(level.getExecuteAccess(), this.getExecuteAccess())) {
+        if (mode.getExecuteAccess() != null && !StrictUtils.equals(mode.getExecuteAccess(), this.isExecuteAccess())) {
             return false;
         }
-        if (level.getEditAccess() != null && !StrictUtils.equals(level.getEditAccess(), this.getEditAccess())) {
+        if (mode.getEditAccess() != null && !StrictUtils.equals(mode.getEditAccess(), this.isEditAccess())) {
             return false;
         }
-        if (level.getDeleteAccess() != null && !StrictUtils.equals(level.getDeleteAccess(), this.getDeleteAccess())) {
+        if (mode.getDeleteAccess() != null && !StrictUtils.equals(mode.getDeleteAccess(), this.isDeleteAccess())) {
             return false;
         }
-        if (level.getEnableAccess() != null && !StrictUtils.equals(level.getEnableAccess(), this.getEnableAccess())) {
+        if (mode.getEnableAccess() != null && !StrictUtils.equals(mode.getEnableAccess(), this.isEnableAccess())) {
             return false;
         }
 
 
-        if (level.getViewControl() != null && !StrictUtils.equals(level.getViewControl(), this.getViewControl())) {
+        if (mode.getViewControl() != null && !StrictUtils.equals(mode.getViewControl(), this.isViewControl())) {
             return false;
         }
-        if (level.getExecuteControl() != null && !StrictUtils.equals(level.getExecuteControl(), this.getExecuteControl())) {
+        if (mode.getExecuteControl() != null && !StrictUtils.equals(mode.getExecuteControl(), this.isExecuteControl())) {
             return false;
         }
-        if (level.getEditControl() != null && !StrictUtils.equals(level.getEditControl(), this.getEditControl())) {
+        if (mode.getEditControl() != null && !StrictUtils.equals(mode.getEditControl(), this.isEditControl())) {
             return false;
         }
-        if (level.getDeleteControl() != null && !StrictUtils.equals(level.getDeleteControl(), this.getDeleteControl())) {
+        if (mode.getDeleteControl() != null && !StrictUtils.equals(mode.getDeleteControl(), this.isDeleteControl())) {
             return false;
         }
-        if (level.getEnableControl() != null && !StrictUtils.equals(level.getEnableControl(), this.getEnableControl())) {
+        if (mode.getEnableControl() != null && !StrictUtils.equals(mode.getEnableControl(), this.isEnableControl())) {
             return false;
         }
 
