@@ -41,4 +41,14 @@ public class User implements RoleItem, UserGroupItem {
         result.scopes.addAll(Arrays.asList(scope));
         return result;
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 }
