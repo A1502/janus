@@ -35,6 +35,26 @@ public class AccessControl extends Access {
         this.enableControl = enableControl;
     }
 
+    @SuppressWarnings("all")
+    public AccessControl(boolean[] viewExecEditDelEnable) {
+        super(viewExecEditDelEnable);
+        if (viewExecEditDelEnable.length >= 6) {
+            this.viewControl = viewExecEditDelEnable[5];
+        }
+        if (viewExecEditDelEnable.length >= 7) {
+            this.executeControl = viewExecEditDelEnable[6];
+        }
+        if (viewExecEditDelEnable.length >= 8) {
+            this.editControl = viewExecEditDelEnable[7];
+        }
+        if (viewExecEditDelEnable.length >= 9) {
+            this.deleteControl = viewExecEditDelEnable[8];
+        }
+        if (viewExecEditDelEnable.length >= 10) {
+            this.enableControl = viewExecEditDelEnable[9];
+        }
+    }
+
     @Override
     public String toString() {
         String empty = "";

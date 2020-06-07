@@ -27,6 +27,25 @@ public class Access {
         this.enableAccess = enableAccess;
     }
 
+    @SuppressWarnings("all")
+    public Access(boolean[] viewExecEditDelEnable) {
+        if (viewExecEditDelEnable.length >= 1) {
+            this.viewAccess = viewExecEditDelEnable[0];
+        }
+        if (viewExecEditDelEnable.length >= 2) {
+            this.executeAccess = viewExecEditDelEnable[1];
+        }
+        if (viewExecEditDelEnable.length >= 3) {
+            this.editAccess = viewExecEditDelEnable[2];
+        }
+        if (viewExecEditDelEnable.length >= 4) {
+            this.deleteAccess = viewExecEditDelEnable[3];
+        }
+        if (viewExecEditDelEnable.length >= 5) {
+            this.enableAccess = viewExecEditDelEnable[4];
+        }
+    }
+
     @Override
     public String toString() {
         String empty = "";
