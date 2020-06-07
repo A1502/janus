@@ -14,57 +14,57 @@ public enum NativeUserGroupEnum {
      * 应用级root组
      */
     APPLICATION_ROOT(Code.APPLICATION_ROOT, DimensionEnum.APPLICATION, new NativeRuleTable(
-            ClassicLevelEnum.TWO,// visitAllPermissionRole,
-            ClassicLevelEnum.TWO_POINT_FIVE,// visitApplicationMaintainerRole,
-            ClassicLevelEnum.TWO_POINT_FIVE,// visitTenantDataOwnerRole,
-            ClassicLevelEnum.TWO_POINT_FIVE,// visitTenantMaintainerRole,
-            ClassicLevelEnum.HYPO_FULL,// visitTenantCustomRole,
+            LevelEnum.TWO,// visitAllPermissionRole,
+            LevelEnum.TWO_POINT_FIVE,// visitApplicationMaintainerRole,
+            LevelEnum.TWO_POINT_FIVE,// visitTenantDataOwnerRole,
+            LevelEnum.TWO_POINT_FIVE,// visitTenantMaintainerRole,
+            LevelEnum.HYPO_FULL,// visitTenantCustomRole,
 
-            ClassicLevelEnum.TWO, // visitAGRootUserGroup,
-            ClassicLevelEnum.TWO_POINT_FIVE, // visitApplicationMaintainerUserGroup,
-            ClassicLevelEnum.TWO_POINT_FIVE, // visitTGRootUserGroup,
-            ClassicLevelEnum.HYPO_FULL,// visitTenantCustomUserGroup,
+            LevelEnum.TWO, // visitAGRootUserGroup,
+            LevelEnum.TWO_POINT_FIVE, // visitApplicationMaintainerUserGroup,
+            LevelEnum.TWO_POINT_FIVE, // visitTGRootUserGroup,
+            LevelEnum.HYPO_FULL,// visitTenantCustomUserGroup,
 
-            ClassicLevelEnum.FOUR,// visitNativePermissionPackage,
-            ClassicLevelEnum.FULL// visitCustomPermissionPackage
+            LevelEnum.FOUR,// visitNativePermissionPackage,
+            LevelEnum.FULL// visitCustomPermissionPackage
     )),
 
     /**
      * 应用级admin组
      */
     APPLICATION_ADMIN(Code.APPLICATION_MAINTAINER, DimensionEnum.APPLICATION, new NativeRuleTable(
-            ClassicLevelEnum.TWO_POINT_FIVE,// visitAllPermissionRole,
-            ClassicLevelEnum.THREE,// visitApplicationMaintainerRole,
-            ClassicLevelEnum.TWO_POINT_FIVE,// visitTenantDataOwnerRole,
-            ClassicLevelEnum.TWO_POINT_FIVE,// visitTenantMaintainerRole,
-            ClassicLevelEnum.HYPO_FULL,// visitTenantCustomRole,
+            LevelEnum.TWO_POINT_FIVE,// visitAllPermissionRole,
+            LevelEnum.THREE,// visitApplicationMaintainerRole,
+            LevelEnum.TWO_POINT_FIVE,// visitTenantDataOwnerRole,
+            LevelEnum.TWO_POINT_FIVE,// visitTenantMaintainerRole,
+            LevelEnum.HYPO_FULL,// visitTenantCustomRole,
 
-            ClassicLevelEnum.NONE, // visitAGRootUserGroup,
-            ClassicLevelEnum.TWO, // visitApplicationMaintainerUserGroup,
-            ClassicLevelEnum.TWO_POINT_FIVE, // visitTGRootUserGroup,
-            ClassicLevelEnum.HYPO_FULL,// visitTenantCustomUserGroup,
+            LevelEnum.NONE, // visitAGRootUserGroup,
+            LevelEnum.TWO, // visitApplicationMaintainerUserGroup,
+            LevelEnum.TWO_POINT_FIVE, // visitTGRootUserGroup,
+            LevelEnum.HYPO_FULL,// visitTenantCustomUserGroup,
 
-            ClassicLevelEnum.FOUR,// visitNativePermissionPackage,
-            ClassicLevelEnum.FULL// visitCustomPermissionPackage,
+            LevelEnum.FOUR,// visitNativePermissionPackage,
+            LevelEnum.FULL// visitCustomPermissionPackage,
     )),
 
     /**
      * tenant级root组
      */
     TENANT_ROOT(Code.TENANT_ROOT, DimensionEnum.TENANT, new NativeRuleTable(
-            ClassicLevelEnum.NONE,// visitAllPermissionRole,
-            ClassicLevelEnum.NONE,// visitApplicationMaintainerRole,
-            ClassicLevelEnum.NONE,// visitTenantDataOwnerRole,
-            ClassicLevelEnum.TWO_POINT_FIVE,// visitTenantMaintainerRole,
-            ClassicLevelEnum.TWO_POINT_FIVE,// visitTenantCustomRole,
+            LevelEnum.NONE,// visitAllPermissionRole,
+            LevelEnum.NONE,// visitApplicationMaintainerRole,
+            LevelEnum.NONE,// visitTenantDataOwnerRole,
+            LevelEnum.TWO_POINT_FIVE,// visitTenantMaintainerRole,
+            LevelEnum.TWO_POINT_FIVE,// visitTenantCustomRole,
 
-            ClassicLevelEnum.NONE, // visitAGRootUserGroup,
-            ClassicLevelEnum.NONE, // visitApplicationMaintainerUserGroup,
-            ClassicLevelEnum.THREE, // visitTGRootUserGroup,
-            ClassicLevelEnum.HYPO_FULL,// visitTenantCustomUserGroup,
+            LevelEnum.NONE, // visitAGRootUserGroup,
+            LevelEnum.NONE, // visitApplicationMaintainerUserGroup,
+            LevelEnum.THREE, // visitTGRootUserGroup,
+            LevelEnum.HYPO_FULL,// visitTenantCustomUserGroup,
 
-            ClassicLevelEnum.NONE,// visitNativePermissionPackage,
-            ClassicLevelEnum.NONE// visitCustomPermissionPackage,
+            LevelEnum.NONE,// visitNativePermissionPackage,
+            LevelEnum.NONE// visitCustomPermissionPackage,
     ));
 
     public static class Code {

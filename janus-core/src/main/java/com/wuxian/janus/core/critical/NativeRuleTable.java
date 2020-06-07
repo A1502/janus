@@ -8,72 +8,72 @@ public class NativeRuleTable {
     /**
      * 对内置角色"AllPermission"的访问控制
      */
-    private ClassicLevelEnum allPermissionRoleRule;
+    private LevelEnum allPermissionRoleRule;
 
     /**
      * 对内置角色"ApplicationMaintainer"的访问控制
      */
-    private ClassicLevelEnum applicationMaintainerRoleRule;
+    private LevelEnum applicationMaintainerRoleRule;
 
     /**
      * 对内置角色"TenantDataOwner"的访问控制
      */
-    private ClassicLevelEnum tenantDataOwnerRoleRule;
+    private LevelEnum tenantDataOwnerRoleRule;
 
     /**
      * 对内置角色"TenantMaintainer"的访问控制
      */
-    private ClassicLevelEnum tenantMaintainerRoleRule;
+    private LevelEnum tenantMaintainerRoleRule;
 
     /**
      * 对所有Tenant级自定义角色的访问控制
      */
-    private ClassicLevelEnum tenantCustomRoleRule;
+    private LevelEnum tenantCustomRoleRule;
 
     /**
      * 对内置用户组"ApplicationRoot"的访问控制
      */
-    private ClassicLevelEnum applicationRootUserGroupRule;
+    private LevelEnum applicationRootUserGroupRule;
 
     /**
      * 对内置用户组"ApplicationMaintainer"的访问控制
      */
-    private ClassicLevelEnum applicationMaintainerUserGroupRule;
+    private LevelEnum applicationMaintainerUserGroupRule;
 
     /**
      * 对内置用户组"TenantRoot"的访问控制
      */
-    private ClassicLevelEnum tenantRootUserGroupRule;
+    private LevelEnum tenantRootUserGroupRule;
 
     /**
      * 对Tenant级所有自定义用户组的访问控制
      */
-    private ClassicLevelEnum tenantCustomUserGroupRule;
+    private LevelEnum tenantCustomUserGroupRule;
 
     /**
      * 对内置权限打包的访问控制
      */
-    private ClassicLevelEnum nativePermissionPackageRule;
+    private LevelEnum nativePermissionPackageRule;
 
     /**
      * 对Tenant级所有自定义权限打包的访问控制
      */
-    private ClassicLevelEnum customPermissionPackageRule;
+    private LevelEnum customPermissionPackageRule;
 
     /**
      * 这是特意不用lombok自动生成。为了避免自动生成的参数顺序不确定性的风险。
      */
-    public NativeRuleTable(ClassicLevelEnum allPermissionRoleRule,
-                           ClassicLevelEnum applicationMaintainerRoleRule,
-                           ClassicLevelEnum tenantDataOwnerRoleRule,
-                           ClassicLevelEnum tenantMaintainerRoleRule,
-                           ClassicLevelEnum tenantCustomRoleRule,
-                           ClassicLevelEnum applicationRootUserGroupRule,
-                           ClassicLevelEnum applicationMaintainerUserGroupRule,
-                           ClassicLevelEnum tenantRootUserGroupRule,
-                           ClassicLevelEnum tenantCustomUserGroupRule,
-                           ClassicLevelEnum nativePermissionPackageRule,
-                           ClassicLevelEnum customPermissionPackageRule
+    public NativeRuleTable(LevelEnum allPermissionRoleRule,
+                           LevelEnum applicationMaintainerRoleRule,
+                           LevelEnum tenantDataOwnerRoleRule,
+                           LevelEnum tenantMaintainerRoleRule,
+                           LevelEnum tenantCustomRoleRule,
+                           LevelEnum applicationRootUserGroupRule,
+                           LevelEnum applicationMaintainerUserGroupRule,
+                           LevelEnum tenantRootUserGroupRule,
+                           LevelEnum tenantCustomUserGroupRule,
+                           LevelEnum nativePermissionPackageRule,
+                           LevelEnum customPermissionPackageRule
     ) {
         this.allPermissionRoleRule = allPermissionRoleRule;
         this.applicationMaintainerRoleRule = applicationMaintainerRoleRule;

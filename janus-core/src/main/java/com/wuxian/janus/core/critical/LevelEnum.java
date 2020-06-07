@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @SuppressWarnings("all")
-public enum ClassicLevelEnum {
+public enum LevelEnum {
 
     /**
      * 完全
@@ -81,16 +81,16 @@ public enum ClassicLevelEnum {
     private boolean deleteControl;
     private boolean enableControl;
 
-    ClassicLevelEnum(boolean viewAccess,
-                     boolean executeAccess,
-                     boolean editAccess,
-                     boolean deleteAccess,
-                     boolean enableAccess,
-                     boolean viewControl,
-                     boolean executeControl,
-                     boolean editControl,
-                     boolean deleteControl,
-                     boolean enableControl) {
+    LevelEnum(boolean viewAccess,
+              boolean executeAccess,
+              boolean editAccess,
+              boolean deleteAccess,
+              boolean enableAccess,
+              boolean viewControl,
+              boolean executeControl,
+              boolean editControl,
+              boolean deleteControl,
+              boolean enableControl) {
         this.viewAccess = viewAccess;
         this.executeAccess = executeAccess;
         this.editAccess = editAccess;
