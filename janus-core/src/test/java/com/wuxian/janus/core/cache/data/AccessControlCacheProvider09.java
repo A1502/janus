@@ -161,7 +161,8 @@ public class AccessControlCacheProvider09 extends BaseAccessControlCacheProvider
             SourceLoader<IdType, RoleStruct> result = () -> {
                 Map<IdType, RoleStruct> map = new HashMap<>();
                 map.put(IdBuilder.id(1), StructBuilder.newRoleStruct(1, defaultAId, defaultTId, "role1", true, "角色1", true, null, 10, "role1-outerObjectRemark", "role1-description", 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(2), StructBuilder.newRoleStruct(2, defaultAId, defaultTId, "role2", true, "角色2", true, null, null, "role2-outerObjectRemark", "role2-description", 1, new Date(), 1, new Date(), 1));
+                //id=2这条是故意的错误数据
+                map.put(IdBuilder.id(2), StructBuilder.newRoleStruct(2, defaultAId, defaultTId, "role2", false, "角色2", true, null, null, "role2-outerObjectRemark", "role2-description", 1, new Date(), 1, new Date(), 1));
                 return map;
             };
             return result;

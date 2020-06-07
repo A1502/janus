@@ -145,8 +145,8 @@ public class AccessControlCacheProvider08 extends BaseAccessControlCacheProvider
         if (StrictUtils.equals(applicationId, IdBuilder.aId(defaultAId)) && StrictUtils.equals(tenantId, IdBuilder.tId(defaultTId))) {
             SourceLoader<IdType, RoleStruct> result = () -> {
                 Map<IdType, RoleStruct> map = new HashMap<>();
-                map.put(IdBuilder.id(1), StructBuilder.newRoleStruct(1, defaultAId, defaultTId, "role1", false, "角色1", true, null, null, "role1-outerObjectRemark", "role1-description", 1, new Date(), 1, new Date(), 1));
-                map.put(IdBuilder.id(2), StructBuilder.newRoleStruct(2, defaultAId, defaultTId, "role2", false, "角色2", true, null, 1, "role2-outerObjectRemark", "role2-description", 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(1), StructBuilder.newRoleStruct(1, defaultAId, defaultTId, "role1", true, "角色1", true, null, null, "role1-outerObjectRemark", "role1-description", 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(2), StructBuilder.newRoleStruct(2, defaultAId, defaultTId, "role2", true, "角色2", true, null, 1, "role2-outerObjectRemark", "role2-description", 1, new Date(), 1, new Date(), 1));
                 return map;
             };
             return result;
