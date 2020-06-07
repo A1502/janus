@@ -1,13 +1,11 @@
 package com.wuxian.janus.cache.model;
 
-import com.wuxian.janus.cache.model.extract.SourceExtractor;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
-import com.wuxian.janus.cache.model.extract.id.LongIdGeneratorFactory;
 import com.wuxian.janus.cache.model.source.*;
-import com.wuxian.janus.core.calculate.AccessControlCalculator;
-import com.wuxian.janus.core.calculate.PermissionResult;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlCacheProvider;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
+import com.wuxian.janus.core.calculate.AccessControlCalculator;
+import com.wuxian.janus.core.calculate.PermissionResult;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.synchronism.ClassicChangeRecorder;
@@ -18,6 +16,17 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 public class ApplicationTenantTest {
+
+    @Test
+    @DisplayName("测试Application和Tenant在最简模式下的纯Native角色和用户组的输出")
+    void testNativeOnly() {
+        ApplicationGroup applicationGroup = new ApplicationGroup().addItem(
+                Application.byId("1").addItem(
+                        Tenant.byId("10"), Tenant.byId("20")));
+
+        TestUtils.extractAndPrint("testNativeOnly", applicationGroup);
+    }
+
     @Test
     @DisplayName("测试Application模型基本数据构建")
     void testInitApplicationTenant() {
