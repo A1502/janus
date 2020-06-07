@@ -59,12 +59,8 @@ public class OuterObjectTest {
                         OuterObject.byId("13", "oo13", "oot20")
                 );
 
-        SourceExtractor sourceExtractor = new SourceExtractor(new LongIdGeneratorFactory());
-        DirectAccessControlSource source = sourceExtractor.extract(applicationGroup);
-
-        System.out.println("==============testOuterObjectAndOuterObjectType===============");
-        source.print(System.out);
-        System.out.println("--------------------------------------------------------");
+        DirectAccessControlSource source = TestUtils.extractAndPrint("testOuterObjectAndOuterObjectType"
+                , applicationGroup);
 
         //验证OuterObjectType
         Set<IdType> ids = source.getOuterObjectType().keySet();

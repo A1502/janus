@@ -1,5 +1,10 @@
 package com.wuxian.janus.cache.model;
 
+import com.wuxian.janus.cache.model.extract.SourceExtractor;
+import com.wuxian.janus.cache.model.extract.id.LongIdGeneratorFactory;
+import com.wuxian.janus.cache.model.source.ApplicationGroup;
+import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
+
 import java.util.function.Predicate;
 
 public class TestUtils {
@@ -10,5 +15,15 @@ public class TestUtils {
             }
         }
         return null;
+    }
+
+    public static DirectAccessControlSource extractAndPrint(String testName, ApplicationGroup applicationGroup) {
+        SourceExtractor sourceExtractor = new SourceExtractor(new LongIdGeneratorFactory());
+        DirectAccessControlSource result = sourceExtractor.extract(applicationGroup);
+
+        System.out.println("==============" + testName + "===============");
+        result.print(System.out);
+        System.out.println("--------------------------------------------------------");
+        return result;
     }
 }
