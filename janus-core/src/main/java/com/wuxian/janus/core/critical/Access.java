@@ -3,6 +3,9 @@ package com.wuxian.janus.core.critical;
 
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public class Access {
 
@@ -48,11 +51,26 @@ public class Access {
 
     @Override
     public String toString() {
-        String empty = "";
-        return (this.viewAccess ? ("viewAccess") : empty)
-                + (this.executeAccess ? ("," + "executeAccess") : empty)
-                + (this.editAccess ? ("," + "editAccess") : empty)
-                + (this.deleteAccess ? ("," + "deleteAccess") : empty)
-                + (this.enableAccess ? ("," + "enableAccess") : empty);
+        List<String> list = new ArrayList();
+        if (this.viewAccess) {
+            list.add("viewAccess");
+        }
+        if (this.executeAccess) {
+            list.add("executeAccess");
+        }
+        if (this.editAccess) {
+            list.add("editAccess");
+        }
+        if (this.deleteAccess) {
+            list.add("deleteAccess");
+        }
+        if (this.enableAccess) {
+            list.add("enableAccess");
+        }
+
+        String[] array = new String[list.size()];
+        list.toArray(array);
+
+        return String.join(",", array);
     }
 }

@@ -4,6 +4,9 @@ package com.wuxian.janus.core.critical;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 public class AccessControl extends Access {
@@ -57,12 +60,32 @@ public class AccessControl extends Access {
 
     @Override
     public String toString() {
-        String empty = "";
-        return super.toString()
-                + (this.viewControl ? ("," + "viewControl") : empty)
-                + (this.executeControl ? ("," + "executeControl") : empty)
-                + (this.editControl ? ("," + "editControl") : empty)
-                + (this.deleteControl ? ("," + "deleteControl") : empty)
-                + (this.enableControl ? ("," + "enableControl") : empty);
+        List<String> list = new ArrayList();
+
+        String superString = super.toString();
+        if (superString != null && superString.length() > 0) {
+            list.add(superString);
+        }
+
+        if (this.viewControl) {
+            list.add("viewControl");
+        }
+        if (this.executeControl) {
+            list.add("executeControl");
+        }
+        if (this.editControl) {
+            list.add("editControl");
+        }
+        if (this.deleteControl) {
+            list.add("deleteControl");
+        }
+        if (this.enableControl) {
+            list.add("enableControl");
+        }
+
+        String[] array = new String[list.size()];
+        list.toArray(array);
+
+        return String.join(",", array);
     }
 }
