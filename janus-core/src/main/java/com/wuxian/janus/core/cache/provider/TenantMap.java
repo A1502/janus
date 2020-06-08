@@ -1,8 +1,8 @@
 package com.wuxian.janus.core.cache.provider;
 
+import com.wuxian.janus.core.basis.StrictUtils;
 import com.wuxian.janus.struct.primary.ApplicationIdType;
 import com.wuxian.janus.struct.primary.TenantIdType;
-import com.wuxian.janus.core.basis.StrictUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +30,12 @@ public class TenantMap<K, V> {
 
     public Map<K, V> get(ApplicationIdType applicationId, TenantIdType tenantId) {
         return get(applicationId, tenantId, false);
+    }
+
+    public TenantMapElement<K, V> getElement(ApplicationIdType applicationId, TenantIdType tenantId) {
+        Map<K, V> element = get(applicationId, tenantId);
+        TenantMapElement<K, V> result = new TenantMapElement<>(applicationId, tenantId, element);
+        return result;
     }
 
     private Map<K, V> get(ApplicationIdType applicationId, TenantIdType tenantId, boolean autoCreate) {
