@@ -1,21 +1,17 @@
 package com.wuxian.janus.cache.model.extract;
 
-import com.wuxian.janus.cache.model.source.*;
-import com.wuxian.janus.cache.model.ErrorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdGenerator;
 import com.wuxian.janus.cache.model.extract.id.IdGeneratorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
-import com.wuxian.janus.core.cache.provider.TenantMap;
-import com.wuxian.janus.core.calculate.RolePermissionUtils;
+import com.wuxian.janus.cache.model.source.*;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
-import com.wuxian.janus.core.calculate.RoleUtils;
+import com.wuxian.janus.core.cache.provider.TenantMap;
 import com.wuxian.janus.core.critical.DimensionEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.struct.layer1.OuterObjectStruct;
 import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
 import com.wuxian.janus.struct.layer1.RoleStruct;
 import com.wuxian.janus.struct.layer2.PermissionTemplateStruct;
-import com.wuxian.janus.struct.layer2.RolePermissionXStruct;
 import com.wuxian.janus.struct.primary.ApplicationIdType;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.TenantIdType;
@@ -54,11 +50,11 @@ public class RoleExtractor {
 
             TenantIdType tenantId = IdUtils.createTenantId(tenant.getId());
 
-            List<Role> all = gatherRole(from1Application, applicationId, tenantId, tenant);
+            List<Role> all = gather(from1Application, applicationId, tenantId, tenant);
 
             ExtractUtils.fixIdAndKeyFields(all, roleIdGenerator);
 
-            //后续计算SinglePermissionX和MultiplePermissionX需要
+            //这是返回值，后续流程需要
             Map<IdType, Role> resultModelMap = ExtractUtils.groupByIdAndMerge(all);
 
             //SingleRole,MultipleRole需要
@@ -90,7 +86,7 @@ public class RoleExtractor {
         }
     }
 
-    private static List<Role> gatherRole(List<Role> fromApplication
+    private static List<Role> gather(List<Role> fromApplication
             , ApplicationIdType applicationId, TenantIdType tenantId, Tenant tenant) {
 
         //来源2
@@ -118,7 +114,8 @@ public class RoleExtractor {
         return result;
     }
 
-    private static RoleStruct convertToStruct(Role roleModel, Application application, DirectAccessControlSource source) {
+    private static RoleStruct convertToStruct(Role roleModel, Application application
+            , DirectAccessControlSource source) {
         RoleStruct struct = new RoleStruct();
         //在roleModel上面有applicationId,所以在生成struct时补上这个属性通过merge进入到结果中
         struct.setApplicationId(IdUtils.createApplicationId(application.getId()).getValue());
