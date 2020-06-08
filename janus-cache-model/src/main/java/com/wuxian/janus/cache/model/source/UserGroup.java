@@ -28,6 +28,9 @@ public class UserGroup extends CodeModel<UserGroupStruct> implements TenantItem 
     @Setter
     private String outerObjectTypeCode;
 
+    /**
+     *  的确是默认null
+     */
     @Getter
     private Access access;
 

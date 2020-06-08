@@ -37,6 +37,9 @@ public class Role extends CodeModel<RoleStruct> implements TenantItem, UserGroup
     @Setter
     private Boolean multiple;
 
+    /**
+     *  的确是默认null
+     */
     @Getter
     private Access access;
 
