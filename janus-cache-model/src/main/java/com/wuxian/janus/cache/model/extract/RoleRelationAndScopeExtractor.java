@@ -49,7 +49,7 @@ public class RoleRelationAndScopeExtractor {
 
 
         Map<IdType, ScopeRoleUserXStruct> scopeSingleRoleUserX = new HashMap<>();
-        Map<IdType, ScopeRoleUserXStruct> scopeMultipleRoleUserX = new HashMap<>();
+        Map<IdType, ScopeRoleUserXStruct> scopeMultipleRoleUserX = new HashMap<>(); ？？
 
         for (Role role : roleMap.values()) {
 
