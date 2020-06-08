@@ -49,6 +49,14 @@ public class Access {
         }
     }
 
+    public void union(Access another) {
+        this.viewAccess = this.viewAccess || another.viewAccess;
+        this.executeAccess = this.executeAccess || another.executeAccess;
+        this.editAccess = this.editAccess || another.editAccess;
+        this.deleteAccess = this.deleteAccess || another.deleteAccess;
+        this.enableAccess = this.enableAccess || another.enableAccess;
+    }
+
     @Override
     public String toString() {
         List<String> list = new ArrayList();
