@@ -154,7 +154,7 @@ public class RoleExtractor {
                 role.setStruct(new RoleStruct());
             }
             NativeRoleEnum nativeRole = NativeRoleEnum.getByCode(role.getCode());
-            if (nativeRole != null && nativeRole.getDimension().equals(DimensionEnum.APPLICATION)) {
+            if (nativeRole != null && DimensionEnum.APPLICATION.equals(nativeRole.getDimension())) {
                 continue;
             }
             role.getStruct().setTenantId(tenantId.getValue());
