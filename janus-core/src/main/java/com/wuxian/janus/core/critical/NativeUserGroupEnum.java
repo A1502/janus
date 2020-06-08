@@ -32,7 +32,7 @@ public enum NativeUserGroupEnum {
     /**
      * 应用级admin组
      */
-    APPLICATION_ADMIN(Code.APPLICATION_MAINTAINER, DimensionEnum.APPLICATION, new NativeRuleTable(
+    APPLICATION_ADMIN(Code.APPLICATION_ADMIN, DimensionEnum.APPLICATION, new NativeRuleTable(
             LevelEnum.TWO_POINT_FIVE,// visitAllPermissionRole,
             LevelEnum.THREE,// visitApplicationMaintainerRole,
             LevelEnum.TWO_POINT_FIVE,// visitTenantDataOwnerRole,
@@ -73,7 +73,7 @@ public enum NativeUserGroupEnum {
         public static final String TENANT_USER_GROUP_PREFIX = Constant.JANUS + "_tg";
 
         static final String APPLICATION_ROOT = APPLICATION_USER_GROUP_PREFIX + ":root";
-        static final String APPLICATION_MAINTAINER = APPLICATION_USER_GROUP_PREFIX + ":maintainer";
+        static final String APPLICATION_ADMIN = APPLICATION_USER_GROUP_PREFIX + ":admin";
         static final String TENANT_ROOT = TENANT_USER_GROUP_PREFIX + ":root";
     }
 
