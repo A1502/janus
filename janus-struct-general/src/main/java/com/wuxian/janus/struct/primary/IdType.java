@@ -10,7 +10,16 @@ public class IdType extends BaseIdType<Long> {
 
     @Override
     public void setStringValue(String format) {
-        //setValue(format);
         setValue(Long.parseLong(format));
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }
