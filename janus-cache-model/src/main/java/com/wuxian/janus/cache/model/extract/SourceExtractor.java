@@ -3,6 +3,7 @@ package com.wuxian.janus.cache.model.extract;
 import com.wuxian.janus.cache.model.source.ApplicationGroup;
 import com.wuxian.janus.cache.model.extract.id.IdGeneratorFactory;
 import com.wuxian.janus.cache.model.source.Role;
+import com.wuxian.janus.cache.model.source.UserGroup;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.cache.provider.TenantMap;
 import com.wuxian.janus.struct.primary.IdType;
@@ -44,13 +45,15 @@ public class SourceExtractor {
         //(16)MultipleRoleOtherX,(18)MultipleRoleUserX
         RoleRelationAndScopeExtractor.extract(roleTenantMap, this.idGeneratorFactory, result);
 
-        //STEP7:提取(4)userGroup DONE TODO 改为返回值模式
-        UserGroupExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
+        //STEP7:提取(4)userGroup DONE
+        TenantMap<IdType, UserGroup> userGroupTenantMap
+                =  UserGroupExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
+        //TODO
         //STEP8:提取(3)ScopeUserGroupUserX
         //(5)UserGroupUserX,(6)UserGroupOtherX
         //(11)SingleRoleUserGroupX,(17)MultipleRoleUserGroupX
-        UserGroupUserExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
+        UserGroupRelationAndScopeExtractor.extract(userGroupTenantMap, this.idGeneratorFactory, result);
 
         return result;
     }
