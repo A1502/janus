@@ -87,19 +87,36 @@ public class RoleTest {
 
         List<RoleUserXStruct> roleAUser100 = getRoleUserXStruct(singleRoleUserXMap, roleAId, user100);
         Assert.assertEquals(roleAUser100.size(), 1);
+        Assert.assertTrue(match(new AccessControl(
+                        new boolean[]{true, true, false, false, false
+                                , false, false, false, false, true})
+                , roleAUser100.get(0)));
+
 
         List<RoleUserXStruct> roleAUser101 = getRoleUserXStruct(singleRoleUserXMap, roleAId, user101);
         Assert.assertEquals(roleAUser101.size(), 0);
 
         List<RoleUserXStruct> roleBUser100 = getRoleUserXStruct(multipleRoleUserXMap, roleBId, user100);
         Assert.assertEquals(roleBUser100.size(), 1);
+        Assert.assertTrue(match(new AccessControl(
+                        new boolean[]{true, false, false, false, false
+                                , false, false, false, false, false})
+                , roleBUser100.get(0)));
 
         List<RoleUserXStruct> roleBUser101 = getRoleUserXStruct(multipleRoleUserXMap, roleBId, user101);
         Assert.assertEquals(roleBUser101.size(), 1);
+        Assert.assertTrue(match(new AccessControl(
+                        new boolean[]{true, true, false, false, false
+                                , false, false, false, false, false})
+                , roleBUser101.get(0)));
 
         List<RoleUserXStruct> roleAllPermissionIdUser100 = getRoleUserXStruct(singleRoleUserXMap
                 , roleAllPermissionId, user100);
         Assert.assertEquals(roleAllPermissionIdUser100.size(), 1);
+        Assert.assertTrue(match(new AccessControl(
+                        new boolean[]{true, true, true, true, true
+                                , true, true, true, true, true})
+                , roleAllPermissionIdUser100.get(0)));
     }
 
     private List<RoleUserXStruct> getRoleUserXStruct(Map<IdType, RoleUserXStruct> roleUserXMap, String roleId, String userId) {
@@ -109,6 +126,40 @@ public class RoleTest {
                         && o.getRoleId().equals(IdUtils.createId(roleId).getValue()))
                 .collect(Collectors.toList());
         return result;
+    }
+
+    private boolean match(AccessControl accessControl, RoleUserXStruct roleUserXStruct) {
+        if (accessControl.isViewAccess() != roleUserXStruct.isViewAccess()) {
+            return false;
+        }
+        if (accessControl.isExecuteAccess() != roleUserXStruct.isExecuteAccess()) {
+            return false;
+        }
+        if (accessControl.isEditAccess() != roleUserXStruct.isEditAccess()) {
+            return false;
+        }
+        if (accessControl.isDeleteAccess() != roleUserXStruct.isDeleteAccess()) {
+            return false;
+        }
+        if (accessControl.isEnableAccess() != roleUserXStruct.isEnableAccess()) {
+            return false;
+        }
+        if (accessControl.isViewControl() != roleUserXStruct.isViewControl()) {
+            return false;
+        }
+        if (accessControl.isExecuteControl() != roleUserXStruct.isExecuteControl()) {
+            return false;
+        }
+        if (accessControl.isEditControl() != roleUserXStruct.isEditControl()) {
+            return false;
+        }
+        if (accessControl.isDeleteControl() != roleUserXStruct.isDeleteControl()) {
+            return false;
+        }
+        if (accessControl.isEnableControl() != roleUserXStruct.isEnableControl()) {
+            return false;
+        }
+        return true;
     }
 }
 
