@@ -14,8 +14,8 @@
     <dependencies>
         <dependency>
             <groupId>com.wuxian</groupId>
-            <artifactId>janus-struct-classic</artifactId>
-            <!--<artifactId>janus-struct-general</artifactId>-->
+            <!--<artifactId>janus-struct-classic</artifactId>-->
+            <artifactId>janus-struct-general</artifactId>
         </dependency>
         <dependency>
             <groupId>com.wuxian</groupId>
