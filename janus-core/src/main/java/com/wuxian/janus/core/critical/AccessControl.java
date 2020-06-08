@@ -59,7 +59,7 @@ public class AccessControl extends Access {
     }
 
     public void union(AccessControl another) {
-        this.union(another);
+        super.union(another);
         this.viewControl = this.viewControl || another.viewControl;
         this.executeControl = this.executeControl || another.executeControl;
         this.editControl = this.editControl || another.editControl;
