@@ -1,13 +1,18 @@
 package com.wuxian.janus.cache.model.extract;
 
-import com.wuxian.janus.cache.model.source.BaseModel;
-import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.cache.model.ErrorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdGenerator;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
+import com.wuxian.janus.cache.model.source.BaseModel;
 import com.wuxian.janus.core.basis.StrictUtils;
+import com.wuxian.janus.core.cache.provider.TenantMap;
+import com.wuxian.janus.core.cache.provider.TenantMapElement;
+import com.wuxian.janus.struct.primary.ApplicationIdType;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.struct.primary.TenantIdType;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -147,5 +152,18 @@ class ExtractUtils {
             }
         }
         return null;
+    }
+
+    static <V> void loopTenantMapElement(TenantMap<IdType, V> tenantMap,
+                                         Consumer<TenantMapElement<IdType, V>> processor) {
+
+        Map<ApplicationIdType, Set<TenantIdType>> map = tenantMap.getIds();
+        for (ApplicationIdType applicationId : map.keySet()) {
+
+            Set<TenantIdType> tenantIds = StrictUtils.get(map, applicationId);
+            for (TenantIdType tenantId : tenantIds) {
+                processor.accept(tenantMap.getElement(applicationId, tenantId));
+            }
+        }
     }
 }

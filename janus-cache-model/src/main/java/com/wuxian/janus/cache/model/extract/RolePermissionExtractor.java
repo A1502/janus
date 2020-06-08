@@ -4,11 +4,8 @@ import com.wuxian.janus.cache.model.ErrorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdGenerator;
 import com.wuxian.janus.cache.model.extract.id.IdGeneratorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
-import com.wuxian.janus.cache.model.source.Application;
 import com.wuxian.janus.cache.model.source.Permission;
 import com.wuxian.janus.cache.model.source.Role;
-import com.wuxian.janus.cache.model.source.Tenant;
-import com.wuxian.janus.core.basis.StrictUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.cache.provider.TenantMap;
 import com.wuxian.janus.core.calculate.RolePermissionUtils;
@@ -19,7 +16,6 @@ import com.wuxian.janus.struct.primary.TenantIdType;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class RolePermissionExtractor {
 
@@ -28,15 +24,9 @@ public class RolePermissionExtractor {
 
         IdGenerator rolePermissionXIdGenerator = IdUtils.createIdGenerator(idGeneratorFactory);
 
-        Map<ApplicationIdType, Set<TenantIdType>> map = roleTenantMap.getIds();
-        for (ApplicationIdType applicationId : map.keySet()) {
-
-            Set<TenantIdType> tenantIds = StrictUtils.get(map, applicationId);
-            for (TenantIdType tenantId : tenantIds) {
-                Map<IdType, Role> roleMap = roleTenantMap.get(applicationId, tenantId);
-                extractRolePermission(applicationId, tenantId, roleMap, rolePermissionXIdGenerator, result);
-            }
-        }
+        ExtractUtils.loopTenantMapElement(roleTenantMap,
+                ele -> extractRolePermission(ele.getApplicationId(), ele.getTenantId()
+                        , ele.getElement(), rolePermissionXIdGenerator, result));
     }
 
     private static void extractRolePermission(ApplicationIdType applicationId
