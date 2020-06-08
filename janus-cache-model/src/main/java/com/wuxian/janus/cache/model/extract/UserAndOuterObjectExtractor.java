@@ -46,30 +46,26 @@ class UserAndOuterObjectExtractor {
         List<OuterObject> from2 = new ArrayList<>();
         List<OuterObject> from3 = new ArrayList<>();
         List<OuterObject> from4 = new ArrayList<>();
+        List<OuterObject> from5 = new ArrayList<>();
 
         for (Application application : applicationGroup.getApplications()) {
             for (Tenant tenant : application.getTenants()) {
                 //来源2
                 for (Permission permission : tenant.getPermissions()) {
-                    String objectCode = permission.getOuterObjectCode();
-                    if (objectCode != null) {
-                        from2.add(new OuterObject(objectCode, permission.getOuterObjectTypeCode()));
-                    }
+                    fill(from2, permission.getOuterObjectTypeCode(), permission.getOuterObjectCode());
                 }
 
                 //来源3
                 for (UserGroup userGroup : tenant.getUserGroups()) {
-                    String objectCode = userGroup.getOuterObjectCode();
-                    if (objectCode != null) {
-                        from3.add(new OuterObject(objectCode, userGroup.getOuterObjectTypeCode()));
-                    }
+                    fill(from3, userGroup.getOuterObjectTypeCode(), userGroup.getOuterObjectCode());
                 }
 
                 //来源4
                 for (Role role : tenant.getRoles()) {
-                    String objectCode = role.getOuterObjectCode();
-                    if (objectCode != null) {
-                        from4.add(new OuterObject(objectCode, role.getOuterObjectTypeCode()));
+                    fill(from4, role.getOuterObjectTypeCode(), role.getOuterObjectCode());
+                    for (Permission permission : role.getPermissions()) {
+                        //来源5
+                        fill(from5, permission.getOuterObjectTypeCode(), permission.getOuterObjectCode());
                     }
                 }
             }
@@ -80,6 +76,7 @@ class UserAndOuterObjectExtractor {
         all.addAll(from2);
         all.addAll(from3);
         all.addAll(from4);
+        all.addAll(from5);
         ExtractUtils.fixIdAndKeyFields(all, idGenerator);
 
         //modelMap最后计算UserOuterObjectX时要用
@@ -112,6 +109,12 @@ class UserAndOuterObjectExtractor {
 
         //再来处理UserOuterObjectX的计算
         return modelMap;
+    }
+
+    static void fill(List<OuterObject> list, String outerObjectTypeCode, String outerObjectCode) {
+        if (outerObjectCode != null) {
+            list.add(new OuterObject(outerObjectCode, outerObjectTypeCode));
+        }
     }
 
     /**

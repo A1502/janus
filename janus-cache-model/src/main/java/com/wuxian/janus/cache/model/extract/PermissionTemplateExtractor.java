@@ -45,19 +45,23 @@ public class PermissionTemplateExtractor {
             //来源2
             for (Permission permission : tenant.getPermissions()) {
                 if (permission.getPermissionTemplateCode() != null) {
-                    from2.add(createTempPermissionTemplate(permission.getPermissionTemplateCode()));
+                    from2.add(createTempPermissionTemplate(permission.getPermissionTemplateCode()
+                            , permission.getOuterObjectTypeCode()));
                 }
             }
 
             for (Role role : tenant.getRoles()) {
                 //来源3
                 if (role.getPermissionTemplateCode() != null) {
+                    //这里明确不能在createTempPermissionTemplate里写role.getOuterObjectTypeCode()
+                    //这样会导致强迫选择。确实需要role.getOuterObjectTypeCode()就单独申明这样的PermissionTemplate
                     from3.add(createTempPermissionTemplate(role.getPermissionTemplateCode()));
                 }
                 for (Permission permission : role.getPermissions()) {
                     //来源4
                     if (permission.getPermissionTemplateCode() != null) {
-                        from4.add(createTempPermissionTemplate(permission.getPermissionTemplateCode()));
+                        from4.add(createTempPermissionTemplate(permission.getPermissionTemplateCode()
+                                , permission.getOuterObjectTypeCode()));
                     }
                 }
             }
@@ -110,7 +114,11 @@ public class PermissionTemplateExtractor {
      * multiple为null是为了在合并时降低自己优先级，以其他数据为准。若multiple为false则会视为确定值不可再被合并逻辑修改
      */
     private static PermissionTemplate createTempPermissionTemplate(String permissionTemplateCode) {
-        PermissionTemplate result = new PermissionTemplate(permissionTemplateCode);
+        return createTempPermissionTemplate(permissionTemplateCode, null);
+    }
+
+    private static PermissionTemplate createTempPermissionTemplate(String permissionTemplateCode, String outerObjectTypeCode) {
+        PermissionTemplate result = new PermissionTemplate(permissionTemplateCode, outerObjectTypeCode);
         result.setMultiple(null);
         return result;
     }

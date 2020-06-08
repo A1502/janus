@@ -39,27 +39,33 @@ class OuterObjectTypeExtractor {
         List<OuterObjectType> from4 = new ArrayList<>();
         List<OuterObjectType> from5 = new ArrayList<>();
         List<OuterObjectType> from6 = new ArrayList<>();
+        List<OuterObjectType> from7 = new ArrayList<>();
 
         for (Application application : applicationGroup.getApplications()) {
 
             for (PermissionTemplate permissionTemplate : application.getPermissionTemplates()) {
+                //来源3
                 fill(from3, permissionTemplate.getOuterObjectTypeCode());
             }
 
             for (Tenant tenant : application.getTenants()) {
-                //来源3
+                //来源4
                 for (Permission permission : tenant.getPermissions()) {
                     fill(from4, permission.getOuterObjectTypeCode());
                 }
 
-                //来源4
+                //来源5
                 for (UserGroup userGroup : tenant.getUserGroups()) {
                     fill(from5, userGroup.getOuterObjectTypeCode());
                 }
 
-                //来源5
+                //来源6
                 for (Role role : tenant.getRoles()) {
                     fill(from6, role.getOuterObjectTypeCode());
+                    //来源7
+                    for (Permission permission : role.getPermissions()) {
+                        fill(from7, permission.getOuterObjectTypeCode());
+                    }
                 }
             }
         }
@@ -71,6 +77,7 @@ class OuterObjectTypeExtractor {
         all.addAll(from4);
         all.addAll(from5);
         all.addAll(from6);
+        all.addAll(from7);
 
         ExtractUtils.fixIdAndKeyFields(all, idGenerator);
         Map<IdType, OuterObjectTypeStruct> map = ExtractUtils.groupByIdAndMergeToStruct(all, null);
