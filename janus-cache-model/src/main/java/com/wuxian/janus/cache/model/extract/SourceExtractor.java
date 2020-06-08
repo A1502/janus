@@ -39,10 +39,9 @@ public class SourceExtractor {
         //(8)singleRolePermissionX,(14)multipleRolePermissionX DONE
         RolePermissionExtractor.extract(roleTenantMap, idGeneratorFactory, result);
 
-        //TODO
-        //STEP6:提取(1)ScopeSingleRoleUserX,(2)ScopeMultipleRoleUserX
-        //(10)SingleRoleOtherX,(12)SingleRoleUserX
-        //(16)MultipleRoleOtherX,(18)MultipleRoleUserX
+        //STEP6:提取(1)ScopeSingleRoleUserX,(2)ScopeMultipleRoleUserX DONE
+        //(10)SingleRoleOtherX,(12)SingleRoleUserX DONE
+        //(16)MultipleRoleOtherX,(18)MultipleRoleUserX DONE
         RoleRelationAndScopeExtractor.extract(roleTenantMap, this.idGeneratorFactory, result);
 
         //STEP7:提取(4)userGroup DONE
