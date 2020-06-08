@@ -1,13 +1,11 @@
 package com.wuxian.janus.cache.model.extract;
 
-import com.wuxian.janus.cache.model.source.ApplicationGroup;
-import com.wuxian.janus.cache.model.source.Tenant;
 import com.wuxian.janus.cache.model.extract.id.IdGenerator;
 import com.wuxian.janus.cache.model.extract.id.IdGeneratorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
-import com.wuxian.janus.cache.model.source.Application;
-import com.wuxian.janus.cache.model.source.UserGroup;
+import com.wuxian.janus.cache.model.source.*;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
+import com.wuxian.janus.core.cache.provider.TenantMap;
 import com.wuxian.janus.core.critical.DimensionEnum;
 import com.wuxian.janus.core.critical.NativeUserGroupEnum;
 import com.wuxian.janus.struct.layer1.OuterObjectStruct;
@@ -19,17 +17,25 @@ import com.wuxian.janus.struct.primary.TenantIdType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class UserGroupExtractor {
-    public static void extract(ApplicationGroup applicationGroup, IdGeneratorFactory idGeneratorFactory, DirectAccessControlSource result) {
+    public static TenantMap<IdType, UserGroup> extract(ApplicationGroup applicationGroup, IdGeneratorFactory idGeneratorFactory, DirectAccessControlSource result) {
+
+        TenantMap<IdType, UserGroup> resultTenantMap = new TenantMap<>();
+
         IdGenerator idGenerator = IdUtils.createIdGenerator(idGeneratorFactory);
 
         for (Application application : applicationGroup.getApplications()) {
-            extractUserGroup(application, idGenerator, result);
+            extractUserGroup(application, idGenerator, resultTenantMap, result);
         }
+
+        return resultTenantMap;
     }
 
-    private static void extractUserGroup(Application application, IdGenerator idGenerator, DirectAccessControlSource result) {
+    private static void extractUserGroup(Application application, IdGenerator idGenerator
+            , TenantMap<IdType, UserGroup> resultTenantMap, DirectAccessControlSource result) {
         ApplicationIdType applicationId = IdUtils.createApplicationId(application.getId());
         //来源1
         List<UserGroup> from1Application = application.buildNativeApplicationUserGroup();
@@ -38,44 +44,65 @@ public class UserGroupExtractor {
 
             TenantIdType tenantId = IdUtils.createTenantId(tenant.getId());
 
-            //来源2
-            List<UserGroup> from2Tenant = tenant.buildNativeTenantUserGroup(applicationId);
-
-            //来源3
-            List<UserGroup> from3Tenant = new ArrayList<>(tenant.getUserGroups());
-
-            //tenant来源合并,并数据加工
-            List<UserGroup> allTenant = new ArrayList<>(from2Tenant);
-            allTenant.addAll(from3Tenant);
-            appendStructTenantId(allTenant, tenantId);
-
-            //来源合并
-            List<UserGroup> all = new ArrayList<>(from1Application);
-            all.addAll(allTenant);
+            List<UserGroup> all = gather(from1Application, applicationId, tenantId, tenant);
 
             ExtractUtils.fixIdAndKeyFields(all, idGenerator);
-            Map<IdType, UserGroupStruct> map = ExtractUtils.groupByIdAndMergeToStruct(all,
-                    //在model上面有applicationId,所以在生成struct时补上这个属性通过merge进入到结果中
-                    (model) -> {
-                        UserGroup userGroupModel = (UserGroup) model;
-                        UserGroupStruct struct = new UserGroupStruct();
-                        struct.setApplicationId(applicationId.getValue());
 
-                        //OuterObjectTypeCode + OuterObjectCode  --> OuterObjectTypeId
-                        //注意下面这个条件不可以用keyFieldsHasValue代替
-                        if (userGroupModel.getOuterObjectCode() != null) {
-                            OuterObjectStruct outerObjectStruct =
-                                    UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(result,
-                                            userGroupModel.getOuterObjectTypeCode()
-                                            , userGroupModel.getOuterObjectCode()
-                                            , userGroupModel.toHashString()).outerObjectStruct;
-                            struct.setOuterObjectId(outerObjectStruct.getId());
-                        }
-                        return struct;
-                    });
+            //这是返回值，后续流程需要
+            Map<IdType, UserGroup> resultModelMap = ExtractUtils.groupByIdAndMerge(all);
 
-            result.getUserGroup().add(applicationId, tenantId, map);
+            Map<IdType, UserGroupStruct> structMap = resultModelMap.entrySet().stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey,
+                            (entry) -> {
+                                UserGroup role = entry.getValue();
+                                Function<BaseModel<UserGroupStruct>, UserGroupStruct> lambda =
+                                        model -> convertToStruct((UserGroup) model, application, result);
+                                return role.buildStruct(lambda);
+                            }
+                    ));
+
+            result.getUserGroup().add(applicationId, tenantId, structMap);
+
+            resultTenantMap.add(applicationId, tenantId, resultModelMap);
         }
+    }
+
+    private static List<UserGroup> gather(List<UserGroup> fromApplication
+            , ApplicationIdType applicationId, TenantIdType tenantId, Tenant tenant) {
+        //来源2
+        List<UserGroup> from2Tenant = tenant.buildNativeTenantUserGroup(applicationId);
+
+        //来源3
+        List<UserGroup> from3Tenant = new ArrayList<>(tenant.getUserGroups());
+
+        //tenant来源合并,并数据加工
+        List<UserGroup> allTenant = new ArrayList<>(from2Tenant);
+        allTenant.addAll(from3Tenant);
+        appendStructTenantId(allTenant, tenantId);
+
+        //来源合并
+        List<UserGroup> result = new ArrayList<>(fromApplication);
+        result.addAll(allTenant);
+
+        return result;
+    }
+
+    private static UserGroupStruct convertToStruct(UserGroup userGroupModel, Application application
+            , DirectAccessControlSource source) {
+        UserGroupStruct struct = new UserGroupStruct();
+        struct.setApplicationId(IdUtils.createApplicationId(application.getId()).getValue());
+
+        //OuterObjectTypeCode + OuterObjectCode  --> OuterObjectTypeId
+        //注意下面这个条件不可以用keyFieldsHasValue代替
+        if (userGroupModel.getOuterObjectCode() != null) {
+            OuterObjectStruct outerObjectStruct =
+                    UserAndOuterObjectExtractor.findByOuterObjectTypeCodeAndOuterObjectCode(source,
+                            userGroupModel.getOuterObjectTypeCode()
+                            , userGroupModel.getOuterObjectCode()
+                            , userGroupModel.toHashString()).outerObjectStruct;
+            struct.setOuterObjectId(outerObjectStruct.getId());
+        }
+        return struct;
     }
 
     private static void appendStructTenantId(List<UserGroup> list, TenantIdType tenantId) {
