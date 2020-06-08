@@ -8,17 +8,17 @@ import com.wuxian.janus.cache.model.source.User;
 import com.wuxian.janus.core.basis.StrictUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.cache.provider.TenantMap;
+import com.wuxian.janus.core.critical.Access;
 import com.wuxian.janus.core.critical.AccessControl;
+import com.wuxian.janus.struct.layer1.RoleOtherXStruct;
+import com.wuxian.janus.struct.layer1.RoleUserXStruct;
 import com.wuxian.janus.struct.layer1.ScopeRoleUserXStruct;
 import com.wuxian.janus.struct.primary.ApplicationIdType;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.TenantIdType;
 import com.wuxian.janus.struct.primary.UserIdType;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 提取role-user,role-userGroup,role-other关系
@@ -47,11 +47,19 @@ public class RoleRelationAndScopeExtractor {
             , IdGenerator roleUserXIdGenerator, IdGenerator roleOtherXIdGenerator
             , IdGenerator scopeRoleUserXIdGenerator, DirectAccessControlSource result) {
 
-
+        //临时结果
         Map<IdType, ScopeRoleUserXStruct> scopeSingleRoleUserX = new HashMap<>();
-        Map<IdType, ScopeRoleUserXStruct> scopeMultipleRoleUserX = new HashMap<>(); ？？
+        Map<IdType, ScopeRoleUserXStruct> scopeMultipleRoleUserX = new HashMap<>();
+
+        Map<IdType, RoleUserXStruct> singleRoleUserX = new HashMap<>();
+        Map<IdType, RoleUserXStruct> multipleRoleUserX = new HashMap<>();
+
+        Map<IdType, RoleOtherXStruct> singleRoleOtherXStruct = new HashMap<>();
+        Map<IdType, RoleOtherXStruct> multipleRoleOtherXStruct = new HashMap<>();
 
         for (Role role : roleMap.values()) {
+
+            IdType roleId = IdUtils.createId(role.getId());
 
             Map<UserIdType, Set<String>> userIdScopeMap = new HashMap<>();
             Map<UserIdType, AccessControl> userIdAccessControlMap = new HashMap<>();
@@ -73,27 +81,106 @@ public class RoleRelationAndScopeExtractor {
                     StrictUtils.get(userIdAccessControlMap, userId).union(entry.getValue());
                 }
             }
+
+            //scopeRoleUser
+            Map<IdType, ScopeRoleUserXStruct> scopeRoleUserPart
+                    = createScopeRoleUserXStructs(roleId, userIdScopeMap, scopeRoleUserXIdGenerator);
+            //roleUser
+            Map<IdType, RoleUserXStruct> roleUserPart
+                    = createRoleUserXStructs(roleId, userIdAccessControlMap, roleUserXIdGenerator);
+            //roleOther
+            RoleOtherXStruct roleOtherXStructItem = null;
+            IdType roleOtherXStructId = null;
+            if (role.getAccess() != null) {
+                roleOtherXStructId = roleOtherXIdGenerator.generate();
+                roleOtherXStructItem = createRoleOtherXStruct(roleOtherXStructId, roleId, role.getAccess());
+            }
+            //按multiple收录
+            if (!role.getMultiple()) {
+                scopeSingleRoleUserX.putAll(scopeRoleUserPart);
+                singleRoleUserX.putAll(roleUserPart);
+                if (roleOtherXStructItem != null) {
+                    singleRoleOtherXStruct.put(roleOtherXStructId, roleOtherXStructItem);
+                }
+            } else {
+                scopeMultipleRoleUserX.putAll(scopeRoleUserPart);
+                multipleRoleUserX.putAll(roleUserPart);
+                if (roleOtherXStructItem != null) {
+                    multipleRoleOtherXStruct.put(roleOtherXStructId, roleOtherXStructItem);
+                }
+            }
+
         }
 
-
-        //role.getAccess()
-        //(10)SingleRoleOtherX,
-        //(16)MultipleRoleOtherX,
-
-        //(1)ScopeSingleRoleUserX,
-        //(2)ScopeMultipleRoleUserX
-        //(12)SingleRoleUserX
-        //(18)MultipleRoleUserX
-
-        //extractScopeRoleUserX(applicationId,tenantId,roleMap);
-
+        //最后收录到result中
+        result.getScopeSingleRoleUserX().add(applicationId, tenantId, scopeSingleRoleUserX);
+        result.getScopeMultipleRoleUserX().add(applicationId, tenantId, scopeMultipleRoleUserX);
+        result.getSingleRoleUserX().add(applicationId, tenantId, singleRoleUserX);
+        result.getMultipleRoleUserX().add(applicationId, tenantId, multipleRoleUserX);
+        result.getSingleRoleOtherX().add(applicationId, tenantId, singleRoleOtherXStruct);
+        result.getMultipleRoleOtherX().add(applicationId, tenantId, multipleRoleOtherXStruct);
     }
 
-    private static void extractScopeRoleUserX(ApplicationIdType applicationId
-            , TenantIdType tenantId, Role role, Map<UserIdType, Set<String>> userIdScopeMap
-            , IdGenerator roleUserXIdGenerator, IdGenerator scopeRoleUserXIdGenerator
-            , DirectAccessControlSource result) {
+    private static Map<IdType, ScopeRoleUserXStruct> createScopeRoleUserXStructs(IdType roleId
+            , Map<UserIdType, Set<String>> userIdScopeMap, IdGenerator idGenerator) {
+        Map<IdType, ScopeRoleUserXStruct> result = new HashMap<>();
 
+        for (Map.Entry<UserIdType, Set<String>> entry : userIdScopeMap.entrySet()) {
+            for (String scope : entry.getValue()) {
+                IdType id = idGenerator.generate();
 
+                ScopeRoleUserXStruct item = new ScopeRoleUserXStruct();
+                item.setId(id.getValue());
+                item.setRoleId(roleId.getValue());
+                item.setUserId(entry.getKey().getValue());
+                item.setScope(scope);
+                result.put(id, item);
+            }
+        }
+        return result;
+    }
+
+    private static Map<IdType, RoleUserXStruct> createRoleUserXStructs(IdType roleId
+            , Map<UserIdType, AccessControl> userIdAccessControlMap, IdGenerator idGenerator) {
+        Map<IdType, RoleUserXStruct> result = new HashMap<>();
+
+        for (Map.Entry<UserIdType, AccessControl> entry : userIdAccessControlMap.entrySet()) {
+            IdType id = idGenerator.generate();
+            AccessControl accessControl = entry.getValue();
+
+            RoleUserXStruct item = new RoleUserXStruct();
+            item.setId(id.getValue());
+            item.setRoleId(roleId.getValue());
+            item.setUserId(entry.getKey().getValue());
+
+            item.setViewAccess(accessControl.isViewAccess());
+            item.setExecuteAccess(accessControl.isExecuteAccess());
+            item.setEditAccess(accessControl.isEditAccess());
+            item.setDeleteAccess(accessControl.isDeleteAccess());
+            item.setEnableAccess(accessControl.isEnableAccess());
+
+            item.setViewControl(accessControl.isViewControl());
+            item.setExecuteControl(accessControl.isExecuteControl());
+            item.setEditControl(accessControl.isEditControl());
+            item.setDeleteControl(accessControl.isDeleteControl());
+            item.setEnableControl(accessControl.isEnableControl());
+            result.put(id, item);
+        }
+        return result;
+    }
+
+    private static RoleOtherXStruct createRoleOtherXStruct(IdType structId, IdType roleId
+            , Access access) {
+        RoleOtherXStruct result = new RoleOtherXStruct();
+        result.setId(structId.getValue());
+        result.setRoleId(roleId.getValue());
+
+        result.setViewAccess(access.isViewAccess());
+        result.setExecuteAccess(access.isExecuteAccess());
+        result.setEditAccess(access.isEditAccess());
+        result.setDeleteAccess(access.isDeleteAccess());
+        result.setEnableAccess(access.isEnableAccess());
+
+        return result;
     }
 }
