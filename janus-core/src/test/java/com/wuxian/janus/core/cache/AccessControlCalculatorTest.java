@@ -5,7 +5,10 @@ import com.wuxian.janus.core.basis.StrictUtils;
 import com.wuxian.janus.core.cache.data.*;
 import com.wuxian.janus.core.cache.provider.BaseAccessControlCacheProvider;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
-import com.wuxian.janus.core.calculate.*;
+import com.wuxian.janus.core.calculate.AccessControlCalculator;
+import com.wuxian.janus.core.calculate.PermissionInfo;
+import com.wuxian.janus.core.calculate.PermissionPackage;
+import com.wuxian.janus.core.calculate.PermissionResult;
 import com.wuxian.janus.core.calculate.error.ErrorDataRecorder;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
 import com.wuxian.janus.core.synchronism.ClassicChangeRecorder;
@@ -263,7 +266,7 @@ public class AccessControlCalculatorTest {
         ErrorDataRecorder recorder = new ErrorDataRecorder();
         List<RoleStruct> roles = getCalculator(AccessControlCacheProvider11.class).getUserExecuteAccessSingleRoles(IdBuilder.uId(1), IdBuilder.aId(1), IdBuilder.tId(10), recorder).getRoles();
         assertEquals(roles.size(), 2);
-        assertEquals(StrictUtils.get(roles, 0).getCode(), "janus_ar:application_maintainer");
+        assertEquals(StrictUtils.get(roles, 0).getCode(), NativeRoleEnum.APPLICATION_MAINTAINER.getCode());
         assertEquals(recorder.errorList.size(), 3);
     }
 
