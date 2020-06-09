@@ -48,7 +48,6 @@ public class SourceExtractor {
         TenantMap<IdType, UserGroup> userGroupTenantMap
                 =  UserGroupExtractor.extract(applicationGroup, this.idGeneratorFactory, result);
 
-        //TODO
         //STEP8:提取(3)ScopeUserGroupUserX
         //(5)UserGroupUserX,(6)UserGroupOtherX
         //(11)SingleRoleUserGroupX,(17)MultipleRoleUserGroupX
