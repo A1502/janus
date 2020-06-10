@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class RoleTest {
 
     @Test
-    @DisplayName("测试RoleUserX多次关系合并")
+    @DisplayName("测试Role&User&Other实战多次关系合并")
     void testMergeRoleByApplicationGroup() {
 
         String appId = "1";
