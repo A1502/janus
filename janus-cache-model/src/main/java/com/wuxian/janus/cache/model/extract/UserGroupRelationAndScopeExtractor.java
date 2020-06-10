@@ -126,7 +126,7 @@ public class UserGroupRelationAndScopeExtractor {
             item.setUserGroupId(userGroupId.getValue());
             item.setUserId(entry.getKey().getValue());
 
-            AccessControlUtils.fillPrototype(item, accessControl);
+            AccessControlUtils.fillByAccessControl(item, accessControl);
 
             result.put(id, item);
         }
@@ -139,7 +139,7 @@ public class UserGroupRelationAndScopeExtractor {
         result.setId(structId.getValue());
         result.setUserGroupId(userGroupId.getValue());
 
-        AccessControlUtils.fillPrototype(result, access);
+        AccessControlUtils.fillByAccess(result, access);
 
         return result;
     }
@@ -157,7 +157,7 @@ public class UserGroupRelationAndScopeExtractor {
             item.setId(id.getValue());
             item.setRoleId(entry.getKey().getValue());
             item.setUserGroupId(userGroupId.getValue());
-            AccessControlUtils.fillPrototype(item, accessControl);
+            AccessControlUtils.fillByAccessControl(item, accessControl);
             result.put(id, item);
         }
         return result;

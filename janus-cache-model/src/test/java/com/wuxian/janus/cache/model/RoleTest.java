@@ -99,10 +99,10 @@ public class RoleTest {
         //测试RoleUserX = roleA User100
         List<RoleUserXStruct> roleAUser100 = getRoleUserXStruct(singleRoleUserXMap, roleAId, user100);
         Assert.assertEquals(roleAUser100.size(), 1);
-        Assert.assertTrue(AccessControlUtils.match(new AccessControl(
-                        new boolean[]{true, true, false, false, false
-                                , false, false, false, false, true})
-                , roleAUser100.get(0)));
+        Assert.assertTrue(AccessControlUtils.matchWithAccessControl(roleAUser100.get(0), new AccessControl(
+                new boolean[]{true, true, false, false, false
+                        , false, false, false, false, true})
+        ));
 
 
         //测试RoleUserX = roleB User100
@@ -110,27 +110,24 @@ public class RoleTest {
         Assert.assertEquals(roleAUser101.size(), 0);
         List<RoleUserXStruct> roleBUser100 = getRoleUserXStruct(multipleRoleUserXMap, roleBId, user100);
         Assert.assertEquals(roleBUser100.size(), 1);
-        Assert.assertTrue(AccessControlUtils.match(new AccessControl(
-                        new boolean[]{true, false, false, false, false
-                                , false, false, false, false, false})
-                , roleBUser100.get(0)));
+        Assert.assertTrue(AccessControlUtils.matchWithAccessControl(roleBUser100.get(0), new AccessControl(
+                new boolean[]{true, false, false, false, false
+                        , false, false, false, false, false})));
 
         //测试RoleUserX = roleA User101
         List<RoleUserXStruct> roleBUser101 = getRoleUserXStruct(multipleRoleUserXMap, roleBId, user101);
         Assert.assertEquals(roleBUser101.size(), 1);
-        Assert.assertTrue(AccessControlUtils.match(new AccessControl(
-                        new boolean[]{true, true, false, false, false
-                                , false, false, false, false, false})
-                , roleBUser101.get(0)));
+        Assert.assertTrue(AccessControlUtils.matchWithAccessControl(roleBUser101.get(0), new AccessControl(
+                new boolean[]{true, true, false, false, false
+                        , false, false, false, false, false})));
 
         //测试RoleUserX = roleAllPermission User100
         List<RoleUserXStruct> roleAllPermissionUser100 = getRoleUserXStruct(singleRoleUserXMap
                 , roleAllPermissionId, user100);
         Assert.assertEquals(roleAllPermissionUser100.size(), 1);
-        Assert.assertTrue(AccessControlUtils.match(new AccessControl(
-                        new boolean[]{true, true, true, true, true
-                                , true, true, true, true, true})
-                , roleAllPermissionUser100.get(0)));
+        Assert.assertTrue(AccessControlUtils.matchWithAccessControl(roleAllPermissionUser100.get(0), new AccessControl(
+                new boolean[]{true, true, true, true, true
+                        , true, true, true, true, true})));
 
         //--------------------------------------------------------------------------------------------
         Map<IdType, ScopeRoleUserXStruct> scopeSingleRoleUserXMap = source.getScopeSingleRoleUserX().get(applicationId, tenantId);
@@ -157,9 +154,8 @@ public class RoleTest {
         Map<IdType, RoleOtherXStruct> scopeSingleRoleOtherXMap = source.getSingleRoleOtherX().get(applicationId, tenantId);
         List<RoleOtherXStruct> listOfRoleAOther = getRoleOther(scopeSingleRoleOtherXMap, roleAId);
         Assert.assertEquals(listOfRoleAOther.size(), 1);
-        Assert.assertTrue(AccessControlUtils.match(new Access(
-                        new boolean[]{true, false, false, false, false})
-                , listOfRoleAOther.get(0)));
+        Assert.assertTrue(AccessControlUtils.matchWithAccess(listOfRoleAOther.get(0), new Access(
+                new boolean[]{true, false, false, false, false})));
     }
 
     private List<RoleUserXStruct> getRoleUserXStruct(Map<IdType, RoleUserXStruct> roleUserXMap, String roleId, String userId) {

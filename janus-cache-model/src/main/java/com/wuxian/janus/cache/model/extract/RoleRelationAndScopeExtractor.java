@@ -136,7 +136,7 @@ public class RoleRelationAndScopeExtractor {
             item.setRoleId(roleId.getValue());
             item.setUserId(entry.getKey().getValue());
 
-            AccessControlUtils.fillPrototype(item, accessControl);
+            AccessControlUtils.fillByAccessControl(item, accessControl);
 
             result.put(id, item);
         }
@@ -149,7 +149,7 @@ public class RoleRelationAndScopeExtractor {
         result.setId(structId.getValue());
         result.setRoleId(roleId.getValue());
 
-        AccessControlUtils.fillPrototype(result, access);
+        AccessControlUtils.fillByAccess(result, access);
 
         return result;
     }
