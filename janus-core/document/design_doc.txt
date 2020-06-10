@@ -74,7 +74,7 @@ Permission
 【DONE】
 
  1:37:50
-7.UserOuterObjectXPrototype的outerObjectIdList违反范式，准备干掉这个逻辑。一并干掉virud_tp:create_outer_group这个内置权限
+7.UserOuterObjectXPrototype的outerObjectIdList违反范式，准备干掉这个逻辑。一并干掉janus_tp:create_outer_group这个内置权限
 TODO 5
 
  1:39:02
@@ -87,7 +87,7 @@ TODO 5
 this.createIndex(OuterObjectTypeStruct.class, (Object[] fields) ->
                 new String[]{
                         safeToString(fields[0])
-                }, USED_BY_USER_GROUP);  DONE 3
+                }, USED_BY_USER_GROUP); 【DONE】 3
 
 11.extractor还没完，包括基本测试 TODO 1
 
