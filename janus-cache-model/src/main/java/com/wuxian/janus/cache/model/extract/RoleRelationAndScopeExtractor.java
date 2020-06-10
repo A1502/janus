@@ -77,7 +77,7 @@ public class RoleRelationAndScopeExtractor {
                 roleOtherXStructId = roleOtherXIdGenerator.generate();
                 roleOtherXStructItem = createRoleOtherXStruct(roleOtherXStructId, roleId, role.getAccess());
             }
-            //按multiple收录
+            //阶段性收录 by multiple
             if (!role.getMultiple()) {
                 scopeSingleRoleUserX.putAll(scopeRoleUserPart);
                 singleRoleUserX.putAll(roleUserPart);
