@@ -4,12 +4,15 @@ import com.wuxian.janus.cache.model.ErrorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdGenerator;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
 import com.wuxian.janus.cache.model.source.BaseModel;
+import com.wuxian.janus.cache.model.source.User;
 import com.wuxian.janus.core.basis.StrictUtils;
 import com.wuxian.janus.core.cache.provider.TenantMap;
 import com.wuxian.janus.core.cache.provider.TenantMapElement;
+import com.wuxian.janus.core.critical.AccessControl;
 import com.wuxian.janus.struct.primary.ApplicationIdType;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.TenantIdType;
+import com.wuxian.janus.struct.primary.UserIdType;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -165,5 +168,40 @@ class ExtractUtils {
                 processor.accept(tenantMap.getElement(applicationId, tenantId));
             }
         }
+    }
+
+
+    static Map<UserIdType, AccessControl> extractUserAccessControlMap(Map<User, AccessControl> users) {
+        Map<UserIdType, AccessControl> result = new HashMap<>();
+
+        for (Map.Entry<User, AccessControl> entry : users.entrySet()) {
+
+            UserIdType userId = IdUtils.createUserId(entry.getKey().getId());
+
+            //填充userIdAccessControlMap
+            if (!StrictUtils.containsKey(result, userId)) {
+                result.put(userId, entry.getValue());
+            } else {
+                StrictUtils.get(result, userId).union(entry.getValue());
+            }
+        }
+        return result;
+    }
+
+    static Map<UserIdType, Set<String>> extractUserScopeMap(Map<User, AccessControl> users) {
+        Map<UserIdType, Set<String>> result = new HashMap<>();
+
+        for (Map.Entry<User, AccessControl> entry : users.entrySet()) {
+
+            UserIdType userId = IdUtils.createUserId(entry.getKey().getId());
+
+            //填充userIdScopeMap
+            if (!StrictUtils.containsKey(result, userId)) {
+                result.put(userId, new HashSet<>());
+            }
+            StrictUtils.get(result, userId).addAll(entry.getKey().getScopes());
+        }
+
+        return result;
     }
 }
