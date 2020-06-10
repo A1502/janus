@@ -135,17 +135,8 @@ public class RoleRelationAndScopeExtractor {
             item.setRoleId(roleId.getValue());
             item.setUserId(entry.getKey().getValue());
 
-            item.setViewAccess(accessControl.isViewAccess());
-            item.setExecuteAccess(accessControl.isExecuteAccess());
-            item.setEditAccess(accessControl.isEditAccess());
-            item.setDeleteAccess(accessControl.isDeleteAccess());
-            item.setEnableAccess(accessControl.isEnableAccess());
+            accessControl.fill(item);
 
-            item.setViewControl(accessControl.isViewControl());
-            item.setExecuteControl(accessControl.isExecuteControl());
-            item.setEditControl(accessControl.isEditControl());
-            item.setDeleteControl(accessControl.isDeleteControl());
-            item.setEnableControl(accessControl.isEnableControl());
             result.put(id, item);
         }
         return result;
@@ -157,11 +148,7 @@ public class RoleRelationAndScopeExtractor {
         result.setId(structId.getValue());
         result.setRoleId(roleId.getValue());
 
-        result.setViewAccess(access.isViewAccess());
-        result.setExecuteAccess(access.isExecuteAccess());
-        result.setEditAccess(access.isEditAccess());
-        result.setDeleteAccess(access.isDeleteAccess());
-        result.setEnableAccess(access.isEnableAccess());
+        access.fill(result);
 
         return result;
     }
