@@ -1,7 +1,5 @@
 package com.wuxian.janus.core.critical;
 
-
-import com.wuxian.janus.struct.prototype.AccessPrototype;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -56,14 +54,6 @@ public class Access {
         this.editAccess = this.editAccess || another.editAccess;
         this.deleteAccess = this.deleteAccess || another.deleteAccess;
         this.enableAccess = this.enableAccess || another.enableAccess;
-    }
-
-    public void fill(AccessPrototype accessPrototype) {
-        accessPrototype.setViewAccess(this.isViewAccess());
-        accessPrototype.setExecuteAccess(this.isExecuteAccess());
-        accessPrototype.setEditAccess(this.isEditAccess());
-        accessPrototype.setDeleteAccess(this.isDeleteAccess());
-        accessPrototype.setEnableAccess(this.isEnableAccess());
     }
 
     @Override
