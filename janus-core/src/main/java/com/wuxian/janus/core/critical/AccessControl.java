@@ -1,6 +1,7 @@
 package com.wuxian.janus.core.critical;
 
 
+import com.wuxian.janus.struct.prototype.ControlPrototype;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -65,6 +66,16 @@ public class AccessControl extends Access {
         this.editControl = this.editControl || another.editControl;
         this.deleteControl = this.deleteControl || another.deleteControl;
         this.enableControl = this.enableControl || another.enableControl;
+    }
+
+    public void fill(ControlPrototype controlPrototype) {
+        super.fill(controlPrototype);
+
+        controlPrototype.setViewControl(this.isViewControl());
+        controlPrototype.setExecuteControl(this.isExecuteControl());
+        controlPrototype.setEditControl(this.isEditControl());
+        controlPrototype.setDeleteControl(this.isDeleteControl());
+        controlPrototype.setEnableControl(this.isEnableControl());
     }
 
     @Override
