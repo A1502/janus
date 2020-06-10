@@ -47,6 +47,8 @@ public class UserGroupTest {
                 , () -> one.mergeFrom(another)
                 , "未抛出ErrorCodeException异常");
     }
+
+
 }
 
 

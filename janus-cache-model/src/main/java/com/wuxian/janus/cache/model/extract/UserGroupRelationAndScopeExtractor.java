@@ -8,6 +8,7 @@ import com.wuxian.janus.cache.model.source.UserGroup;
 import com.wuxian.janus.core.basis.StrictUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.cache.provider.TenantMap;
+import com.wuxian.janus.core.calculate.AccessControlUtils;
 import com.wuxian.janus.core.critical.Access;
 import com.wuxian.janus.core.critical.AccessControl;
 import com.wuxian.janus.struct.layer1.RoleUserGroupXStruct;
@@ -125,7 +126,7 @@ public class UserGroupRelationAndScopeExtractor {
             item.setUserGroupId(userGroupId.getValue());
             item.setUserId(entry.getKey().getValue());
 
-            accessControl.fill(item);
+            AccessControlUtils.fillPrototype(item, accessControl);
 
             result.put(id, item);
         }
@@ -138,12 +139,11 @@ public class UserGroupRelationAndScopeExtractor {
         result.setId(structId.getValue());
         result.setUserGroupId(userGroupId.getValue());
 
-        access.fill(result);
+        AccessControlUtils.fillPrototype(result, access);
 
         return result;
     }
 
-    //要区分single multiple
     private static Map<IdType, RoleUserGroupXStruct> createRoleUserGroupXStruct(IdType userGroupId
             , Map<IdType, AccessControl> roleIdAccessControlMap, IdGenerator idGenerator) {
 
@@ -157,7 +157,7 @@ public class UserGroupRelationAndScopeExtractor {
             item.setId(id.getValue());
             item.setRoleId(entry.getKey().getValue());
             item.setUserGroupId(userGroupId.getValue());
-            accessControl.fill(item);
+            AccessControlUtils.fillPrototype(item, accessControl);
             result.put(id, item);
         }
         return result;
@@ -182,7 +182,7 @@ public class UserGroupRelationAndScopeExtractor {
         return result;
     }
 
-    static Map<IdType, AccessControl> extractRoleAccessControlMap(Map<Role, AccessControl> roles, boolean multiple) {
+    private static Map<IdType, AccessControl> extractRoleAccessControlMap(Map<Role, AccessControl> roles, boolean multiple) {
         Map<IdType, AccessControl> result = new HashMap<>();
 
         for (Map.Entry<Role, AccessControl> entry : roles.entrySet()) {

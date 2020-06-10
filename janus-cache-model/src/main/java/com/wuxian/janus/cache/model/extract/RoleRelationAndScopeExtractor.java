@@ -6,6 +6,7 @@ import com.wuxian.janus.cache.model.extract.id.IdUtils;
 import com.wuxian.janus.cache.model.source.Role;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.cache.provider.TenantMap;
+import com.wuxian.janus.core.calculate.AccessControlUtils;
 import com.wuxian.janus.core.critical.Access;
 import com.wuxian.janus.core.critical.AccessControl;
 import com.wuxian.janus.struct.layer1.RoleOtherXStruct;
@@ -135,7 +136,7 @@ public class RoleRelationAndScopeExtractor {
             item.setRoleId(roleId.getValue());
             item.setUserId(entry.getKey().getValue());
 
-            accessControl.fill(item);
+            AccessControlUtils.fillPrototype(item, accessControl);
 
             result.put(id, item);
         }
@@ -148,7 +149,7 @@ public class RoleRelationAndScopeExtractor {
         result.setId(structId.getValue());
         result.setRoleId(roleId.getValue());
 
-        access.fill(result);
+        AccessControlUtils.fillPrototype(result, access);
 
         return result;
     }

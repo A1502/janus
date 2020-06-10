@@ -3,6 +3,7 @@ package com.wuxian.janus.cache.model;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
 import com.wuxian.janus.cache.model.source.*;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
+import com.wuxian.janus.core.calculate.AccessControlUtils;
 import com.wuxian.janus.core.critical.Access;
 import com.wuxian.janus.core.critical.AccessControl;
 import com.wuxian.janus.core.critical.LevelEnum;
@@ -27,7 +28,7 @@ public class RoleTest {
 
     @Test
     @DisplayName("测试RoleUserX多次关系合并")
-    void testMergeRole() {
+    void testMergeRoleByApplicationGroup() {
 
         String appId = "1";
         String tId = "10";
@@ -87,7 +88,7 @@ public class RoleTest {
                 )
         );
 
-        DirectAccessControlSource source = TestUtils.extractAndPrint("testMergeRole", applicationGroup);
+        DirectAccessControlSource source = TestUtils.extractAndPrint("testMergeRoleByApplicationGroup", applicationGroup);
 
         ApplicationIdType applicationId = IdUtils.createApplicationId(appId);
         TenantIdType tenantId = IdUtils.createTenantId(tId);
@@ -98,7 +99,7 @@ public class RoleTest {
         //测试RoleUserX = roleA User100
         List<RoleUserXStruct> roleAUser100 = getRoleUserXStruct(singleRoleUserXMap, roleAId, user100);
         Assert.assertEquals(roleAUser100.size(), 1);
-        Assert.assertTrue(match(new AccessControl(
+        Assert.assertTrue(AccessControlUtils.match(new AccessControl(
                         new boolean[]{true, true, false, false, false
                                 , false, false, false, false, true})
                 , roleAUser100.get(0)));
@@ -109,7 +110,7 @@ public class RoleTest {
         Assert.assertEquals(roleAUser101.size(), 0);
         List<RoleUserXStruct> roleBUser100 = getRoleUserXStruct(multipleRoleUserXMap, roleBId, user100);
         Assert.assertEquals(roleBUser100.size(), 1);
-        Assert.assertTrue(match(new AccessControl(
+        Assert.assertTrue(AccessControlUtils.match(new AccessControl(
                         new boolean[]{true, false, false, false, false
                                 , false, false, false, false, false})
                 , roleBUser100.get(0)));
@@ -117,7 +118,7 @@ public class RoleTest {
         //测试RoleUserX = roleA User101
         List<RoleUserXStruct> roleBUser101 = getRoleUserXStruct(multipleRoleUserXMap, roleBId, user101);
         Assert.assertEquals(roleBUser101.size(), 1);
-        Assert.assertTrue(match(new AccessControl(
+        Assert.assertTrue(AccessControlUtils.match(new AccessControl(
                         new boolean[]{true, true, false, false, false
                                 , false, false, false, false, false})
                 , roleBUser101.get(0)));
@@ -126,7 +127,7 @@ public class RoleTest {
         List<RoleUserXStruct> roleAllPermissionUser100 = getRoleUserXStruct(singleRoleUserXMap
                 , roleAllPermissionId, user100);
         Assert.assertEquals(roleAllPermissionUser100.size(), 1);
-        Assert.assertTrue(match(new AccessControl(
+        Assert.assertTrue(AccessControlUtils.match(new AccessControl(
                         new boolean[]{true, true, true, true, true
                                 , true, true, true, true, true})
                 , roleAllPermissionUser100.get(0)));
@@ -156,7 +157,7 @@ public class RoleTest {
         Map<IdType, RoleOtherXStruct> scopeSingleRoleOtherXMap = source.getSingleRoleOtherX().get(applicationId, tenantId);
         List<RoleOtherXStruct> listOfRoleAOther = getRoleOther(scopeSingleRoleOtherXMap, roleAId);
         Assert.assertEquals(listOfRoleAOther.size(), 1);
-        Assert.assertTrue(match(new Access(
+        Assert.assertTrue(AccessControlUtils.match(new Access(
                         new boolean[]{true, false, false, false, false})
                 , listOfRoleAOther.get(0)));
     }
@@ -200,60 +201,6 @@ public class RoleTest {
             if (!set.contains(item)) {
                 return false;
             }
-        }
-        return true;
-    }
-
-    private boolean match(AccessControl accessControl, RoleUserXStruct roleUserXStruct) {
-        if (accessControl.isViewAccess() != roleUserXStruct.isViewAccess()) {
-            return false;
-        }
-        if (accessControl.isExecuteAccess() != roleUserXStruct.isExecuteAccess()) {
-            return false;
-        }
-        if (accessControl.isEditAccess() != roleUserXStruct.isEditAccess()) {
-            return false;
-        }
-        if (accessControl.isDeleteAccess() != roleUserXStruct.isDeleteAccess()) {
-            return false;
-        }
-        if (accessControl.isEnableAccess() != roleUserXStruct.isEnableAccess()) {
-            return false;
-        }
-        if (accessControl.isViewControl() != roleUserXStruct.isViewControl()) {
-            return false;
-        }
-        if (accessControl.isExecuteControl() != roleUserXStruct.isExecuteControl()) {
-            return false;
-        }
-        if (accessControl.isEditControl() != roleUserXStruct.isEditControl()) {
-            return false;
-        }
-        if (accessControl.isDeleteControl() != roleUserXStruct.isDeleteControl()) {
-            return false;
-        }
-        if (accessControl.isEnableControl() != roleUserXStruct.isEnableControl()) {
-            return false;
-        }
-        return true;
-    }
-
-
-    private boolean match(Access access, RoleOtherXStruct roleOtherXStruct) {
-        if (access.isViewAccess() != roleOtherXStruct.isViewAccess()) {
-            return false;
-        }
-        if (access.isExecuteAccess() != roleOtherXStruct.isExecuteAccess()) {
-            return false;
-        }
-        if (access.isEditAccess() != roleOtherXStruct.isEditAccess()) {
-            return false;
-        }
-        if (access.isDeleteAccess() != roleOtherXStruct.isDeleteAccess()) {
-            return false;
-        }
-        if (access.isEnableAccess() != roleOtherXStruct.isEnableAccess()) {
-            return false;
         }
         return true;
     }
