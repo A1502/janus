@@ -4,8 +4,6 @@ import com.wuxian.janus.cache.model.extract.id.IdGenerator;
 import com.wuxian.janus.cache.model.extract.id.IdGeneratorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
 import com.wuxian.janus.cache.model.source.Role;
-import com.wuxian.janus.cache.model.source.User;
-import com.wuxian.janus.core.basis.StrictUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.cache.provider.TenantMap;
 import com.wuxian.janus.core.critical.Access;
@@ -18,7 +16,9 @@ import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.TenantIdType;
 import com.wuxian.janus.struct.primary.UserIdType;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 提取role-user,role-userGroup,role-other关系
@@ -61,26 +61,8 @@ public class RoleRelationAndScopeExtractor {
 
             IdType roleId = IdUtils.createId(role.getId());
 
-            Map<UserIdType, Set<String>> userIdScopeMap = new HashMap<>();
-            Map<UserIdType, AccessControl> userIdAccessControlMap = new HashMap<>();
-
-            for (Map.Entry<User, AccessControl> entry : role.getUsers().entrySet()) {
-
-                UserIdType userId = IdUtils.createUserId(entry.getKey().getId());
-
-                //填充userIdScopeMap
-                if (!StrictUtils.containsKey(userIdScopeMap, userId)) {
-                    userIdScopeMap.put(userId, new HashSet<>());
-                }
-                StrictUtils.get(userIdScopeMap, userId).addAll(entry.getKey().getScopes());
-
-                //填充userIdAccessControlMap
-                if (!StrictUtils.containsKey(userIdAccessControlMap, userId)) {
-                    userIdAccessControlMap.put(userId, entry.getValue());
-                } else {
-                    StrictUtils.get(userIdAccessControlMap, userId).union(entry.getValue());
-                }
-            }
+            Map<UserIdType, Set<String>> userIdScopeMap = ExtractUtils.extractUserScopeMap(role.getUsers());
+            Map<UserIdType, AccessControl> userIdAccessControlMap = ExtractUtils.extractUserAccessControlMap((role.getUsers()));
 
             //scopeRoleUser
             Map<IdType, ScopeRoleUserXStruct> scopeRoleUserPart
