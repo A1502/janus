@@ -96,58 +96,36 @@ public class RoleTest {
         Map<IdType, RoleUserXStruct> singleRoleUserXMap = source.getSingleRoleUserX().get(applicationId, tenantId);
         Map<IdType, RoleUserXStruct> multipleRoleUserXMap = source.getMultipleRoleUserX().get(applicationId, tenantId);
 
-        //测试RoleUserX = roleA User100
-        List<RoleUserXStruct> roleAUser100 = getRoleUserXStruct(singleRoleUserXMap, roleAId, user100);
-        Assert.assertEquals(roleAUser100.size(), 1);
-        Assert.assertTrue(AccessControlUtils.matchWithAccessControl(roleAUser100.get(0), new AccessControl(
+        checkRoleUserXStruct(singleRoleUserXMap, roleAId, user100, new AccessControl(
                 new boolean[]{true, true, false, false, false
-                        , false, false, false, false, true})
-        ));
+                        , false, false, false, false, true}));
 
+        checkRoleUserXStruct(singleRoleUserXMap, roleAId, user101, null);
 
-        //测试RoleUserX = roleB User100
-        List<RoleUserXStruct> roleAUser101 = getRoleUserXStruct(singleRoleUserXMap, roleAId, user101);
-        Assert.assertEquals(roleAUser101.size(), 0);
-        List<RoleUserXStruct> roleBUser100 = getRoleUserXStruct(multipleRoleUserXMap, roleBId, user100);
-        Assert.assertEquals(roleBUser100.size(), 1);
-        Assert.assertTrue(AccessControlUtils.matchWithAccessControl(roleBUser100.get(0), new AccessControl(
+        checkRoleUserXStruct(multipleRoleUserXMap, roleBId, user100, new AccessControl(
                 new boolean[]{true, false, false, false, false
-                        , false, false, false, false, false})));
+                        , false, false, false, false, false}));
 
-        //测试RoleUserX = roleA User101
-        List<RoleUserXStruct> roleBUser101 = getRoleUserXStruct(multipleRoleUserXMap, roleBId, user101);
-        Assert.assertEquals(roleBUser101.size(), 1);
-        Assert.assertTrue(AccessControlUtils.matchWithAccessControl(roleBUser101.get(0), new AccessControl(
+
+        checkRoleUserXStruct(multipleRoleUserXMap, roleBId, user101, new AccessControl(
                 new boolean[]{true, true, false, false, false
-                        , false, false, false, false, false})));
+                        , false, false, false, false, false}));
 
-        //测试RoleUserX = roleAllPermission User100
-        List<RoleUserXStruct> roleAllPermissionUser100 = getRoleUserXStruct(singleRoleUserXMap
-                , roleAllPermissionId, user100);
-        Assert.assertEquals(roleAllPermissionUser100.size(), 1);
-        Assert.assertTrue(AccessControlUtils.matchWithAccessControl(roleAllPermissionUser100.get(0), new AccessControl(
+        checkRoleUserXStruct(singleRoleUserXMap, roleAllPermissionId, user100, new AccessControl(
                 new boolean[]{true, true, true, true, true
-                        , true, true, true, true, true})));
+                        , true, true, true, true, true}));
 
         //--------------------------------------------------------------------------------------------
         Map<IdType, ScopeRoleUserXStruct> scopeSingleRoleUserXMap = source.getScopeSingleRoleUserX().get(applicationId, tenantId);
         Map<IdType, ScopeRoleUserXStruct> scopeMultipleRoleUserXMap = source.getScopeMultipleRoleUserX().get(applicationId, tenantId);
 
-        //测试ScopeRoleUserX = roleA User100
-        Set<String> scopesOfRoleAUser100 = getScopesOfRoleUser(scopeSingleRoleUserXMap, roleAId, user100);
-        Assert.assertTrue(TestUtils.match(scopesOfRoleAUser100, new String[]{scope_a, scope_b, scope_c}));
+        checkScopesOfRoleUser(scopeSingleRoleUserXMap, roleAId, user100, scope_a, scope_b, scope_c);
 
-        //测试ScopeRoleUserX = roleB User100
-        Set<String> scopesOfRoleBUser100 = getScopesOfRoleUser(scopeMultipleRoleUserXMap, roleBId, user100);
-        Assert.assertTrue(TestUtils.match(scopesOfRoleBUser100, new String[]{scope_null}));
+        checkScopesOfRoleUser(scopeMultipleRoleUserXMap, roleBId, user100, scope_null);
 
-        //测试ScopeRoleUserX = roleB User101
-        Set<String> scopesOfRoleBUser101 = getScopesOfRoleUser(scopeMultipleRoleUserXMap, roleBId, user101);
-        Assert.assertTrue(TestUtils.match(scopesOfRoleBUser101, new String[]{scope_null}));
+        checkScopesOfRoleUser(scopeMultipleRoleUserXMap, roleBId, user101, scope_null);
 
-        //测试ScopeRoleUserX = roleAllPermission User100
-        Set<String> scopesOfRoleAllPermissionUser100 = getScopesOfRoleUser(scopeSingleRoleUserXMap, roleAllPermissionId, user100);
-        Assert.assertTrue(TestUtils.match(scopesOfRoleAllPermissionUser100, new String[]{scope_d}));
+        checkScopesOfRoleUser(scopeSingleRoleUserXMap, roleAllPermissionId, user100, scope_d);
 
         //--------------------------------------------------------------------------------------------
         //测试RoleOther
@@ -156,6 +134,23 @@ public class RoleTest {
         Assert.assertEquals(listOfRoleAOther.size(), 1);
         Assert.assertTrue(AccessControlUtils.matchWithAccess(listOfRoleAOther.get(0), new Access(
                 new boolean[]{true, false, false, false, false})));
+    }
+
+    private void checkScopesOfRoleUser(Map<IdType, ScopeRoleUserXStruct> scopeRoleUserXMap
+            , String roleId, String userId, String... scopes) {
+        Set<String> scopesOfRoleAllPermissionUser100 = getScopesOfRoleUser(scopeRoleUserXMap, roleId, userId);
+        Assert.assertTrue(TestUtils.match(scopesOfRoleAllPermissionUser100, scopes));
+    }
+
+    private void checkRoleUserXStruct(Map<IdType, RoleUserXStruct> roleUserXMap
+            , String roleId, String userId, AccessControl accessControl) {
+        List<RoleUserXStruct> roleAUser100 = getRoleUserXStruct(roleUserXMap, roleId, userId);
+        if (accessControl != null) {
+            Assert.assertEquals(roleAUser100.size(), 1);
+            Assert.assertTrue(AccessControlUtils.matchWithAccessControl(roleAUser100.get(0), accessControl));
+        } else {
+            Assert.assertEquals(roleAUser100.size(), 0);
+        }
     }
 
     private List<RoleUserXStruct> getRoleUserXStruct(Map<IdType, RoleUserXStruct> roleUserXMap, String roleId, String userId) {
