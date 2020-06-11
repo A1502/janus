@@ -144,12 +144,12 @@ public class RoleTest {
 
     private void checkRoleUserXStruct(Map<IdType, RoleUserXStruct> roleUserXMap
             , String roleId, String userId, AccessControl accessControl) {
-        List<RoleUserXStruct> roleAUser100 = getRoleUserXStruct(roleUserXMap, roleId, userId);
+        List<RoleUserXStruct> list = getRoleUserXStruct(roleUserXMap, roleId, userId);
         if (accessControl != null) {
-            Assert.assertEquals(roleAUser100.size(), 1);
-            Assert.assertTrue(AccessControlUtils.matchWithAccessControl(roleAUser100.get(0), accessControl));
+            Assert.assertEquals(list.size(), 1);
+            Assert.assertTrue(AccessControlUtils.matchWithAccessControl(list.get(0), accessControl));
         } else {
-            Assert.assertEquals(roleAUser100.size(), 0);
+            Assert.assertEquals(list.size(), 0);
         }
     }
 
