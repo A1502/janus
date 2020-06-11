@@ -54,9 +54,9 @@ public class DirectAccessControlCacheProvider extends BaseAccessControlCacheProv
         }
     }
 
-    private String createKey(Class clazz, Boolean single, BaseIdType firstId, BaseIdType second) {
+    private String createKey(Class clazz, Boolean single, BaseIdType firstId, BaseIdType secondId) {
         String singleStr = single == null ? "" : single.toString();
-        return StringUtils.safeJoinStrings(clazz.toString(), singleStr, firstId.toString(), second.toString());
+        return StringUtils.safeJoinStrings(clazz.toString(), singleStr, firstId.toString(), secondId.toString());
     }
 
     private <T> T getFromSourceLoaderMap(Class clazz, Boolean single, BaseIdType firstId, BaseIdType secondId) {
