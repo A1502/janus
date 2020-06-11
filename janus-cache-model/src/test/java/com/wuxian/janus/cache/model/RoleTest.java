@@ -135,19 +135,19 @@ public class RoleTest {
 
         //测试ScopeRoleUserX = roleA User100
         Set<String> scopesOfRoleAUser100 = getScopesOfRoleUser(scopeSingleRoleUserXMap, roleAId, user100);
-        Assert.assertTrue(match(scopesOfRoleAUser100, new String[]{scope_a, scope_b, scope_c}));
+        Assert.assertTrue(TestUtils.match(scopesOfRoleAUser100, new String[]{scope_a, scope_b, scope_c}));
 
         //测试ScopeRoleUserX = roleB User100
         Set<String> scopesOfRoleBUser100 = getScopesOfRoleUser(scopeMultipleRoleUserXMap, roleBId, user100);
-        Assert.assertTrue(match(scopesOfRoleBUser100, new String[]{scope_null}));
+        Assert.assertTrue(TestUtils.match(scopesOfRoleBUser100, new String[]{scope_null}));
 
         //测试ScopeRoleUserX = roleB User101
         Set<String> scopesOfRoleBUser101 = getScopesOfRoleUser(scopeMultipleRoleUserXMap, roleBId, user101);
-        Assert.assertTrue(match(scopesOfRoleBUser101, new String[]{scope_null}));
+        Assert.assertTrue(TestUtils.match(scopesOfRoleBUser101, new String[]{scope_null}));
 
         //测试ScopeRoleUserX = roleAllPermission User100
         Set<String> scopesOfRoleAllPermissionUser100 = getScopesOfRoleUser(scopeSingleRoleUserXMap, roleAllPermissionId, user100);
-        Assert.assertTrue(match(scopesOfRoleAllPermissionUser100, new String[]{scope_d}));
+        Assert.assertTrue(TestUtils.match(scopesOfRoleAllPermissionUser100, new String[]{scope_d}));
 
         //--------------------------------------------------------------------------------------------
         //测试RoleOther
@@ -185,20 +185,6 @@ public class RoleTest {
                 o -> o.getRoleId().equals(IdUtils.createId(roleId).getValue()))
                 .collect(Collectors.toList());
         return result;
-    }
-
-    private boolean match(Set<String> set, String[] array) {
-
-        if (set.size() != array.length) {
-            return false;
-        }
-
-        for (String item : array) {
-            if (!set.contains(item)) {
-                return false;
-            }
-        }
-        return true;
     }
 }
 

@@ -5,6 +5,7 @@ import com.wuxian.janus.cache.model.extract.id.LongIdGeneratorFactory;
 import com.wuxian.janus.cache.model.source.ApplicationGroup;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class TestUtils {
@@ -25,5 +26,20 @@ public class TestUtils {
         result.print(System.out);
         System.out.println("--------------------------------------------------------");
         return result;
+    }
+
+
+    public static <T> boolean match(Set<T> set, T[] array) {
+
+        if (set.size() != array.length) {
+            return false;
+        }
+
+        for (T item : array) {
+            if (!set.contains(item)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
