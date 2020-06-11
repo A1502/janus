@@ -174,8 +174,8 @@ public class RoleTest {
         return result;
     }
 
-    private List<RoleOtherXStruct> getRoleOther(Map<IdType, RoleOtherXStruct> scopeRoleOtherXMap, String roleId) {
-        List<RoleOtherXStruct> result = scopeRoleOtherXMap.
+    private List<RoleOtherXStruct> getRoleOther(Map<IdType, RoleOtherXStruct> roleOtherXMap, String roleId) {
+        List<RoleOtherXStruct> result = roleOtherXMap.
                 values().stream().filter(
                 o -> o.getRoleId().equals(IdUtils.createId(roleId).getValue()))
                 .collect(Collectors.toList());
