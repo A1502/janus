@@ -25,7 +25,6 @@ public class ApplicationTenantTest {
         TestUtils.extractAndPrint("testNativeOnly", applicationGroup);
     }
 
-
     @Test
     @DisplayName("测试HelloWorld")
     void testHelloWorld() {
