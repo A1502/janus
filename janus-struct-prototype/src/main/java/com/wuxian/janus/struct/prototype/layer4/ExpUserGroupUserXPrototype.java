@@ -20,8 +20,6 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class ExpUserGroupUserXPrototype<ID, UID> extends ExpiryPrototype<ID, UID> {
 
-    private static final long serialVersionUID = 1L;
-
     @PropertyRemark(value = "用户组id", example = "1")
     private Integer userGroupId;
 

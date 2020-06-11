@@ -22,8 +22,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class UserOuterObjectXPrototype<ID, UID> extends JanusPrototype<ID, UID> {
 
-    private static final long serialVersionUID = 1L;
-
     public void fill(ID id, ID outerObjectTypeId, String scope, UID userId, String outerObjectIdList
             , UID createdBy, Date createdDate, UID lastModifiedBy, Date lastModifiedDate) {
         setId(id);

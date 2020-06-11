@@ -23,8 +23,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class RolePrototype<ID, UID, AID, TID> extends JanusPrototype<ID, UID> {
 
-    private static final long serialVersionUID = 1L;
-
     public RolePrototype<ID, UID, AID, TID> fill(
             ID id, AID applicationId, TID tenantId, String code, Boolean multiple, String name, Boolean enable
             , ID permissionTemplateId, ID outerObjectId, String outerObjectRemark, String description

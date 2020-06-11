@@ -22,8 +22,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class RolePermissionXPrototype<ID, UID> extends JanusPrototype<ID, UID> {
 
-    private static final long serialVersionUID = 1L;
-
     public void fill(ID id, ID roleId, ID permissionId
             , UID createdBy, Date createdDate, UID lastModifiedBy
             , Date lastModifiedDate, Integer version) {

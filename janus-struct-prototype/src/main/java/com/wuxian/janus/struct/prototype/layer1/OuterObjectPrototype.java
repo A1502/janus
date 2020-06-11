@@ -23,8 +23,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class OuterObjectPrototype<ID, UID> extends JanusPrototype<ID, UID> {
 
-    private static final long serialVersionUID = 1L;
-
     public void fill(ID id
             , ID outerObjectTypeId, String referenceId, String referenceCode, String referenceName
             , String referenceDescription, UID createdBy, Date createdDate, UID lastModifiedBy, Date lastModifiedDate) {

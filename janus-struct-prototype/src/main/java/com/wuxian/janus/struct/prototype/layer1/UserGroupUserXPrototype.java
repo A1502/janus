@@ -23,8 +23,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class UserGroupUserXPrototype<ID, UID> extends ControlPrototype<ID, UID> {
 
-    private static final long serialVersionUID = 1L;
-
     public void fill(ID id, ID userGroupId, UID userId
             , Boolean viewAccess, Boolean executeAccess, Boolean editAccess, Boolean deleteAccess, Boolean enableAccess
             , Boolean viewControl, Boolean executeControl, Boolean editControl, Boolean deleteControl, Boolean enableControl

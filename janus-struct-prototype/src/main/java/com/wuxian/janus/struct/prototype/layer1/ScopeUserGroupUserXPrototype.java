@@ -16,8 +16,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class ScopeUserGroupUserXPrototype<ID, UID> extends JanusPrototype<ID, UID> {
 
-    private static final long serialVersionUID = 1L;
-
     public void fill(ID id, String scope, ID userGroupId, UID userId
             , UID createdBy, Date createdDate, UID lastModifiedBy, Date lastModifiedDate) {
         setId(id);

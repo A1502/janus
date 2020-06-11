@@ -23,8 +23,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class UserGroupPrototype<ID, UID, AID, TID> extends JanusPrototype<ID, UID> {
 
-    private static final long serialVersionUID = 1L;
-
     public void fill(ID id, AID applicationId, TID tenantId
             , String code, String name, Boolean enable, String description, ID outerObjectId
             , UID createdBy, Date createdDate, UID lastModifiedBy, Date lastModifiedDate, Integer version) {
@@ -59,8 +57,11 @@ public class UserGroupPrototype<ID, UID, AID, TID> extends JanusPrototype<ID, UI
     @PropertyRemark(value = "描述", example = "这是用户组的描述...")
     private String description;
 
-    @PropertyRemark(value = "外部对象id", example = "1")
+    @PropertyRemark(value = "绑定的外部对象id", example = "1")
     private ID outerObjectId;
+
+    @PropertyRemark(value = "绑定的外部对象的备注", example = "会议室对象:CQ811")
+    private String outerObjectRemark;
 
     @PropertyRemark(value = "乐观锁", example = "998")
     private Integer version;

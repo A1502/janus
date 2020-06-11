@@ -20,8 +20,6 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class PermissionDetailPrototype<ID, UID> extends JanusPrototype<ID, UID> {
 
-    private static final long serialVersionUID = 1L;
-
     @PropertyRemark(value = "权限模板id", example = "1")
     private ID permissionTemplateId;
 

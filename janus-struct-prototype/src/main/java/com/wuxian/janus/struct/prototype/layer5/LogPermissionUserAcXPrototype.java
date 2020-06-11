@@ -20,8 +20,6 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class LogPermissionUserAcXPrototype<ID, UID> extends ControlPrototype<ID, UID> {
 
-    private static final long serialVersionUID = 1L;
-
     @PropertyRemark(value = "权限id", example = "1")
     private ID permissionId;
 

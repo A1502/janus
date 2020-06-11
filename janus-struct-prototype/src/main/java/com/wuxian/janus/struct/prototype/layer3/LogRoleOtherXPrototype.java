@@ -20,8 +20,6 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class LogRoleOtherXPrototype<ID, UID> extends AccessPrototype<ID, UID> {
 
-    private static final long serialVersionUID = 1L;
-
     @PropertyRemark(value = "角色id", example = "1")
     private ID roleId;
 

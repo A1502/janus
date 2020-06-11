@@ -22,8 +22,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class PermissionTemplatePrototype<ID, UID, AID> extends JanusPrototype<ID, UID> {
 
-    private static final long serialVersionUID = 1L;
-
     public void fill(ID id, AID applicationId, String code, Boolean multiple, String name
             , String description, String permissionLevel, String permissionType, ID outerObjectTypeId
             , UID createdBy, Date createdDate, UID lastModifiedBy, Date lastModifiedDate, Integer version) {
