@@ -1,12 +1,13 @@
 package com.wuxian.janus.core.cache.data;
 
-import com.wuxian.janus.StructBuilder;
 import com.wuxian.janus.IdBuilder;
-import com.wuxian.janus.core.basis.StrictUtils;
+import com.wuxian.janus.StructBuilder;
 import com.wuxian.janus.core.basis.SourceLoader;
+import com.wuxian.janus.core.basis.StrictUtils;
 import com.wuxian.janus.core.cache.provider.BaseAccessControlCacheProvider;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;
+import com.wuxian.janus.core.critical.NativeUserGroupEnum;
 import com.wuxian.janus.core.critical.PermissionLevelEnum;
 import com.wuxian.janus.struct.layer1.*;
 import com.wuxian.janus.struct.layer2.PermissionStruct;
@@ -96,6 +97,9 @@ public class AccessControlCacheProvider18 extends BaseAccessControlCacheProvider
                 Map<IdType, UserGroupStruct> map = new HashMap<>();
                 map.put(IdBuilder.id(6), StructBuilder.newUserGroupStruct(6, defaultAId, defaultTId, "stdUG", "stdUG", true, "stdUG", 10, 1, new Date(), 1, new Date(), 1));
                 map.put(IdBuilder.id(7), StructBuilder.newUserGroupStruct(7, defaultAId, defaultTId, "bbbUG", "bbbUG", true, "stdUG", null, 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(8), StructBuilder.newUserGroupStruct(7, defaultAId, null, NativeUserGroupEnum.APPLICATION_ROOT.getCode(), "agroot", true, "stdUG", null, 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(9), StructBuilder.newUserGroupStruct(7, defaultAId, null, NativeUserGroupEnum.APPLICATION_ADMIN.getCode(), "agadmin", true, "stdUG", null, 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(10), StructBuilder.newUserGroupStruct(7, defaultAId, defaultTId, NativeUserGroupEnum.TENANT_ROOT.getCode(), "tgroot", true, "stdUG", null, 1, new Date(), 1, new Date(), 1));
                 return map;
             };
             return result;
@@ -129,6 +133,9 @@ public class AccessControlCacheProvider18 extends BaseAccessControlCacheProvider
 
                 map.put(IdBuilder.id(1), StructBuilder.newPermission(1, 1, null, null, null, 1, new Date(), 1, new Date(), 1));
                 map.put(IdBuilder.id(2), StructBuilder.newPermission(2, 2, null, null, null, 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(3), StructBuilder.newPermission(3, 3, defaultTId, null, null, 1, new Date(), 1, new Date(), 1));
+                map.put(IdBuilder.id(4), StructBuilder.newPermission(4, 4, defaultTId, null, null, 1, new Date(), 1, new Date(), 1));
+
 
                 map.put(IdBuilder.id(714), StructBuilder.newPermission(714, 14, defaultTId, null, "14-remark", 1, new Date(), 1, new Date(), 1));
                 map.put(IdBuilder.id(715), StructBuilder.newPermission(715, 15, defaultTId, null, "15-remark", 1, new Date(), 1, new Date(), 1));
