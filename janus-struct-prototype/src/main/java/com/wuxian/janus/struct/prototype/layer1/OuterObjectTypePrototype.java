@@ -48,11 +48,17 @@ public class OuterObjectTypePrototype<ID, UID> extends JanusPrototype<ID, UID> {
     @PropertyRemark(value = "reference_id的组成类型", example = "application_id;tenant_id")
     private String referenceIdRemark;
 
+    /**
+     * 这个标识可以过滤大量数据提高外部用户组查询性能
+     */
     @PropertyRemark(value = "是否作为用户组的关联对象", example = "false")
     private boolean usedByUserGroup;
 
     @PropertyRemark(value = "是否作为数据级权限的关联对象", example = "false")
     private boolean usedByPermission;
+
+    @PropertyRemark(value = "描述", example = "这是用户组的描述...")
+    private String description;
 
     @PropertyRemark(value = "乐观锁", example = "998")
     private Integer version;
