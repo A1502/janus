@@ -2,6 +2,7 @@ package com.wuxian.janus.cache.model;
 
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
 import com.wuxian.janus.cache.model.source.*;
+import com.wuxian.janus.core.cache.provider.BaseAccessControlCacheProvider;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlCacheProvider;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.calculate.AccessControlCalculator;
@@ -73,7 +74,7 @@ public class ApplicationTenantTest {
 
         DirectAccessControlSource source = TestUtils.extractAndPrint("x", applicationGroup);
 
-        DirectAccessControlCacheProvider cacheProvider = DirectAccessControlCacheProvider.createFrom(source);
+        BaseAccessControlCacheProvider cacheProvider = DirectAccessControlCacheProvider.createFrom(source);
 
         AccessControlCalculator cpu = new AccessControlCalculator(
                 cacheProvider.new OuterObjectCachePool(),
