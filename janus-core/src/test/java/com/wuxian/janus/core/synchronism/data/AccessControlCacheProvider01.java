@@ -1,8 +1,8 @@
 package com.wuxian.janus.core.synchronism.data;
 
 import com.wuxian.janus.IdBuilder;
-import com.wuxian.janus.core.basis.StrictUtils;
-import com.wuxian.janus.core.basis.SourceLoader;
+import com.wuxian.janus.util.StrictUtils;
+import com.wuxian.janus.index.SourceLoader;
 import com.wuxian.janus.core.cache.provider.BaseAccessControlCacheProvider;
 import com.wuxian.janus.struct.layer1.*;
 import com.wuxian.janus.struct.layer2.PermissionStruct;

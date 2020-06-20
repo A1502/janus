@@ -5,7 +5,7 @@ import com.wuxian.janus.cache.model.ErrorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdGenerator;
 import com.wuxian.janus.cache.model.extract.id.IdGeneratorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
-import com.wuxian.janus.core.basis.StrictUtils;
+import com.wuxian.janus.util.StrictUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.struct.layer1.OuterObjectStruct;
 import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;

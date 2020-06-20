@@ -1,4 +1,4 @@
-package com.wuxian.janus.core.basis;
+package com.wuxian.janus.index;
 
 import java.lang.reflect.Method;
 

@@ -1,5 +1,6 @@
 package com.wuxian.janus.cache.model;
 
+import com.wuxian.janus.ErrorCodeException;
 import com.wuxian.janus.cache.model.extract.SourceExtractor;
 import com.wuxian.janus.cache.model.extract.id.LongIdGeneratorFactory;
 import com.wuxian.janus.cache.model.source.ApplicationGroup;
@@ -11,7 +12,6 @@ import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.UserIdType;
 import com.wuxian.janus.cache.model.source.OuterObject;
 import com.wuxian.janus.cache.model.source.User;
-import com.wuxian.janus.core.basis.ErrorCodeException;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.cache.provider.JanusMap;
 import org.junit.Assert;

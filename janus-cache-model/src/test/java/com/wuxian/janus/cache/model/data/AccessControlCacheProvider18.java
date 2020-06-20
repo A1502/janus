@@ -1,7 +1,7 @@
 package com.wuxian.janus.cache.model.data;
 
-import com.wuxian.janus.core.basis.SourceLoader;
-import com.wuxian.janus.core.basis.StrictUtils;
+import com.wuxian.janus.index.SourceLoader;
+import com.wuxian.janus.util.StrictUtils;
 import com.wuxian.janus.core.cache.provider.BaseAccessControlCacheProvider;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
 import com.wuxian.janus.core.critical.NativeRoleEnum;

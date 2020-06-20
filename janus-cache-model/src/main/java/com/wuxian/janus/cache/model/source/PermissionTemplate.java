@@ -2,7 +2,7 @@ package com.wuxian.janus.cache.model.source;
 
 import com.wuxian.janus.cache.model.ErrorFactory;
 import com.wuxian.janus.cache.model.source.item.ApplicationItem;
-import com.wuxian.janus.core.basis.StrictUtils;
+import com.wuxian.janus.util.StrictUtils;
 import com.wuxian.janus.core.critical.DimensionEnum;
 import com.wuxian.janus.core.critical.NativePermissionTemplateEnum;
 import com.wuxian.janus.struct.layer2.PermissionTemplateStruct;

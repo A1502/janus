@@ -1,4 +1,4 @@
-package com.wuxian.janus.core.basis;
+package com.wuxian.janus;
 
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.wuxian.janus.core.basis;
+package com.wuxian.janus.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

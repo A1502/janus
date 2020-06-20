@@ -1,6 +1,7 @@
 package com.wuxian.janus.core.index;
 
-import com.wuxian.janus.core.basis.SourceLoader;
+import com.wuxian.janus.index.SimpleIndexesMap;
+import com.wuxian.janus.index.SourceLoader;
 import com.wuxian.janus.struct.layer2.PermissionTemplateStruct;
 import com.wuxian.janus.struct.primary.IdType;
 

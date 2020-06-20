@@ -1,7 +1,7 @@
 package com.wuxian.janus.cache.model;
 
+import com.wuxian.janus.ErrorCodeException;
 import com.wuxian.janus.cache.model.source.BaseModel;
-import com.wuxian.janus.core.basis.ErrorCodeException;
 import com.wuxian.janus.core.critical.DimensionEnum;
 
 import java.lang.reflect.Type;

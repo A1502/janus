@@ -1,6 +1,6 @@
 package com.wuxian.janus.core.cache.provider;
 
-import com.wuxian.janus.core.basis.SourceLoader;
+import com.wuxian.janus.index.SourceLoader;
 import com.wuxian.janus.struct.layer1.*;
 import com.wuxian.janus.struct.layer2.PermissionStruct;
 import com.wuxian.janus.struct.layer2.PermissionTemplateStruct;

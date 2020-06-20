@@ -1,8 +1,6 @@
 package com.wuxian.janus.core.cache.provider;
 
-import com.wuxian.janus.core.basis.StrictUtils;
-import com.wuxian.janus.core.basis.SourceLoader;
-import com.wuxian.janus.core.basis.StringUtils;
+import com.wuxian.janus.index.SourceLoader;
 import com.wuxian.janus.struct.layer1.*;
 import com.wuxian.janus.struct.layer2.PermissionStruct;
 import com.wuxian.janus.struct.layer2.PermissionTemplateStruct;
@@ -12,6 +10,8 @@ import com.wuxian.janus.struct.primary.ApplicationIdType;
 import com.wuxian.janus.struct.primary.BaseIdType;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.TenantIdType;
+import com.wuxian.janus.util.StrictUtils;
+import com.wuxian.janus.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.HashSet;

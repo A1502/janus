@@ -1,7 +1,7 @@
 package com.wuxian.janus.core.cache;
 
 import com.wuxian.janus.IdBuilder;
-import com.wuxian.janus.core.basis.StrictUtils;
+import com.wuxian.janus.util.StrictUtils;
 import com.wuxian.janus.core.cache.data.*;
 import com.wuxian.janus.core.cache.provider.BaseAccessControlCacheProvider;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;

@@ -1,6 +1,5 @@
 package com.wuxian.janus.core.calculate;
 
-import com.wuxian.janus.core.basis.StrictUtils;
 import com.wuxian.janus.core.cache.BaseOuterObjectTypeCachePool;
 import com.wuxian.janus.core.calculate.error.ErrorDataRecorder;
 import com.wuxian.janus.core.calculate.error.ErrorInfoFactory;
@@ -11,6 +10,7 @@ import com.wuxian.janus.core.index.*;
 import com.wuxian.janus.struct.layer1.*;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.UserIdType;
+import com.wuxian.janus.util.StrictUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;

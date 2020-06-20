@@ -1,10 +1,13 @@
-package com.wuxian.janus.core.basis;
+package com.wuxian.janus.index;
 
-import com.wuxian.janus.core.ErrorFactory;
+import com.wuxian.janus.ErrorFactory;
+import com.wuxian.janus.util.StrictUtils;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author wuxian

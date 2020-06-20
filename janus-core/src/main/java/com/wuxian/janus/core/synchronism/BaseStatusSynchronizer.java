@@ -1,12 +1,12 @@
 package com.wuxian.janus.core.synchronism;
 
-import com.wuxian.janus.core.basis.StrictUtils;
-import com.wuxian.janus.core.basis.AutoFillMultipleIndexesMap;
 import com.wuxian.janus.core.cache.*;
+import com.wuxian.janus.index.AutoFillMultipleIndexesMap;
 import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
 import com.wuxian.janus.struct.primary.ApplicationIdType;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.TenantIdType;
+import com.wuxian.janus.util.StrictUtils;
 
 import java.util.ArrayList;
 import java.util.List;

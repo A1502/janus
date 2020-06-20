@@ -1,9 +1,12 @@
-package com.wuxian.janus.core.basis;
+package com.wuxian.janus.index;
+
+import com.wuxian.janus.util.ReflectUtils;
+import com.wuxian.janus.util.StrictUtils;
+import com.wuxian.janus.util.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.function.Function;
 
 class IndexedList<V> {
 

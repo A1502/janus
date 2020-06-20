@@ -1,6 +1,4 @@
-package com.wuxian.janus.core;
-
-import com.wuxian.janus.core.basis.ErrorCodeException;
+package com.wuxian.janus;
 
 public final class ErrorFactory {
 

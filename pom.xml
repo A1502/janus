@@ -15,6 +15,7 @@
         <module>janus-struct-classic</module>
         <module>janus-struct-general</module>
         <module>janus-cache-model</module>
+        <module>janus-common</module>
     </modules>
 
     <properties>
@@ -26,7 +27,6 @@
 
     <dependencyManagement>
         <dependencies>
-
             <dependency>
                 <groupId>com.wuxian</groupId>
                 <artifactId>janus-struct-general</artifactId>
@@ -48,6 +48,12 @@
             <dependency>
                 <groupId>com.wuxian</groupId>
                 <artifactId>janus-core</artifactId>
+                <version>${module.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wuxian</groupId>
+                <artifactId>janus-common</artifactId>
                 <version>${module.version}</version>
             </dependency>
 
@@ -93,6 +99,32 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
+        <!-- Junit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-runner</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

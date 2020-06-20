@@ -5,7 +5,7 @@ import com.wuxian.janus.cache.model.extract.id.IdGenerator;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
 import com.wuxian.janus.cache.model.source.BaseModel;
 import com.wuxian.janus.cache.model.source.User;
-import com.wuxian.janus.core.basis.StrictUtils;
+import com.wuxian.janus.util.StrictUtils;
 import com.wuxian.janus.core.cache.provider.TenantMap;
 import com.wuxian.janus.core.cache.provider.TenantMapElement;
 import com.wuxian.janus.core.critical.AccessControl;

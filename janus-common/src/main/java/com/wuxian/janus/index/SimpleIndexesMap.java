@@ -1,8 +1,4 @@
-package com.wuxian.janus.core.index;
-
-import com.wuxian.janus.core.basis.AutoFillMultipleIndexesMap;
-import com.wuxian.janus.core.basis.NamedConverter;
-import com.wuxian.janus.core.basis.SourceLoader;
+package com.wuxian.janus.index;
 
 public class SimpleIndexesMap<K, V> extends AutoFillMultipleIndexesMap<K, V> {
 

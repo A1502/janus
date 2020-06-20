@@ -2,8 +2,8 @@ package com.wuxian.janus.cache.model.source;
 
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.cache.model.ErrorFactory;
-import com.wuxian.janus.core.basis.BeanCopyUtils;
-import com.wuxian.janus.core.basis.FieldCopyHandler;
+import com.wuxian.janus.util.BeanCopyUtils;
+import com.wuxian.janus.util.FieldCopyHandler;
 import lombok.Getter;
 import lombok.Setter;
 

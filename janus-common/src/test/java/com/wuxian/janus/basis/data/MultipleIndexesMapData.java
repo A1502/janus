@@ -1,4 +1,4 @@
-package com.wuxian.janus.core.basis.data;
+package com.wuxian.janus.basis.data;
 
 import lombok.Builder;
 import lombok.Data;

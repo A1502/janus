@@ -1,9 +1,9 @@
 package com.wuxian.janus.core.cache;
 
-import com.wuxian.janus.struct.primary.IdType;
-import com.wuxian.janus.core.basis.StrictUtils;
 import com.wuxian.janus.core.index.OuterObjectMap;
 import com.wuxian.janus.core.index.UserOuterObjectXMap;
+import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.util.StrictUtils;
 
 import java.util.HashMap;
 import java.util.Map;

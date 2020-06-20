@@ -1,4 +1,4 @@
-package com.wuxian.janus.core.basis;
+package com.wuxian.janus.util;
 
 import java.util.HashMap;
 import java.util.Map;

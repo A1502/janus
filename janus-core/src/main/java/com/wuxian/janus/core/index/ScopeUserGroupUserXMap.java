@@ -1,6 +1,7 @@
 package com.wuxian.janus.core.index;
 
-import com.wuxian.janus.core.basis.SourceLoader;
+import com.wuxian.janus.index.SimpleIndexesMap;
+import com.wuxian.janus.index.SourceLoader;
 import com.wuxian.janus.struct.layer1.ScopeUserGroupUserXStruct;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.UserIdType;

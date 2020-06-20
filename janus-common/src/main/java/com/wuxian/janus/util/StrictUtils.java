@@ -1,9 +1,4 @@
-package com.wuxian.janus.core.basis;
-
-import com.wuxian.janus.struct.primary.ApplicationIdType;
-import com.wuxian.janus.struct.primary.IdType;
-import com.wuxian.janus.struct.primary.TenantIdType;
-import com.wuxian.janus.struct.primary.UserIdType;
+package com.wuxian.janus.util;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +25,7 @@ public final class StrictUtils {
         return list.get(index);
     }
 
-    public static boolean equals(IdType obj1, IdType obj2) {
+    /*public static boolean equals(IdType obj1, IdType obj2) {
         if (obj1 != null) {
             return obj1.equals(obj2);
         } else {
@@ -60,7 +55,7 @@ public final class StrictUtils {
         } else {
             return obj2 == null;
         }
-    }
+    }*/
 
     public static boolean equals(Boolean obj1, Boolean obj2) {
         if (obj1 != null) {

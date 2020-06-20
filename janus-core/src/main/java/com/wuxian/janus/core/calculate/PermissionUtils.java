@@ -1,6 +1,5 @@
 package com.wuxian.janus.core.calculate;
 
-import com.wuxian.janus.core.basis.StrictUtils;
 import com.wuxian.janus.core.cache.BaseOuterObjectTypeCachePool;
 import com.wuxian.janus.core.calculate.error.ErrorDataRecorder;
 import com.wuxian.janus.core.calculate.error.ErrorInfoFactory;
@@ -16,6 +15,7 @@ import com.wuxian.janus.struct.layer2.PermissionStruct;
 import com.wuxian.janus.struct.layer2.PermissionTemplateStruct;
 import com.wuxian.janus.struct.layer2.RolePermissionXStruct;
 import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.util.StrictUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

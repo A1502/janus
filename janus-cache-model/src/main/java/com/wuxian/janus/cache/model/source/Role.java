@@ -4,7 +4,7 @@ import com.wuxian.janus.cache.model.ErrorFactory;
 import com.wuxian.janus.cache.model.source.item.RoleItem;
 import com.wuxian.janus.cache.model.source.item.TenantItem;
 import com.wuxian.janus.cache.model.source.item.UserGroupItem;
-import com.wuxian.janus.core.basis.StrictUtils;
+import com.wuxian.janus.util.StrictUtils;
 import com.wuxian.janus.core.critical.Access;
 import com.wuxian.janus.core.critical.AccessControl;
 import com.wuxian.janus.core.critical.LevelEnum;

@@ -1,7 +1,9 @@
-package com.wuxian.janus.core.basis;
+package com.wuxian.janus.basis;
 
-import com.wuxian.janus.TestTemplate;
-import com.wuxian.janus.core.basis.data.MultipleIndexesMapData;
+import com.wuxian.janus.basis.data.MultipleIndexesMapData;
+import com.wuxian.janus.index.MultipleIndexesMap;
+import com.wuxian.janus.index.NamedConverter;
+import com.wuxian.janus.util.StrictUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

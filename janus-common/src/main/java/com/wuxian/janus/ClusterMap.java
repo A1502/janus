@@ -1,6 +1,6 @@
-package com.wuxian.janus.core.cache.provider;
+package com.wuxian.janus;
 
-import com.wuxian.janus.core.basis.StrictUtils;
+import com.wuxian.janus.util.StrictUtils;
 
 import java.util.HashMap;
 import java.util.Map;

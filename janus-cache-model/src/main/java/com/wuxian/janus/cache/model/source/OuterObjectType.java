@@ -1,6 +1,6 @@
 package com.wuxian.janus.cache.model.source;
 
-import com.wuxian.janus.core.basis.StrictUtils;
+import com.wuxian.janus.util.StrictUtils;
 import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
 import com.wuxian.janus.cache.model.ErrorFactory;
 
