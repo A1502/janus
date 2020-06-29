@@ -5,6 +5,9 @@ import java.util.List;
 
 public class StringUtils {
 
+    private StringUtils() {
+    }
+
     public static String safeJoinStrings(String... data) {
         List<String> safe = new ArrayList<>();
         for (String d : data) {

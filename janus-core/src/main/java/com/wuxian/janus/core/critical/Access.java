@@ -58,7 +58,7 @@ public class Access {
 
     @Override
     public String toString() {
-        List<String> list = new ArrayList();
+        List<String> list = new ArrayList<>();
         if (this.viewAccess) {
             list.add("viewAccess");
         }

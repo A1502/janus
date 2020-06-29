@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RolePermissionExtractor {
+    private RolePermissionExtractor() {
+    }
 
     public static void extract(TenantMap<IdType, Role> roleTenantMap, IdGeneratorFactory idGeneratorFactory
             , DirectAccessControlSource result) {

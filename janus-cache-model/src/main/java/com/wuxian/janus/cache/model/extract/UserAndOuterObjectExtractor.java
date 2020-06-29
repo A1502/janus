@@ -1,23 +1,26 @@
 package com.wuxian.janus.cache.model.extract;
 
-import com.wuxian.janus.cache.model.source.*;
 import com.wuxian.janus.cache.model.ErrorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdGenerator;
 import com.wuxian.janus.cache.model.extract.id.IdGeneratorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
-import com.wuxian.janus.util.StrictUtils;
+import com.wuxian.janus.cache.model.source.*;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.struct.layer1.OuterObjectStruct;
 import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
 import com.wuxian.janus.struct.layer6.UserOuterObjectXStruct;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.UserIdType;
+import com.wuxian.janus.util.StrictUtils;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 class UserAndOuterObjectExtractor {
+
+    private UserAndOuterObjectExtractor() {
+    }
 
     static class OuterObjectPair {
         OuterObjectTypeStruct outerObjectTypeStruct;

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class RolePermissionXMap extends SimpleIndexesMap<IdType, RolePermissionXStruct> {
 
-    private final static String ROLE_ID = "roleId";
+    private static final String ROLE_ID = "roleId";
 
     public RolePermissionXMap(SourceLoader<IdType, RolePermissionXStruct> sourceLoader) {
         super(sourceLoader);

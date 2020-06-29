@@ -50,7 +50,7 @@ public class AutoFillMultipleIndexesMapTest extends TestTemplate<MultipleIndexes
         MultipleIndexesMapData.Student sample = MultipleIndexesMapData.Student.builder().address("std3_\"address").age(22).multiple(true).build();
         List<MultipleIndexesMapData.Student> result1 = map.getByCondition(sample,
                 "address", "age", "multiple");
-        assertEquals(result1.size(), 2);
+        assertEquals(2, result1.size());
 
         map.clearSource();
         List<MultipleIndexesMapData.Student> result2;
@@ -58,6 +58,6 @@ public class AutoFillMultipleIndexesMapTest extends TestTemplate<MultipleIndexes
         result2 = map.getByCondition(sample,
                 "address", "age", "multiple");
 
-        assertEquals(result2.size(), 2);
+        assertEquals(2, result2.size());
     }
 }

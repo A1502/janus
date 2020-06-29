@@ -17,6 +17,10 @@ import com.wuxian.janus.util.StrictUtils;
 import java.util.*;
 
 public class UserGroupUtils {
+
+    private UserGroupUtils() {
+    }
+
     static List<UserGroupStruct> getExecuteAccessOuterUserGroups(UserIdType userId,
                                                                  List<String> scopes,
                                                                  BaseOuterObjectTypeCachePool outerObjectCache,

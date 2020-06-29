@@ -26,6 +26,9 @@ import java.util.Set;
  */
 public class RoleRelationAndScopeExtractor {
 
+    private RoleRelationAndScopeExtractor() {
+    }
+
     public static void extract(TenantMap<IdType, Role> roleTenantMap, IdGeneratorFactory idGeneratorFactory, DirectAccessControlSource result) {
 
         //经过前面的环节，roleTenantMap里的role都必然已经填充好id和keyFields

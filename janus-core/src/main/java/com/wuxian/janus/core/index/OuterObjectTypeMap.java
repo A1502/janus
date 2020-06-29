@@ -13,7 +13,7 @@ import java.util.List;
 
 public class OuterObjectTypeMap extends SimpleIndexesMap<IdType, OuterObjectTypeStruct> {
 
-    private final static String USED_BY_USER_GROUP = "usedByUserGroup";
+    private static final String USED_BY_USER_GROUP = "usedByUserGroup";
 
     public OuterObjectTypeMap(SourceLoader<IdType, OuterObjectTypeStruct> sourceLoader) {
         super(sourceLoader);

@@ -52,7 +52,7 @@ public final class ChangeStatus {
             , boolean status) {
         for (IdType outerObjectTypeId : outerObjectTypeCacheStatusMap.keySet()) {
             List<OuterObjectTypeCacheChangePart> changeParts = StrictUtils.get(outerObjectTypeCacheStatusMap, outerObjectTypeId);
-            if (changeParts.size() > 0) {
+            if (!changeParts.isEmpty()) {
                 if (!StrictUtils.containsKey(outerObjectTypeCacheStatus, outerObjectTypeId)) {
                     outerObjectTypeCacheStatus.put(outerObjectTypeId, new HashMap<>());
                 }
@@ -70,7 +70,7 @@ public final class ChangeStatus {
         for (IdType outerObjectTypeId : outerObjectTypeCacheStatus.keySet()) {
             Map<OuterObjectTypeCacheChangePart, Boolean> map = StrictUtils.get(outerObjectTypeCacheStatus, outerObjectTypeId);
             List<OuterObjectTypeCacheChangePart> truePartList = map.keySet().stream().filter(map::get).collect(Collectors.toList());
-            if (truePartList.size() > 0) {
+            if (!truePartList.isEmpty()) {
                 result.put(outerObjectTypeId, truePartList);
             }
         }
@@ -150,7 +150,7 @@ public final class ChangeStatus {
                     .stream()
                     .filter(item.value::get)
                     .collect(Collectors.toList());
-            if (changedParts.size() > 0) {
+            if (!changedParts.isEmpty()) {
                 TenantChangePartStatus status = new TenantChangePartStatus(item.applicationId, item.tenantId);
                 status.value.addAll(changedParts);
                 result.add(status);

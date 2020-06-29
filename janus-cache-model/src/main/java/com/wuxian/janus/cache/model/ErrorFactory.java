@@ -8,51 +8,54 @@ import java.lang.reflect.Type;
 
 public final class ErrorFactory {
 
+    private ErrorFactory() {
+    }
+
     private static final String PRE = "JANUS_1:";
 
-    public final static String PERMISSION_TEMPLATE_CODE_CANNOT_BE_NULL = PRE + "PERMISSION_TEMPLATE_CODE_CANNOT_BE_NULL";
+    public static final String PERMISSION_TEMPLATE_CODE_CANNOT_BE_NULL = PRE + "PERMISSION_TEMPLATE_CODE_CANNOT_BE_NULL";
 
-    public final static String CODE_CANNOT_BE_NULL = PRE + "CODE_CANNOT_BE_NULL";
+    public static final String CODE_CANNOT_BE_NULL = PRE + "CODE_CANNOT_BE_NULL";
 
-    public final static String ID_CANNOT_BE_NULL = PRE + "ID_CANNOT_BE_NULL";
+    public static final String ID_CANNOT_BE_NULL = PRE + "ID_CANNOT_BE_NULL";
 
-    public final static String ILLEGAL_ITEM_TYPE = PRE + "ILLEGAL_ITEM_TYPE";
+    public static final String ILLEGAL_ITEM_TYPE = PRE + "ILLEGAL_ITEM_TYPE";
 
-    public final static String ILLEGAL_NATIVE_DIMENSION = PRE + "ILLEGAL_NATIVE_DIMENSION";
+    public static final String ILLEGAL_NATIVE_DIMENSION = PRE + "ILLEGAL_NATIVE_DIMENSION";
 
-    public final static String ID_GENERATOR_FACTORY_NOT_SUPPORT = PRE + "ID_GENERATOR_FACTORY_NOT_SUPPORT";
+    public static final String ID_GENERATOR_FACTORY_NOT_SUPPORT = PRE + "ID_GENERATOR_FACTORY_NOT_SUPPORT";
 
-    public final static String STRUCT_MERGING_FAILED = PRE + "STRUCT_MERGING_FAILED";
+    public static final String STRUCT_MERGING_FAILED = PRE + "STRUCT_MERGING_FAILED";
 
-    public final static String ID_CONFLICT = PRE + "ID_CONFLICT";
+    public static final String ID_CONFLICT = PRE + "ID_CONFLICT";
 
-    public final static String KEY_FIELDS_CONFLICT = PRE + "KEY_FIELDS_CONFLICT";
+    public static final String KEY_FIELDS_CONFLICT = PRE + "KEY_FIELDS_CONFLICT";
 
-    public final static String DUPLICATED_PROPERTY = PRE + "DUPLICATED_PROPERTY";
+    public static final String DUPLICATED_PROPERTY = PRE + "DUPLICATED_PROPERTY";
 
-    public final static String BUILD_STRUCT_FAILED = PRE + "BUILD_STRUCT_FAILED";
+    public static final String BUILD_STRUCT_FAILED = PRE + "BUILD_STRUCT_FAILED";
 
-    public final static String NOTHING_FOUND = PRE + "NOTHING_FOUND";
+    public static final String NOTHING_FOUND = PRE + "NOTHING_FOUND";
 
-    public final static String LIST_STRUCT_FIELD = PRE + "LIST_STRUCT_FIELD";
+    public static final String LIST_STRUCT_FIELD = PRE + "LIST_STRUCT_FIELD";
 
-    public final static String MAP_STRUCT_FIELD = PRE + "MAP_STRUCT_FIELD";
+    public static final String MAP_STRUCT_FIELD = PRE + "MAP_STRUCT_FIELD";
 
-    public final static String OUTER_OBJECT_TYPE_CODE_CANNOT_BE_NULL = PRE + "OUTER_OBJECT_TYPE_CODE_CANNOT_BE_NULL";
+    public static final String OUTER_OBJECT_TYPE_CODE_CANNOT_BE_NULL = PRE + "OUTER_OBJECT_TYPE_CODE_CANNOT_BE_NULL";
 
-    public final static String OUTER_OBJECT_CODE_CANNOT_BE_NULL = PRE + "OUTER_OBJECT_CODE_CANNOT_BE_NULL";
+    public static final String OUTER_OBJECT_CODE_CANNOT_BE_NULL = PRE + "OUTER_OBJECT_CODE_CANNOT_BE_NULL";
 
-    public final static String INVALID_MODEL_CLASS = PRE + "INVALID_MODEL_CLASS";
+    public static final String INVALID_MODEL_CLASS = PRE + "INVALID_MODEL_CLASS";
 
-    public final static String KEY_FIELDS_NO_VALUE = PRE + "KEY_FIELDS_NO_VALUE";
+    public static final String KEY_FIELDS_NO_VALUE = PRE + "KEY_FIELDS_NO_VALUE";
 
-    public final static String OUTER_OBJECT_TYPE_NOT_MATCH = PRE + "OUTER_OBJECT_TYPE_NOT_MATCH";
+    public static final String OUTER_OBJECT_TYPE_NOT_MATCH = PRE + "OUTER_OBJECT_TYPE_NOT_MATCH";
 
-    public final static String INVALID_NATIVE_PERMISSION_TEMPLATE_CODE = PRE + "INVALID_NATIVE_PERMISSION_TEMPLATE_CODE";
+    public static final String INVALID_NATIVE_PERMISSION_TEMPLATE_CODE = PRE + "INVALID_NATIVE_PERMISSION_TEMPLATE_CODE";
 
-    public final static String OUTER_OBJECT_TYPE_CODE_OF_MULTIPLE_ROLE_MUST_BE_NULL = PRE + "OUTER_OBJECT_TYPE_CODE_OF_MULTIPLE_ROLE_MUST_BE_NULL";
+    public static final String OUTER_OBJECT_TYPE_CODE_OF_MULTIPLE_ROLE_MUST_BE_NULL = PRE + "OUTER_OBJECT_TYPE_CODE_OF_MULTIPLE_ROLE_MUST_BE_NULL";
 
-    public final static String CREATE_ROLE_AND_PERMISSION_RELATION_NOT_ALLOWED = PRE + "CREATE_ROLE_AND_PERMISSION_RELATION_NOT_ALLOWED";
+    public static final String CREATE_ROLE_AND_PERMISSION_RELATION_NOT_ALLOWED = PRE + "CREATE_ROLE_AND_PERMISSION_RELATION_NOT_ALLOWED";
 
     public static ErrorCodeException createPermissionTemplateCodeCannotBeNullError() {
         String message = "PermissionTemplateCode不能为null";

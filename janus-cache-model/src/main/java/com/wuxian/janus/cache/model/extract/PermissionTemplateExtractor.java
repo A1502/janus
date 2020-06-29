@@ -16,7 +16,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class PermissionTemplateExtractor {
-
+    private PermissionTemplateExtractor() {
+    }
     /**
      * STEP3:提取permissionTemplate
      * 为STEP4提供PermissionTemplateExtractor.findByPermissionTemplateCode

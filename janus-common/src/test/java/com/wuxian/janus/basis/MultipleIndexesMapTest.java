@@ -57,27 +57,27 @@ public class MultipleIndexesMapTest extends TestTemplate<MultipleIndexesMapData>
         List<MultipleIndexesMapData.Student> result1 = map.getByCondition(sample1,
                 "address", "age", "multiple");
 
-        assertEquals(result1.size(), 2);
-        assertEquals(StrictUtils.get(result1, 0).getCode(), "std4_code");
-        assertEquals(StrictUtils.get(result1, 1).getCode(), "std3_code");
+        assertEquals(2, result1.size());
+        assertEquals("std4_code", StrictUtils.get(result1, 0).getCode());
+        assertEquals("std3_code", StrictUtils.get(result1, 1).getCode());
 
         //test2
         MultipleIndexesMapData.Student sample2 = MultipleIndexesMapData.Student.builder().address("draft").age(22).multiple(true).build();
         List<MultipleIndexesMapData.Student> result2 = map.getByCondition(sample2,
                 "address", "age", "multiple");
-        assertEquals(result2.size(), 0);
+        assertEquals(0, result2.size());
 
         //test3
         MultipleIndexesMapData.Student sample3 = MultipleIndexesMapData.Student.builder().address("draft").multiple(true).build();
         List<MultipleIndexesMapData.Student> result3 = map.getByCondition(sample3,
                 "address", "age", "multiple");
-        assertEquals(result3.size(), 0);
+        assertEquals(0, result3.size());
 
         //test4
         MultipleIndexesMapData.Student sample4 = MultipleIndexesMapData.Student.builder().multiple(true).build();
         List<MultipleIndexesMapData.Student> result4 = map.getByCondition(sample4,
                 "address", "age", "multiple");
-        assertEquals(result4.size(), 0);
+        assertEquals(0, result4.size());
     }
 
     @DisplayName("测试清理源数据")
@@ -86,14 +86,14 @@ public class MultipleIndexesMapTest extends TestTemplate<MultipleIndexesMapData>
         MultipleIndexesMapData.Student sample = MultipleIndexesMapData.Student.builder().address("std3_\"address").age(22).multiple(true).build();
         List<MultipleIndexesMapData.Student> result1 = map.getByCondition(sample,
                 "address", "age", "multiple");
-        assertEquals(result1.size(), 2);
+        assertEquals(2, result1.size());
 
         map.clearSource();
         List<MultipleIndexesMapData.Student> result2;
 
         result2 = map.getByCondition(sample,
                 "address", "age", "multiple");
-        assertEquals(result2.size(), 0);
+        assertEquals(0, result2.size());
     }
 
     @DisplayName("测试by Keys过滤")
@@ -102,16 +102,16 @@ public class MultipleIndexesMapTest extends TestTemplate<MultipleIndexesMapData>
 
         //test1
         List<MultipleIndexesMapData.Student> students1 = map.getByKeys("std3_code", "std3_code", "std3_code");
-        assertEquals(students1.size(), 3);
-        assertEquals(StrictUtils.get(students1, 0).getCode(), "std3_code");
-        assertEquals(StrictUtils.get(students1, 1).getCode(), "std3_code");
-        assertEquals(StrictUtils.get(students1, 2).getCode(), "std3_code");
+        assertEquals(3, students1.size());
+        assertEquals("std3_code", StrictUtils.get(students1, 0).getCode());
+        assertEquals("std3_code", StrictUtils.get(students1, 1).getCode());
+        assertEquals("std3_code", StrictUtils.get(students1, 2).getCode());
 
         //test2
         List<MultipleIndexesMapData.Student> students2 = map.getByKeys("std3_code", "std4_code", "std999_code");
-        assertEquals(students2.size(), 3);
-        assertEquals(StrictUtils.get(students2, 0).getCode(), "std3_code");
-        assertEquals(StrictUtils.get(students2, 1).getCode(), "std4_code");
+        assertEquals(3, students2.size());
+        assertEquals("std3_code", StrictUtils.get(students2, 0).getCode());
+        assertEquals("std4_code", StrictUtils.get(students2, 1).getCode());
         assertNull(StrictUtils.get(students2, 2));
     }
 
@@ -119,7 +119,7 @@ public class MultipleIndexesMapTest extends TestTemplate<MultipleIndexesMapData>
     @Test
     public void testGetByKey() {
         MultipleIndexesMapData.Student student = map.getByKey("std3_code");
-        assertEquals(student.getCode(), "std3_code");
+        assertEquals("std3_code", student.getCode());
     }
 
     @DisplayName("测试将集合转化成Map")

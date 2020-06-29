@@ -5,7 +5,6 @@ import com.wuxian.janus.cache.model.extract.id.IdGeneratorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
 import com.wuxian.janus.cache.model.source.Role;
 import com.wuxian.janus.cache.model.source.UserGroup;
-import com.wuxian.janus.util.StrictUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.core.cache.provider.TenantMap;
 import com.wuxian.janus.core.calculate.AccessControlUtils;
@@ -19,12 +18,16 @@ import com.wuxian.janus.struct.primary.ApplicationIdType;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.TenantIdType;
 import com.wuxian.janus.struct.primary.UserIdType;
+import com.wuxian.janus.util.StrictUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class UserGroupRelationAndScopeExtractor {
+
+    private UserGroupRelationAndScopeExtractor() {
+    }
 
     public static void extract(TenantMap<IdType, UserGroup> userGroupTenantMap, IdGeneratorFactory idGeneratorFactory, DirectAccessControlSource result) {
 

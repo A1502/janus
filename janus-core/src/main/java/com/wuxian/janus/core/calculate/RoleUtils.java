@@ -17,6 +17,9 @@ import java.util.stream.Collectors;
 
 public class RoleUtils {
 
+    private RoleUtils() {
+    }
+
     @SuppressWarnings("all")
     static ExecuteAccessRolePackage getExecuteAccessRolePackage(UserIdType userId,
                                                                 List<String> scopes,
@@ -186,7 +189,7 @@ public class RoleUtils {
         //数据检查 roleId在executeAccessRoleUsers中有，但是在scopeRoleUsers中没有;反向检查不用做,因为executeAccess=false的role-user关系在executeAccessRoleUsers变量里本身就不存在
         for (RoleUserXStruct roleUserXStruct : executeAccessRoleUsers) {
             List<String> foundScopes = scopeRoleUsers.stream().filter(o -> StrictUtils.equals(roleUserXStruct.getRoleId(), o.getRoleId())).map(ScopeRoleUserXStruct::getScope).collect(Collectors.toList());
-            if (foundScopes.size() == 0) {
+            if (foundScopes.isEmpty()) {
                 ErrorInfoFactory.RoleUserX.scopeRoleUserNotMatch(recorder, roleUserXStruct);
                 hasError = true;
                 //不中断for循环是因为要收集完整所有的error到recorder
@@ -223,7 +226,7 @@ public class RoleUtils {
             List<String> foundScopes = scopeUserGroupUsers.stream().filter(o ->
                     StrictUtils.equals(userGroupUserXStruct.getUserGroupId(), o.getUserGroupId()))
                     .map(ScopeUserGroupUserXStruct::getScope).collect(Collectors.toList());
-            if (foundScopes.size() == 0) {
+            if (foundScopes.isEmpty()) {
                 ErrorInfoFactory.UserGroupUserX.scopeUserGroupNotMatch(recorder, userGroupUserXStruct);
                 hasError = true;
                 //不中断for循环是因为要收集完整所有的error到recorder
@@ -282,9 +285,9 @@ public class RoleUtils {
         RoleMap backUpRoleSource = !useSingleRoles ? singleRoleSource : multipleRoleSource;
 
         List<RoleStruct> roleStructs = roleSource.getByCode(roleCode);
-        if (roleStructs.size() == 0) {
+        if (roleStructs.isEmpty()) {
             List<RoleStruct> backUpRoleStructs = backUpRoleSource.getByCode(roleCode);
-            if (backUpRoleStructs.size() == 0) {
+            if (backUpRoleStructs.isEmpty()) {
                 //找不到
                 ErrorInfoFactory.Role.roleCodeNotMatch(recorder, roleCode);
                 return null;

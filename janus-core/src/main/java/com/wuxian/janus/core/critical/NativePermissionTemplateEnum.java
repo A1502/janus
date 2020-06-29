@@ -46,6 +46,9 @@ public enum NativePermissionTemplateEnum {
 
     public static class Code {
 
+        private Code() {
+        }
+
         public static final String APPLICATION_PERMISSION_PREFIX = Constant.JANUS + "_ap";
         public static final String TENANT_PERMISSION_PREFIX = Constant.JANUS + "_tp";
 

@@ -5,6 +5,9 @@ import java.util.Map;
 
 public final class StrictUtils {
 
+    private StrictUtils() {
+    }
+
     public static <K, V> boolean containsKey(Map<K, V> map, K key) {
         return map.containsKey(key);
     }
@@ -25,7 +28,7 @@ public final class StrictUtils {
         return list.get(index);
     }
 
-    /*public static boolean equals(IdType obj1, IdType obj2) {
+    /** public static boolean equals(IdType obj1, IdType obj2) {
         if (obj1 != null) {
             return obj1.equals(obj2);
         } else {
@@ -55,7 +58,7 @@ public final class StrictUtils {
         } else {
             return obj2 == null;
         }
-    }*/
+    }**/
 
     public static boolean equals(Boolean obj1, Boolean obj2) {
         if (obj1 != null) {

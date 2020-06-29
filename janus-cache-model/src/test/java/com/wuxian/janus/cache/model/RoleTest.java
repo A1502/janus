@@ -131,7 +131,7 @@ public class RoleTest {
         //测试RoleOther
         Map<IdType, RoleOtherXStruct> scopeSingleRoleOtherXMap = source.getSingleRoleOtherX().get(applicationId, tenantId);
         List<RoleOtherXStruct> listOfRoleAOther = getRoleOther(scopeSingleRoleOtherXMap, roleAId);
-        Assert.assertEquals(listOfRoleAOther.size(), 1);
+        Assert.assertEquals(1, listOfRoleAOther.size());
         Assert.assertTrue(AccessControlUtils.matchWithAccess(listOfRoleAOther.get(0), new Access(
                 new boolean[]{true, false, false, false, false})));
     }
@@ -146,10 +146,10 @@ public class RoleTest {
             , String roleId, String userId, AccessControl accessControl) {
         List<RoleUserXStruct> list = getRoleUserXStruct(roleUserXMap, roleId, userId);
         if (accessControl != null) {
-            Assert.assertEquals(list.size(), 1);
+            Assert.assertEquals(1, list.size());
             Assert.assertTrue(AccessControlUtils.matchWithAccessControl(list.get(0), accessControl));
         } else {
-            Assert.assertEquals(list.size(), 0);
+            Assert.assertEquals(0, list.size());
         }
     }
 

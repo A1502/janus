@@ -7,7 +7,10 @@ import com.wuxian.janus.struct.prototype.ControlPrototype;
 
 public class AccessControlUtils {
 
-    public static void fillByAccess(AccessPrototype accessPrototype, Access data) {
+    private AccessControlUtils() {
+    }
+
+    public static <ID, UID> void fillByAccess(AccessPrototype<ID, UID> accessPrototype, Access data) {
         accessPrototype.setViewAccess(data.isViewAccess());
         accessPrototype.setExecuteAccess(data.isExecuteAccess());
         accessPrototype.setEditAccess(data.isEditAccess());
@@ -15,7 +18,7 @@ public class AccessControlUtils {
         accessPrototype.setEnableAccess(data.isEnableAccess());
     }
 
-    public static boolean matchWithAccess(AccessPrototype prototype, Access access) {
+    public static <ID, UID> boolean matchWithAccess(AccessPrototype<ID, UID> prototype, Access access) {
         if (access.isViewAccess() != prototype.isViewAccess()) {
             return false;
         }
@@ -34,7 +37,7 @@ public class AccessControlUtils {
         return true;
     }
 
-    public static void fillByAccessControl(ControlPrototype controlPrototype, AccessControl data) {
+    public static <ID, UID> void fillByAccessControl(ControlPrototype<ID, UID> controlPrototype, AccessControl data) {
         fillByAccess(controlPrototype, data);
 
         controlPrototype.setViewControl(data.isViewControl());
@@ -44,7 +47,7 @@ public class AccessControlUtils {
         controlPrototype.setEnableControl(data.isEnableControl());
     }
 
-    public static boolean matchWithAccessControl(ControlPrototype prototype, AccessControl accessControl) {
+    public static <ID, UID> boolean matchWithAccessControl(ControlPrototype<ID, UID> prototype, AccessControl accessControl) {
         if (!matchWithAccess(prototype, accessControl)) {
             return false;
         }

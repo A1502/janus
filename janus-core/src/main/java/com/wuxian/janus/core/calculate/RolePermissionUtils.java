@@ -2,6 +2,9 @@ package com.wuxian.janus.core.calculate;
 
 public class RolePermissionUtils {
 
+    private RolePermissionUtils() {
+    }
+
     public static boolean relationAllowed(boolean multipleOfRole, Object outerObjectTypeIdOfRole, Object outerObjectIdOfRole
             , Object outerObjectTypeIdOfPermissionTemplate, Object outerObjectIdOfPermission) {
 
@@ -49,12 +52,14 @@ public class RolePermissionUtils {
             }
 
             if (outerObjectOfRole == null) {
-                //outerObjectCodeOfRole==null表示不限定outerObjectCode范围，
-                //所以outerObjectCodeOfPermission可以是任意
+                /*
+                outerObjectCodeOfRole==null表示不限定outerObjectCode范围，
+                所以outerObjectCodeOfPermission可以是任意
 
-                //特别注意outerObjectCodeOfPermission!=null这个条件没有必要
-                //outerObjectTypeCodeOfPermissionTemplate != null就已经保证了权限是multiple的
-                //所以下面直接return true;
+                特别注意outerObjectCodeOfPermission!=null这个条件没有必要
+                outerObjectTypeCodeOfPermissionTemplate != null就已经保证了权限是multiple的
+                所以下面直接return true;
+                */
                 return true;
             } else {
                 //outerObjectCodeOfRole!=null即有具体指定时

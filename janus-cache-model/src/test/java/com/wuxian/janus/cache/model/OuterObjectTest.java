@@ -4,16 +4,16 @@ import com.wuxian.janus.ErrorCodeException;
 import com.wuxian.janus.cache.model.extract.SourceExtractor;
 import com.wuxian.janus.cache.model.extract.id.LongIdGeneratorFactory;
 import com.wuxian.janus.cache.model.source.ApplicationGroup;
+import com.wuxian.janus.cache.model.source.OuterObject;
 import com.wuxian.janus.cache.model.source.OuterObjectType;
+import com.wuxian.janus.cache.model.source.User;
+import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
+import com.wuxian.janus.core.cache.provider.JanusMap;
 import com.wuxian.janus.struct.layer1.OuterObjectStruct;
 import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
 import com.wuxian.janus.struct.layer6.UserOuterObjectXStruct;
 import com.wuxian.janus.struct.primary.IdType;
 import com.wuxian.janus.struct.primary.UserIdType;
-import com.wuxian.janus.cache.model.source.OuterObject;
-import com.wuxian.janus.cache.model.source.User;
-import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
-import com.wuxian.janus.core.cache.provider.JanusMap;
 import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,7 +64,7 @@ public class OuterObjectTest {
 
         //验证OuterObjectType
         Set<IdType> ids = source.getOuterObjectType().keySet();
-        Assert.assertEquals(ids.size(), 4);
+        Assert.assertEquals(4, ids.size());
         for (String id : new String[]{"1", "19", "20", "21"}) {
             Assert.assertTrue(ids.contains(createIdType(id)));
         }
@@ -224,8 +224,8 @@ public class OuterObjectTest {
 
         checkOuterObjectTypeContainsId(source, "oot88", new String[]{"1"});
 
-        Assert.assertEquals(source.getOuterObject().getIds().size(), 2);
-        Assert.assertEquals(source.getOuterObjectType().keySet().size(), 2);
+        Assert.assertEquals(2, source.getOuterObject().getIds().size());
+        Assert.assertEquals(2, source.getOuterObjectType().keySet().size());
     }
 }
 

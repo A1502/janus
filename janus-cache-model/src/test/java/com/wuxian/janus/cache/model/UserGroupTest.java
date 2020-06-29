@@ -46,7 +46,7 @@ public class UserGroupTest {
         one.mergeFrom(another);
 
         //users也以Map方式合并了
-        Assert.assertEquals(one.getUsers().size(), 3);
+        Assert.assertEquals(3, one.getUsers().size());
     }
 
     @Test
@@ -186,10 +186,10 @@ public class UserGroupTest {
     private void checkUserGroupXOther(Map<IdType, UserGroupOtherXStruct> userGroupOtherXMap, String userGroupId, Access access) {
         List<UserGroupOtherXStruct> list = getUserGroupXOther(userGroupOtherXMap, userGroupId);
         if (access != null) {
-            Assert.assertEquals(list.size(), 1);
+            Assert.assertEquals(1, list.size());
             Assert.assertTrue(AccessControlUtils.matchWithAccess(list.get(0), access));
         } else {
-            Assert.assertEquals(list.size(), 0);
+            Assert.assertEquals(0, list.size());
         }
     }
 
@@ -203,10 +203,10 @@ public class UserGroupTest {
             , String userGroupId, String userId, AccessControl accessControl) {
         List<UserGroupUserXStruct> list = getUserGroupUserXStruct(userGroupUserXMap, userGroupId, userId);
         if (accessControl != null) {
-            Assert.assertEquals(list.size(), 1);
+            Assert.assertEquals(1, list.size());
             Assert.assertTrue(AccessControlUtils.matchWithAccessControl(list.get(0), accessControl));
         } else {
-            Assert.assertEquals(list.size(), 0);
+            Assert.assertEquals(0, list.size());
         }
     }
 
@@ -214,10 +214,10 @@ public class UserGroupTest {
             , String userGroupId, String roleId, AccessControl accessControl) {
         List<RoleUserGroupXStruct> list = getRoleUserGroupXStruct(roleUserGroupXMap, userGroupId, roleId);
         if (accessControl != null) {
-            Assert.assertEquals(list.size(), 1);
+            Assert.assertEquals(1, list.size());
             Assert.assertTrue(AccessControlUtils.matchWithAccessControl(list.get(0), accessControl));
         } else {
-            Assert.assertEquals(list.size(), 0);
+            Assert.assertEquals(0, list.size());
         }
     }
 

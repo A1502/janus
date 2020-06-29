@@ -5,16 +5,19 @@ import com.wuxian.janus.cache.model.extract.id.IdGenerator;
 import com.wuxian.janus.cache.model.extract.id.IdGeneratorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
 import com.wuxian.janus.cache.model.source.*;
-import com.wuxian.janus.util.StrictUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
 import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
 import com.wuxian.janus.struct.primary.IdType;
+import com.wuxian.janus.util.StrictUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 class OuterObjectTypeExtractor {
+
+    private OuterObjectTypeExtractor() {
+    }
 
     /**
      * STEP1,排最前是为了给extractOuterObject提供outerObjectCode到Id的转换参照数据

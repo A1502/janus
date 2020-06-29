@@ -41,6 +41,10 @@ public enum NativeRoleEnum {
             NativePermissionTemplateEnum.CREATE_INNER_GROUP);
 
     public static class Code {
+
+        private Code() {
+        }
+
         public static final String APPLICATION_ROLE_PREFIX = Constant.JANUS + "_ar";
         public static final String TENANT_ROLE_PREFIX = Constant.JANUS + "_tr";
 

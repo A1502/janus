@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
 
 public class RoleExtractor {
 
+    private RoleExtractor() {
+    }
+
     static TenantMap<IdType, Role> extract(ApplicationGroup applicationGroup, IdGeneratorFactory idGeneratorFactory
             , DirectAccessControlSource result) {
 

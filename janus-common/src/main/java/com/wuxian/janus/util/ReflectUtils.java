@@ -9,6 +9,9 @@ import java.util.function.Predicate;
 
 public class ReflectUtils {
 
+    private ReflectUtils() {
+    }
+
     public static List<Field> getAllFields(Class<?> clazz) {
         return getAllFields(null, clazz);
     }

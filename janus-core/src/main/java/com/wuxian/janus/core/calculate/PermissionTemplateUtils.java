@@ -5,6 +5,9 @@ import com.wuxian.janus.struct.layer2.PermissionTemplateStruct;
 
 public class PermissionTemplateUtils {
 
+    private PermissionTemplateUtils() {
+    }
+
     public static PermissionTemplateStruct getNativePermissionTemplate(NativePermissionTemplateEnum permissionTemplate) {
         PermissionTemplateStruct struct = new PermissionTemplateStruct();
 

@@ -5,8 +5,8 @@ import com.wuxian.janus.cache.model.extract.id.IdGenerator;
 import com.wuxian.janus.cache.model.extract.id.IdGeneratorFactory;
 import com.wuxian.janus.cache.model.extract.id.IdUtils;
 import com.wuxian.janus.cache.model.source.*;
-import com.wuxian.janus.core.calculate.PermissionTemplateUtils;
 import com.wuxian.janus.core.cache.provider.DirectAccessControlSource;
+import com.wuxian.janus.core.calculate.PermissionTemplateUtils;
 import com.wuxian.janus.struct.layer1.OuterObjectStruct;
 import com.wuxian.janus.struct.layer1.OuterObjectTypeStruct;
 import com.wuxian.janus.struct.layer2.PermissionStruct;
@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 class PermissionExtractor {
+    private PermissionExtractor() {
+    }
+
     static void extract(ApplicationGroup applicationGroup, IdGeneratorFactory idGeneratorFactory, DirectAccessControlSource result) {
 
         //准备template的id生成

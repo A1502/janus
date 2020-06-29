@@ -8,6 +8,9 @@ import java.util.Date;
 
 public class PrototypeUtils {
 
+    private PrototypeUtils() {
+    }
+
     public static <ID, UID> void fill(JanusPrototype<ID, UID> struct, UID createdBy, Date createdDate
             , UID lastModifiedBy, Date lastModifiedDate) {
         struct.setCreationProposer(createdBy);

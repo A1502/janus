@@ -69,7 +69,7 @@ public class AccessControl extends Access {
 
     @Override
     public String toString() {
-        List<String> list = new ArrayList();
+        List<String> list = new ArrayList<>();
 
         String superString = super.toString();
         if (superString != null && superString.length() > 0) {

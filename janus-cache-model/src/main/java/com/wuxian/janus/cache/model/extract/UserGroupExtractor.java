@@ -21,6 +21,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class UserGroupExtractor {
+
+    private UserGroupExtractor() {
+    }
+
     public static TenantMap<IdType, UserGroup> extract(ApplicationGroup applicationGroup, IdGeneratorFactory idGeneratorFactory, DirectAccessControlSource result) {
 
         TenantMap<IdType, UserGroup> resultTenantMap = new TenantMap<>();

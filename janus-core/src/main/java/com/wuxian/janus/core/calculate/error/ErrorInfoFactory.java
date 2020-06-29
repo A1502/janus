@@ -18,16 +18,28 @@ import java.util.stream.Collectors;
 
 public class ErrorInfoFactory {
 
+    private ErrorInfoFactory() {
+    }
+
     public static class OuterObject {
+        private OuterObject() {
+        }
+
         private static final String TABLE_NAME = "outer_object";
         private static final String OUTER_OBJECT_TYPE_ID = "outer_object_type_id";
     }
 
     public static class UserGroup {
+        private UserGroup() {
+        }
+
         private static final String TABLE_NAME = "user_group";
     }
 
     public static class UserGroupUserX {
+        private UserGroupUserX() {
+        }
+
         private static final String TABLE_NAME = "user_group_user_x";
         private static final String USER_GROUP_ID = "user_group_id";
 
@@ -61,6 +73,9 @@ public class ErrorInfoFactory {
     }
 
     public static class Role {
+        private Role() {
+        }
+
         private static final String TABLE_NAME = "role";
         private static final String CODE = "code";
 
@@ -96,6 +111,9 @@ public class ErrorInfoFactory {
     }
 
     public static class UserOuterObjectX {
+        private UserOuterObjectX() {
+        }
+
         private static final String TABLE_NAME = "user_outer_object_x";
         private static final String OUTER_GROUP_ID_LIST = "outer_group_id_list";
 
@@ -141,6 +159,9 @@ public class ErrorInfoFactory {
     }
 
     public static class OuterObjectType {
+        private OuterObjectType() {
+        }
+
         private static final String TABLE_NAME = "outer_object_type";
 
         public static void outerObjectTypeIdScopeUserIdNotUnique(ErrorDataRecorder recorder
@@ -162,6 +183,9 @@ public class ErrorInfoFactory {
     }
 
     public static class RoleUserX {
+        private RoleUserX() {
+        }
+
         private static final String TABLE_NAME = "role_user_x";
         private static final String ROLE_ID = "role_id";
 
@@ -177,16 +201,23 @@ public class ErrorInfoFactory {
     }
 
     public static class RoleUserGroupX {
+        private RoleUserGroupX() {
+        }
+
         private static final String TABLE_NAME = "role_user_group_x";
-        private static final String ROLE_ID = "role_id";
     }
 
     public static class RoleOtherX {
+        private RoleOtherX() {
+        }
+
         private static final String TABLE_NAME = "role_other_x";
-        private static final String ROLE_ID = "role_id";
     }
 
     public static class RolePermissionX {
+        private RolePermissionX() {
+        }
+
         private static final String TABLE_NAME = "role_permission_x";
         private static final String PERMISSION_ID = "permission_id";
 
@@ -202,6 +233,9 @@ public class ErrorInfoFactory {
     }
 
     public static class Permission {
+        private Permission() {
+        }
+
         private static final String TABLE_NAME = "permission";
 
         public static void permissionTemplateIdNotUnique(ErrorDataRecorder recorder
@@ -231,6 +265,9 @@ public class ErrorInfoFactory {
     }
 
     public static class PermissionTemplate {
+        private PermissionTemplate() {
+        }
+
         private static final String TABLE_NAME = "permission_template";
         private static final String CODE = "code";
 
@@ -245,10 +282,16 @@ public class ErrorInfoFactory {
     }
 
     public static class ScopeRoleUserX {
+        private ScopeRoleUserX() {
+        }
+
         private static final String TABLE_NAME = "scope_role_user_x";
     }
 
     public static class ScopeUserGroupUserX {
+        private ScopeUserGroupUserX() {
+        }
+
         private static final String TABLE_NAME = "scope_user_group_user_x";
     }
 
@@ -256,6 +299,8 @@ public class ErrorInfoFactory {
      * UserGroupUserOther同时需要复用的逻辑
      */
     public static class RoleUserGroupUserOtherX {
+        private RoleUserGroupUserOtherX() {
+        }
 
         @SuppressWarnings("all")
         public enum TableNameEnum {
